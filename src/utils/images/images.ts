@@ -19,6 +19,11 @@ import AgentAvatarFour from "@/public/images/agent-avatars-4.png";
 import MaleAgent from "@/public/images/male-agent.png";
 import LightningIcon from "@/public/images/Featured-icon.png";
 import ExtranetMan from "@/public/images/extranet.png";
+import BlogCover from "@/public/images/blog-cover.png";
+import BlogAgentAvatar from "@/public/images/blog-agent-avatar.png";
+import CustomerServiceFemale from "@/public/images/customer-female.png";
+import TestimonialAvatar from "@/public/images/testimonial-avatar.png";
+import SunsetCover from "@/public/images/sunset.png";
 
 export {
   Logo,
@@ -42,4 +47,9 @@ export {
   MaleAgent,
   LightningIcon,
   ExtranetMan,
+  BlogCover,
+  BlogAgentAvatar,
+  CustomerServiceFemale,
+  TestimonialAvatar,
+  SunsetCover,
 };

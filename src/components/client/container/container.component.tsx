@@ -1,15 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
-const Client_Container = ({children}:{children:React.ReactNode}) => {
-  return (
-    <div className='max-w-7xl m-auto px-4'>
-    {
-      children
-    }
-    </div>
-  )
-}
+const Client_Container = ({ children }: { children: React.ReactNode }) => {
+  return <div className="max-w-7xl m-auto px-4">{children}</div>;
+};
 
-export default Client_Container
+export default Client_Container;
