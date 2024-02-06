@@ -24,6 +24,13 @@ import BlogAgentAvatar from "@/public/images/blog-agent-avatar.png";
 import CustomerServiceFemale from "@/public/images/customer-female.png";
 import TestimonialAvatar from "@/public/images/testimonial-avatar.png";
 import SunsetCover from "@/public/images/sunset.png";
+import CustomTourCover from "@/public/images/custom-tour-cover.png";
+import ExploreWorldCover from "@/public/images/explore-world-cover.png";
+import LocationIcon from "@/public/images/location-icon.png";
+import RatingStar from "@/public/images/rating-star.png";
+import DollarShield from "@/public/images/shield-dollar.png";
+import Plane from "@/public/images/plane.png";
+import ClockStopWatch from "@/public/images/clock-stopwatch.png";
 
 export {
   Logo,
@@ -52,4 +59,11 @@ export {
   CustomerServiceFemale,
   TestimonialAvatar,
   SunsetCover,
+  CustomTourCover,
+  ExploreWorldCover,
+  RatingStar,
+  LocationIcon,
+  DollarShield,
+  ClockStopWatch,
+  Plane,
 };
