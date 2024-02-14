@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   TourHighLigh01,
@@ -6,8 +7,34 @@ import {
   BookGroup01,
   BookGroup02,
   BookGroup03,
+  Client01,
+  Client02,
 } from "@/src/utils/images/images";
+import { Divider } from "@mui/material";
+const faqs = [
+  {
+    question: "What your Package Includes",
+    answer: "Stay With Music Night",
+  },
+  {
+    question: "What your Package Includes",
+    answer:
+      "Embark on a journey to unforgettable destinations, where breath taking landscapes Embark on a journey to unforgettable destinations, where breath taking landscapes Embark on a journey to unforgettable destinations, where breath taking landscapes",
+  },
+  {
+    question: "What your Package Includes",
+    answer: "Security Maintenance",
+  },
+];
+
 const Client_TourDetailDescription = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+  const RatingStar = "/images/rating-star.png";
+
   return (
     <div className="flex  justify-between  bg-[#FFF9EF] py-8 md:px-20 lg:px-30  gap-10 md:gap-5 sm:gap-0">
       <div className=" w-3/5 ">
@@ -303,6 +330,137 @@ const Client_TourDetailDescription = () => {
             the sdf accessibility needs (wheelchairs).
           </span>
         </div>
+        <div className="">
+          <h3 className="pt-5 mt-4 font-bold text-2xl text-black-variant leading-8">
+            Clients Feedback
+          </h3>
+          <p className="font-mont pt-3 text-lg text-black-variant">
+            See what Our Valuebale Clients Share about there Journey
+          </p>
+        </div>
+        <div className="mb-3 mt-10">
+          <div className="flex gap-3 items-center">
+            <Image
+              className=" w-20 h-20 object-cover rounded-full "
+              src={Client01}
+              alt="client_01"
+            />
+            <div className="client-info font-mont">
+              <p className=" text-lg text-black-variant font-medium ">
+                Jhon Chritopher
+              </p>
+              <p className=" text-sm text-[#4F4F4FCC]">Feb-03-2023</p>
+            </div>
+          </div>
+          <div className="romantic-copy-long-des flex px-24 py-0 mr-1 gap-5">
+            <div className="quality">
+              <p>Quality</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Location</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Services</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Price</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+          </div>
+          <p className="font-mont px-24 pt-3 text-lg text-black-variant">
+            See what Our Valuebale Clients Share about there Journey See what
+            Our Valuebale Clients Share{" "}
+          </p>
+        </div>
+        <Divider />
+        <div className="mb-3 mt-10">
+          <div className="flex gap-3 items-center">
+            <Image
+              className=" w-20 h-20 object-cover rounded-full "
+              src={Client02}
+              alt="client_02"
+            />
+            <div className="client-info font-mont">
+              <p className=" text-lg text-black-variant font-medium ">
+                Kristofur
+              </p>
+              <p className=" text-sm text-[#4F4F4FCC]">Jul-13-2022</p>
+            </div>
+          </div>
+          <div className="romantic-copy-long-des flex px-24 py-0 mr-1 gap-5">
+            <div className="quality">
+              <p>Quality</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Location</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Services</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div className="quality">
+              <p>Price</p>
+              <p className="flex">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index}>
+                    <Image src={RatingStar} alt="Star" width={20} height={20} />
+                  </div>
+                ))}
+              </p>
+            </div>
+          </div>
+          <p className="font-mont px-24 pt-3 text-lg text-black-variant">
+            See what Our Valuebale Clients Share about there Journey See what
+            Our Valuebale Clients Share{" "}
+          </p>
+        </div>
       </div>
       <div className=" w-2/5 ">
         <div className="font-mont pt-5 border-x border-x-black border-y border-y-black rounded-lg px-2 py-6">
@@ -371,6 +529,63 @@ const Client_TourDetailDescription = () => {
           <button className="bg-[#FFA500] text-black font-bold text-2xl px-4 py-2 rounded-md w-full mt-4">
             Book Groups
           </button>
+        </div>
+        <div className="font-mont mt-4 pt-5 border-x border-x-black border-y border-y-black rounded-lg px-2 py-6">
+          <label className=" text-[#000] border-t-8 border-[#FFA500] pt-1">
+            Frequent Asked Question
+          </label>
+          <div className=" w-full my-4">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="bg-[#FBFBFB] shadow-md rounded-md border-b mb-4 border-gray-200"
+              >
+                <button
+                  className="w-full  flex justify-between items-center p-4 focus:outline-none"
+                  onClick={() => toggleAccordion(index)}
+                >
+                  <span className="font-medium">{faq.question}</span>
+
+                  <svg
+                    className="fill-black shrink-0 ml-8   bg-[#FFF8EC]"
+                    width="16"
+                    height="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      y="7"
+                      width="16"
+                      height="2"
+                      rx="1"
+                      className={`transform origin-center transition duration-200 ease-out ${
+                        activeIndex === index && "!rotate-180"
+                      }`}
+                    />
+                    <rect
+                      y="7"
+                      width="16"
+                      height="2"
+                      rx="1"
+                      className={`transform origin-center rotate-90 transition duration-200 ease-out ${
+                        activeIndex === index && "!rotate-180"
+                      }`}
+                    />
+                  </svg>
+                </button>
+                {activeIndex === index && (
+                  <div
+                    className={`transform  px-6 pt-0 grid overflow-hidden transition-all duration-500 ease-in-out ${
+                      activeIndex === index
+                        ? " grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0 "
+                    }`}
+                  >
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
