@@ -31,6 +31,8 @@ import RatingStar from "@/public/images/rating-star.png";
 import DollarShield from "@/public/images/shield-dollar.png";
 import Plane from "@/public/images/plane.png";
 import ClockStopWatch from "@/public/images/clock-stopwatch.png";
+import HelpAndSupport from "@/public/images/help-and-support.png";
+import TropicaIcon from "@/public/images/tropica.png";
 
 export {
   Logo,
@@ -66,4 +68,6 @@ export {
   DollarShield,
   ClockStopWatch,
   Plane,
+  HelpAndSupport,
+  TropicaIcon,
 };
