@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "@/public/icons/lineicons.css";
-import { Montserrat } from "next/font/google";
+import "@/public/icons/lineicons.css"
+import { inter, montserrat} from "@/src/utils/fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Extranet | Tours made adventures",
   description: "Explore the unforgettable adventures",
 };
-
-const inter = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export default function RootLayout({
   children,
@@ -19,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.className}`}>
+    <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
       <body className="font-mont">{children}</body>
     </html>
   );

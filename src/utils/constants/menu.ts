@@ -1,22 +1,26 @@
-export const mainMenu=[
+export const mainMenu = [
   {
-    text:'Home',
-    link:'/home',
+    text: "Home",
+    link: "/home",
   },
   {
-    text:'Destinations',
-    link:'/destination',
+    text: "Destinations",
+    link: "/destination",
   },
   {
-    text:'Blog',
-    link:'#',
+    text: "Blog",
+    link: "#",
   },
   {
-    text:'Tour types',
-    link:'#',
+    text: "Tour types",
+    link: "#",
   },
   {
-    text:'About us',
-    link:'#',
+    text: "About us",
+    link: "#",
   },
-]
+  {
+    text: "Help and support",
+    link: "/help-and-support",
+  },
+];
