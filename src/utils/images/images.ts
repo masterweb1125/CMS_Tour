@@ -33,6 +33,8 @@ import Plane from "@/public/images/plane.png";
 import ClockStopWatch from "@/public/images/clock-stopwatch.png";
 import HelpAndSupport from "@/public/images/help-and-support.png";
 import TropicaIcon from "@/public/images/tropica.png";
+import AddToCard from "@/public/images/addtocard.png";
+import CartTourImage from "@/public/images/cardTourImage.png"
 
 export {
   Logo,
@@ -70,4 +72,6 @@ export {
   Plane,
   HelpAndSupport,
   TropicaIcon,
+  AddToCard,
+  CartTourImage
 };

@@ -1,284 +1,269 @@
 "use client";
-import { Divider } from "@mui/material";
-import React, { useState } from "react";
-import Image from "next/image";
-import { TourHighLigh01, TourHighLigh02 } from "@/src/utils/images/images";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import { CartTourImage } from "@/src/utils/images/images";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import { Divider, Grid } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
+
 const faqs = [
   {
     question: "What your Package Includes",
-    answer: "Stay With Music Night",
+    answer:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ",
   },
   {
     question: "What your Package Includes",
     answer:
-      "Embark on a journey to unforgettable destinations, where breath taking landscapes Embark on a journey to unforgettable destinations, where breath taking landscapes Embark on a journey to unforgettable destinations, where breath taking landscapes",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ",
   },
   {
     question: "What your Package Includes",
-    answer: "Security Maintenance",
+    answer:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ",
   },
 ];
+
 const CartPage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const toggleAccordion = (index) => {
+  const [selectedOption, setSelectedOption] = useState("option1");
+  const [itemsList, setItemsList] = useState([
+    {
+      image: CartTourImage,
+      title: " Maldive Tour",
+      date: "January 24,2024",
+      duration: "05 days",
+      person: "1x Adult (12+), 1x Child (3-11)",
+      child: "02",
+      departureTime: "10:00 PM",
+      price: "8734",
+    },
+    {
+      image: CartTourImage,
+      title: " Maldive Tour",
+      date: "January 24,2024",
+      duration: "05 days",
+      person: "1x Adult (12+), 1x Child (3-11)",
+      child: "02",
+      departureTime: "10:00 PM",
+      price: "734",
+    },
+    {
+      image: CartTourImage,
+      title: " Maldive Tour",
+      date: "January 24,2024",
+      duration: "05 days",
+      person: "1x Adult (12+), 1x Child (3-11)",
+      child: "02",
+      departureTime: "10:00 PM",
+      price: "8734",
+    },
+  ]);
+
+  const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-   const [selectedOption, setSelectedOption] = useState("option1");
-   const handleOptionChange = (e) => {
-     setSelectedOption(e.target.value);
-   };
+
+  const handleOptionChange = (e: any) => {
+    setSelectedOption(e.target.value);
+  };
+
   return (
-    <>
-      <h1 className="bg-[#FFF9EF] md:px-20 lg:px-30 pt-10 text-4xl font-semibold font-mont text-[#000]">
+    <div className="px-4 md:px-20 lg:px-30">
+      <h1 className="pt-14 text-3xl font-bold md:text-2xl md:font-semibold font-mont text-[#000]">
         Complete Your Booking
       </h1>
-      <div className="flex  justify-between  bg-[#FFF9EF] py-8 md:px-20 lg:px-30  gap-10 md:gap-5 sm:gap-0">
-        <div className=" w-3/5 ">
-          <div className="flex justify-between pb-8 pt-8 ">
-            <div className="tour-info flex gap-4">
-              <Image
-                className=" w-48 h-48 rounded-xl "
-                src={TourHighLigh01}
-                alt="tour-pic"
-              />
-              <div className="tour-detail-info flex-col justify-between flex">
-                <h6 className=" text-[#000] text-3xl font-semibold font-mont ">
-                  Maldive Tour
-                </h6>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Date: January 24,2024
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Duration : 05 Days
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Person: 1x Adult (12+), 1x Child (3-11)
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Child: 02
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Departure Time : 10:00 PM
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between items-end">
-              <div className="actions flex gap-4">
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <ModeEditOutlinedIcon /> Edit
-                </div>
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <DeleteOutlineRoundedIcon /> Remove
-                </div>
-              </div>
-              <div className="price">
-                <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                  $8734
-                </p>
-              </div>
-            </div>
-          </div>
-          <Divider />
-          <div className="flex justify-between pb-8 pt-8 ">
-            <div className="tour-info flex gap-4">
-              <Image
-                className=" w-48 h-48 rounded-xl "
-                src={TourHighLigh02}
-                alt="tour-pic"
-              />
-              <div className="tour-detail-info flex-col justify-between flex">
-                <h6 className=" text-[#000] text-3xl font-semibold font-mont ">
-                  Maldive Tour
-                </h6>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Date: May 24,2024
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Duration : 02 Days
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Person: 1x Adult (12+), 1x Child (3-11)
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Child: 01
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Departure Time : 01:00 PM
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between items-end">
-              <div className="actions flex gap-4">
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <ModeEditOutlinedIcon /> Edit
-                </div>
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <DeleteOutlineRoundedIcon /> Remove
-                </div>
-              </div>
-              <div className="price">
-                <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                  $834
-                </p>
-              </div>
-            </div>
-          </div>
-          <Divider />
-          <div className="flex justify-between pb-8 pt-8 ">
-            <div className="tour-info flex gap-4">
-              <Image
-                className=" w-48 h-48 rounded-xl "
-                src={TourHighLigh01}
-                alt="tour-pic"
-              />
-              <div className="tour-detail-info flex-col justify-between flex">
-                <h6 className=" text-[#000] text-3xl font-semibold font-mont ">
-                  Maldive Tour
-                </h6>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Date: April 24,2022
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Duration : 25 Days
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Person: 1x Adult (12+), 1x Child (3-11)
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Child: 02
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Departure Time : 08:00 PM
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between items-end">
-              <div className="actions flex gap-4">
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <ModeEditOutlinedIcon /> Edit
-                </div>
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <DeleteOutlineRoundedIcon /> Remove
-                </div>
-              </div>
-              <div className="price">
-                <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                  $809734
-                </p>
-              </div>
-            </div>
-          </div>
-          <Divider />
-          <div className="flex justify-between pb-8 pt-8 ">
-            <div className="tour-info flex gap-4">
-              <Image
-                className=" w-48 h-48 rounded-xl "
-                src={TourHighLigh02}
-                alt="tour-pic"
-              />
-              <div className="tour-detail-info flex-col justify-between flex">
-                <h6 className=" text-[#000] text-3xl font-semibold font-mont ">
-                  Maldive Tour
-                </h6>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Date: March 24,2023
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Duration : 15 Days
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Person: 1x Adult (12+), 1x Child (3-11)
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Child: 20
-                </p>
-                <p className="text-[#000] text-base font-medium font-mont ">
-                  Departure Time : 12:00 AM
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-between items-end">
-              <div className="actions flex gap-4">
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <ModeEditOutlinedIcon /> Edit
-                </div>
-                <div className=" text-base font-mont font-normal cursor-pointer ">
-                  <DeleteOutlineRoundedIcon /> Remove
-                </div>
-              </div>
-              <div className="price">
-                <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                  $89734
-                </p>
-              </div>
-            </div>
-          </div>
-          <Divider />
-          <div className="font-mont mt-4 pt-10  shadow-xl shadow-[#FBFBFB]-500  bg-[#FBFBFB]   rounded-lg p-6">
-            <label className=" text-[#000] border-t-4 border-[#FFA500] text-2xl font-medium pt-4 ">
-              Personal Details
-            </label>
 
-            <div className="name py-6 w-full flex gap-5">
-              <div className="form-group w-24 flex-col  flex">
-                <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
-                  Title
+      <Grid container spacing={6}>
+        <Grid item md={7}>
+          {!!itemsList?.length &&
+            itemsList.map((item, index) => (
+              <React.Fragment key={index}>
+                <div className="hidden md:flex justify-between pb-8 pt-8 ">
+                  <div className="tour-info flex gap-4">
+                    <Image
+                      className="w-40 h-40 object-contain rounded-xl "
+                      width={200}
+                      height={200}
+                      src={item.image}
+                      alt="tour-pic"
+                    />
+                    <div className="tour-detail-info flex-col gap-2 flex">
+                      <h6 className=" text-[#000] text-1xl font-semibold font-mont ">
+                        {item.title}
+                      </h6>
+                      <p className="text-[#000] text-xs font-medium font-mont ">
+                        Date: {item.date}
+                      </p>
+                      <p className="text-[#000] text-xs font-medium font-mont ">
+                        Duration : {item.duration}
+                      </p>
+                      <p className="text-[#000] text-xs font-medium font-mont ">
+                        Person: {item.person}
+                      </p>
+                      <p className="text-[#000] text-xs font-medium font-mont ">
+                        Child: {item.child}
+                      </p>
+
+                      <p className="text-[#000] text-xs font-medium font-mont ">
+                        Departure Time : {item.departureTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-between items-end">
+                    <div className="actions flex gap-4">
+                      <div className="text-xs font-mont font-normal cursor-pointer ">
+                        <ModeEditOutlinedIcon fontSize="inherit" /> Edit
+                      </div>
+                      <div className="text-xs font-mont font-normal cursor-pointer ">
+                        <DeleteOutlineRoundedIcon fontSize="inherit" /> Remove
+                      </div>
+                    </div>
+                    <div className="price ">
+                      <p className="text-[#FFA500] font-mont font-semibold text-2xl">
+                        ${item.price}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex md:hidden justify-between pt-8 ">
+                  <div className="tour-info flex gap-4">
+                    <Image
+                      className="w-30 h-30 object-contain rounded-xl "
+                      width={80}
+                      height={80}
+                      src={item.image}
+                      alt="tour-pic"
+                    />
+                    <div className="tour-detail-info flex-col gap-2 flex">
+                      <h6 className=" text-[#000] text-1xl font-semibold font-mont ">
+                        {item.title}
+                      </h6>
+                      <div className="actions flex gap-4">
+                        <div className="text-xs font-mont font-normal cursor-pointer ">
+                          <ModeEditOutlinedIcon fontSize="inherit" /> Edit
+                        </div>
+                        <div className="text-xs font-mont font-normal cursor-pointer ">
+                          <DeleteOutlineRoundedIcon fontSize="inherit" /> Remove
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="tour-detail-info flex-col gap-2 flex my-4">
+                  <p className="text-[#000] text-xs font-medium font-mont ">
+                    Date: {item.date}
+                  </p>
+                  <p className="text-[#000] text-xs font-medium font-mont ">
+                    Duration : {item.duration}
+                  </p>
+                  <p className="text-[#000] text-xs font-medium font-mont ">
+                    Person: {item.person}
+                  </p>
+                  <p className="text-[#000] text-xs font-medium font-mont ">
+                    Child: {item.child}
+                  </p>
+
+                  <div className="flex justify-between items-center gap-2">
+                    <p className="text-[#000] text-xs font-medium font-mont ">
+                      Departure Time : {item.departureTime}
+                    </p>
+                    <p className="text-[#FFA500] font-mont font-semibold text-2xl">
+                      ${item.price}
+                    </p>
+                  </div>
+                </div>
+
+                <Divider />
+              </React.Fragment>
+            ))}
+
+          <div className="font-mont mt-4 pt-10 bg-[#FBFBFB] rounded-lg p-6">
+            <Grid container>
+              <Grid item xs={12}>
+                <label className="text-[#000] border-t-4 border-[#FFA500] text-1xl font-semibold pt-4 ">
+                  Personal Details
                 </label>
-                <input
-                  className="border-solid border  py-2 border-opacity-20 pl-2  rounded-lg border-black-variant"
-                  type="text"
-                  placeholder="Mr,"
-                />
-              </div>
-              <div className="form-group w-full  flex-col flex">
-                <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
-                  First Name
-                </label>
-                <input
-                  className="border-solid border  py-2 border-opacity-20  pl-2  rounded-lg border-black-variant"
-                  type="text"
-                  placeholder="First name"
-                />
-              </div>
-              <div className="form-group w-full  flex-col flex">
-                <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
-                  Last Name
-                </label>
-                <input
-                  className="border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant"
-                  type="text"
-                  placeholder="Last name"
-                />
-              </div>
-            </div>
-            <div className="contact w-full flex gap-5">
-              <div className="form-group w-full  flex-col flex">
-                <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
-                  Cellphone Number
-                </label>
-                <input
-                  className="border-solid border  py-2 border-opacity-20  pl-2  rounded-lg border-black-variant"
-                  type="text"
-                  placeholder="+92 4040 40404"
-                />
-              </div>
-              <div className="form-group w-full  flex-col flex">
-                <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
-                  Email
-                </label>
-                <input
-                  className="border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant"
-                  type="text"
-                  placeholder="you@company.com"
-                />
-              </div>
-            </div>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mb={2}>
+              <Grid item xs={3} md={2}>
+                <div className="form-group">
+                  <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
+                    Title
+                  </label>
+                  <br />
+                  <input
+                    className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                    type="text"
+                    placeholder="Mr,"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={9} md={5}>
+                <div className="form-group">
+                  <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
+                    First Name
+                  </label>
+                  <br />
+                  <input
+                    className="w-full border-solid border  py-2 border-opacity-20  pl-2  rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                    type="text"
+                    placeholder="First name"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} md={5}>
+                <div className="form-group">
+                  <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
+                    Last Name
+                  </label>
+                  <br />
+                  <input
+                    className="w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]"
+                    type="text"
+                    placeholder="Last name"
+                  />
+                </div>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <div className="form-group">
+                  <label className="text-sm font-mont font-normal text-[#344054]">
+                    Cellphone Number
+                  </label>
+                  <br />
+                  <input
+                    className="w-full border-solid border  py-2 border-opacity-20  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]"
+                    type="text"
+                    placeholder="+92 4040 40404"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <div className="form-group">
+                  <label className="mb-2 text-sm font-mont font-normal text-[#344054]">
+                    Email
+                  </label>
+                  <br />
+                  <input
+                    className="w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]"
+                    type="text"
+                    placeholder="you@company.com"
+                  />
+                </div>
+              </Grid>
+            </Grid>
+
             <div className="term-condition mt-4">
               <input type="checkbox" value="terms&condition" />
-              <label className="pl-3 text-[#475467] text-base font-normal font-mont">
+              <label className="pl-3 text-[#475467] text-xs font-normal font-mont">
                 You agree to our friendly{" "}
                 <Link className=" underline decoration-solid  " href="#">
                   Term & Conditions
@@ -286,15 +271,16 @@ const CartPage = () => {
                 .
               </label>
             </div>
+
             <div className=" mt-14 ">
-              <label className=" text-[#000] border-t-4 border-[#FFA500] text-2xl font-medium pt-4 ">
+              <label className="text-[#000] border-t-4 border-[#FFA500] text-1xl font-semibold pt-4">
                 Select Your Payment Method
               </label>
-              <p className="text-base font-normal font-mont text-[#475467]">
+              <p className="text-[#475467] text-xs">
                 Safe and Secure Payment processing guaranteed. view details
               </p>
 
-              <div className="mt-2 flex justify-between px-2 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant">
+              <div className="mt-2 flex justify-between px-2 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]">
                 <div className="flex gap-3 items-center">
                   <input
                     value="option1"
@@ -304,7 +290,7 @@ const CartPage = () => {
                     id="card"
                     type="radio"
                   />
-                  <label>Card</label>
+                  <label className="text-gray-500 text-sm">Card</label>
                 </div>
                 <div className="card">
                   <svg
@@ -321,7 +307,7 @@ const CartPage = () => {
                   </svg>
                 </div>
               </div>
-              <div className="mt-3 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant">
+              <div className="mt-3 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]">
                 <div className="flex gap-3 items-center">
                   <input
                     value="option2"
@@ -385,14 +371,18 @@ const CartPage = () => {
                     checked={selectedOption === "option3"}
                     onChange={handleOptionChange}
                   />
-                  <label htmlFor="pay-later" className=" italic ">
+                  <label
+                    htmlFor="pay-later"
+                    className=" italic font-semibold text-sm"
+                  >
                     Pay Later
                   </label>
                 </div>
               </div>
             </div>
           </div>
-          <div className="font-mont mt-4 pt-10  shadow-xl shadow-[#FBFBFB]-500  bg-[#FBFBFB]   rounded-lg p-6">
+
+          <div className="font-mont mt-4 pt-10 bg-[#FBFBFB] rounded-lg p-6">
             <div className="total flex justify-between">
               <p className="text-[#000] font-semibold text-2xl font-mont">
                 Total
@@ -406,16 +396,18 @@ const CartPage = () => {
               conditions - Privacy policy
             </p>
             <button className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4">
-             Card
+              Card
             </button>
           </div>
-        </div>
-        <div className=" w-2/5 ">
-          <div className="font-mont mt-4 pt-10  shadow-xl shadow-[#FBFBFB]-500  bg-[#FBFBFB]   rounded-lg p-6">
-            <label className=" text-[#000] border-t-4 border-[#FFA500] text-2xl font-medium pt-4 ">
+        </Grid>
+
+        {/* Order Review */}
+        <Grid item md={5}>
+          <div className="font-mont mt-4 pt-10  shadow-[#FBFBFB]-500  bg-[#FBFBFB] rounded-lg p-6">
+            <label className="text-[#000] border-t-4 border-[#FFA500] text-2xl font-semibold pt-4 ">
               Order Review
             </label>
-            <div className=" w-full my-4">
+            <div className="w-full my-4">
               <div className="flex justify-between py-6">
                 <div className="reviews flex items-center gap-4">
                   <svg
@@ -432,51 +424,51 @@ const CartPage = () => {
                       stroke-linejoin="round"
                     />
                   </svg>
-                  <p className=" text-xl font-medium ">03 Experiences</p>
+                  <p className="text-md font-medium">03 Experiences</p>
                 </div>
-                <div className="viewDetail text-[#FFB733] text-base font-medium border-b-2 border-[#FFA500]">
+                <div className="viewDetail text-[#FFB733] text-md font-medium border-b-2 border-[#FFA500]">
                   View Details
                 </div>
               </div>
               <Divider />
-              <div className="py-6">
-                <p className="text-lg font-medium text-[#323232]">
+              <div className="py-4">
+                <p className="text-md font-medium text-[#323232]">
                   Apply Promo Code
                 </p>
-                <div className="apply_form w-full flex gap-5 py-4">
+                <div className="apply_form w-full flex gap-2 py-2">
                   <input
-                    className="border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
+                    className="bg-[#FBFBFB] text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
                     type="text"
                     placeholder="Enter Code"
                   />
-                  <button className="border-opacity-20  border-solid py-2 px-6 border rounded-lg border-black-variant">
-                    Apply
-                  </button>
-                </div>
-              </div>
-              <Divider />
-              <div className="py-6">
-                <p className="text-lg font-medium text-[#323232]">
-                  Apply Referral Code
-                </p>
-                <div className="apply_form w-full flex gap-5 py-4">
-                  <input
-                    className="border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
-                    type="text"
-                    placeholder="Enter Code"
-                  />
-                  <button className="border-opacity-20  border-solid py-2 px-6 border rounded-lg border-black-variant">
+                  <button className="text-sm border-opacity-20  border-solid py-2 px-6 border rounded-lg border-black-variant">
                     Apply
                   </button>
                 </div>
               </div>
               <Divider />
               <div className="py-4">
-                <div className="total-pricing w-full justify-between flex gap-5 py-4">
+                <p className="text-md font-medium text-[#323232]">
+                  Apply Referral Code
+                </p>
+                <div className="apply_form w-full flex gap-2 py-2">
+                  <input
+                    className="bg-[#FBFBFB] text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
+                    type="text"
+                    placeholder="Enter Code"
+                  />
+                  <button className="text-sm border-opacity-20 border-solid py-2 px-6 border rounded-lg border-black-variant">
+                    Apply
+                  </button>
+                </div>
+              </div>
+              <Divider />
+              <div className="py-4">
+                <div className="total-pricing w-full justify-between flex gap-2 py-2">
                   <p className="text-2xl font-medium text-[#000]">Total</p>
                   <p className="text-2xl font-medium text-[#000]">$97874</p>
                 </div>
-                <p className="text-base text-[#323232] font-medium">
+                <p className="text-[#323232] font-medium text-sm">
                   By proceeding to payment, you agree to our Terms &
                   conditions - Privacy policy
                 </p>
@@ -486,15 +478,20 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-          <div className="font-mont mt-4 pt-10  shadow-xl shadow-[#FBFBFB]-500  bg-[#FBFBFB]   rounded-lg p-6">
-            <label className=" text-[#000] border-t-4 border-[#FFA500] text-2xl font-medium pt-4 ">
+          <div className="font-mont mt-4 pt-8 border rounded-2xl p-6">
+            <div className="border-t-4 border-[#FFA500] w-24 mb-4" />
+            <label className="text-[#000] text-2xl font-semibold md:font-medium pt-4">
               Frequent Asked Question
             </label>
             <div className=" w-full my-4">
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="bg-[#FBFBFB] shadow-md rounded-md border-b mb-4 border-gray-200"
+                  className={`${
+                    activeIndex === index
+                      ? "bg-white border-white shadow-lg "
+                      : "bg-[#FBFBFB] border-gray-200"
+                  } rounded-md mb-4 `}
                 >
                   <button
                     className="w-full  flex justify-between items-center p-4 focus:outline-none"
@@ -539,22 +536,23 @@ const CartPage = () => {
                   </button>
                   {activeIndex === index && (
                     <div
-                      className={`transform  px-6 pt-0 grid overflow-hidden transition-all duration-500 ease-in-out ${
+                      className={`transform px-4 pt-0 pb-6 grid transition-all duration-500 ease-in-out ${
                         activeIndex === index
                           ? " grid-rows-[1fr] opacity-100"
                           : "grid-rows-[0fr] opacity-0 "
                       }`}
                     >
-                      <p>{faq.answer}</p>
+                      <p className="text-[#6F6C90] text-xs ">{faq.answer}</p>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
-    </>
+        </Grid>
+        {/* Order Review */}
+      </Grid>
+    </div>
   );
 };
 

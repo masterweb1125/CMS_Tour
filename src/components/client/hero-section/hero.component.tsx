@@ -12,14 +12,14 @@ const Client_Hero: React.FC<HeroProps> = ({
 }) => {
   return (
     <section
-      className={`bg-cover bg-no-repeat ${minHeight} pt-28 pb-14 lg:pt-0 h-max flex flex-col justify-center items-center w-full text-center gap-8`}
+      className={`bg-cover bg-no-repeat ${minHeight} pt-28 pb-14 lg:pt-0 h-80 flex flex-col justify-center items-center w-full text-center gap-8`}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-bold leading-normal text-white block">
+      <h1 className="text-center text-2xl md:text-3xl lg:text-5xl font-bold leading-normal text-white block">
         {title}
       </h1>
       <p
-        className={`text-sm md:text-md lg:text-lg font-medium leading-7 text-white ${subTitleWidth}`}
+        className={`text-sm md:text-xs lg:text-lg font-medium leading-7 text-white ${subTitleWidth}`}
       >
         {subTitle}
       </p>

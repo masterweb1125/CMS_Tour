@@ -30,7 +30,7 @@ const faqs = [
 const Client_TourDetailDescription = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const toggleAccordion = (index) => {
+  const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
   const RatingStar = "/images/rating-star.png";

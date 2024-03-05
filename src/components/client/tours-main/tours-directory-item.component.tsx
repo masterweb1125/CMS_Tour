@@ -66,12 +66,16 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
       </div>
       <div className="card-actions flex flex-row gap-2">
         <Link className="w-full" href="#">
-          <button
-            type="submit"
-            className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-primary text-white font-semibold text-xs leading-4"
+          <Link
+            href={"/book-now"}
           >
+            <button 
+            className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-primary text-white font-semibold text-xs leading-4"
+            >
+
             Book Now
-          </button>
+            </button>
+          </Link>
         </Link>
         <Link className="w-full" href="/tour-detail">
           <button

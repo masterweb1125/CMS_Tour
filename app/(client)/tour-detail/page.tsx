@@ -5,6 +5,7 @@ import Client_RecomendedTours from "@/src/components/client/tour-detail-page/rec
 import Client_TourDetailHeader from "@/src/components/client/tour-detail-page/tour-header/tour-header.component";
 import Client_TourDetailDescription from "@/src/components/client/tour-detail-page/tour-details/tour-detail.component";
 import CartPage from "@/src/components/client/cart-page/cart-page.component";
+
 const Client_TourDetail = () => {
   return (
     <>
@@ -18,7 +19,7 @@ const Client_TourDetail = () => {
         }
       />
       <Client_TourDetailHeader />
-     <Client_TourDetailDescription />
+      <Client_TourDetailDescription />
       <Client_RecomendedTours />
       <CartPage />
     </>
