@@ -153,7 +153,7 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                <div className="tour-detail-info flex-col gap-2 flex my-4">
+                <div className="tour-detail-info flex-col gap-2 flex md:hidden my-4">
                   <p className="text-[#000] text-xs font-medium font-mont ">
                     Date: {item.date}
                   </p>
@@ -176,7 +176,6 @@ const CartPage = () => {
                     </p>
                   </div>
                 </div>
-
                 <Divider />
               </React.Fragment>
             ))}
