@@ -183,13 +183,13 @@ const CartPage = () => {
           <div className="font-mont mt-4 pt-10 bg-[#FBFBFB] rounded-lg p-6">
             <Grid container>
               <Grid item xs={12}>
-                <label className="text-[#000] border-t-4 border-[#FFA500] text-1xl font-semibold pt-4 ">
+                <label className="text-[#000] border-t-4 border-[#FFA500] text-1xl font-semibold pt-4">
                   Personal Details
                 </label>
               </Grid>
             </Grid>
 
-            <Grid container spacing={2} mb={2}>
+            <Grid container spacing={2} mt={0.2} mb={2}>
               <Grid item xs={3} md={2}>
                 <div className="form-group">
                   <label className="mb-2 text-sm font-mont font-normal text-[#344054]">

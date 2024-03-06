@@ -1,13 +1,25 @@
-import React from "react";
+"use client";
 import { Tours } from "@/src/types/client/tours.types";
-import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Image from "next/image";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import PersonIcon from "@mui/icons-material/Person";
+import WatchLaterIcon from "@mui/icons-material/WatchLater";
+import { IconButton } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import FilterModal from "./tours-filtermodal";
 
 const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="card tour-card p-4 flex flex-col rounded-2xl gap-6  bg-white shadow-md">
       <div
@@ -64,19 +76,15 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
           </div>
         </div>
       </div>
-      <div className="card-actions flex flex-row gap-2">
-        <Link className="w-full" href="#">
-          <Link
-            href={"/book-now"}
-          >
-            <button 
-            className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-primary text-white font-semibold text-xs leading-4"
-            >
 
-            Book Now
-            </button>
-          </Link>
-        </Link>
+      <div className="card-actions flex flex-row gap-2">
+        <button
+          onClick={handleOpen}
+          className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-primary text-white font-semibold text-xs leading-4"
+        >
+          Book Now
+        </button>
+
         <Link className="w-full" href="/tour-detail">
           <button
             type="submit"
@@ -86,6 +94,8 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
           </button>
         </Link>
       </div>
+
+      <FilterModal open={open} handleClose={handleClose} />
     </div>
   );
 };
