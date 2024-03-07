@@ -1,7 +1,7 @@
 export const mainMenu = [
   {
     text: "Home",
-    link: "/home",
+    link: "/",
   },
   {
     text: "Destinations",

@@ -34,7 +34,9 @@ import ClockStopWatch from "@/public/images/clock-stopwatch.png";
 import HelpAndSupport from "@/public/images/help-and-support.png";
 import TropicaIcon from "@/public/images/tropica.png";
 import AddToCard from "@/public/images/addtocard.png";
-import CartTourImage from "@/public/images/cardTourImage.png"
+import CartTourImage from "@/public/images/cardTourImage.png";
+import Client01 from "@/public/icons/tourdetails/image1.png";
+import Client02 from "@/public/icons/tourdetails/image2.png";
 
 export {
   Logo,
@@ -73,5 +75,7 @@ export {
   HelpAndSupport,
   TropicaIcon,
   AddToCard,
-  CartTourImage
+  CartTourImage,
+  Client01,
+  Client02,
 };
