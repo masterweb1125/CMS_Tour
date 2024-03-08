@@ -37,6 +37,7 @@ import AddToCard from "@/public/images/addtocard.png";
 import CartTourImage from "@/public/images/cardTourImage.png";
 import Client01 from "@/public/icons/tourdetails/image1.png";
 import Client02 from "@/public/icons/tourdetails/image2.png";
+import RegisterImage from "@/public/images/register.png";
 
 export {
   Logo,
@@ -78,4 +79,5 @@ export {
   CartTourImage,
   Client01,
   Client02,
+  RegisterImage,
 };
