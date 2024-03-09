@@ -1,7 +1,6 @@
 import { LogoTransparent, RegisterImage } from "@/src/utils/images/images";
 import { Grid } from "@mui/material";
 import Image from "next/image";
-import React from "react";
 
 const Register = () => {
   return (
@@ -22,7 +21,6 @@ const Register = () => {
               </div>
             </Grid>
           </Grid>
-
           <Grid container className="px-8 py-4" spacing={3}>
             <Grid item xs={12} md={6}>
               <div className="form-group">
