@@ -1,5 +1,5 @@
 import Logo from "@/public/images/tropical_logo.png";
-import LogoTransparent from "@/public/images/logo_transparent.png";
+import LogoTransparent from "@/public/images/logo_transparent1.png";
 import Cover from "@/public/images/cover.jpg";
 import Avatar from "@/public/images/Avatar.png";
 import AvatarFull from "@/public/images/avatarfull.png";
