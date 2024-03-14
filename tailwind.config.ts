@@ -25,6 +25,9 @@ const config: Config = {
       backgroundImage: {
         'client-hero' : "url('/public/images/cover.jpg')"
       },
+      boxShadow: {
+        '4xl': 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+      }
     },
   },
   plugins: [],

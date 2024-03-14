@@ -1,6 +1,3 @@
-import React from "react";
-import Image from "next/image";
-import Client_Container from "../../container/container.component";
 import {
   ClockStopWatch,
   DollarShield,
@@ -9,6 +6,7 @@ import {
   RatingStar,
 } from "@/src/utils/images/images";
 import { Grid } from "@mui/material";
+import Image from "next/image";
 
 const Client_TourDetailHeader = () => {
   return (

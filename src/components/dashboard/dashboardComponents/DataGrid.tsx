@@ -15,18 +15,43 @@ const columns = [
 
 function DataGrid({ title }: { title: string }) {
   return (
-    <div className="shadow rounded-lg">
+    <div className="shadow-md rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={9}>
           <h1 className="text-2xl font-semibold">{title}</h1>
         </Grid>
+
         <Grid item xs={12} md={3}>
-          <SearchInput />
+          <div className="flex justify-between gap-3">
+            <SearchInput />
+            <svg
+              width="40"
+              height="34"
+              viewBox="0 0 40 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="0.5"
+                y="0.5"
+                width="39"
+                height="43"
+                rx="7.5"
+                stroke="#D0D5DD"
+              />
+              <path
+                d="M15 22H25M12.5 17H27.5M17.5 27H22.5"
+                stroke="#667085"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         </Grid>
-        <Grid item xs={12} md={1}></Grid>
 
         <Grid item xs={12}>
-          <div className="relative overflow-x-auto border rounded-md mb-10">
+          <div className="relative overflow-x-auto border rounded-md">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -95,6 +120,9 @@ function DataGrid({ title }: { title: string }) {
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div className="text-end py-4 text-[#353535] font-semibold cursor-pointer select-none">
+            View All
           </div>
         </Grid>
       </Grid>

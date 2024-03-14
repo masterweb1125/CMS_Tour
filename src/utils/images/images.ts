@@ -38,6 +38,9 @@ import CartTourImage from "@/public/images/cardTourImage.png";
 import Client01 from "@/public/icons/tourdetails/image1.png";
 import Client02 from "@/public/icons/tourdetails/image2.png";
 import RegisterImage from "@/public/images/register.png";
+import DashboardTourDetails from "@/public/images/dashboardtourdetails.png";
+import CardTourImage2 from "@/public/images/cardTourImage2.png";
+import GroupImage from "@/public/images/GroupImage.png";
 
 export {
   Logo,
@@ -80,4 +83,7 @@ export {
   Client01,
   Client02,
   RegisterImage,
+  DashboardTourDetails,
+  CardTourImage2,
+  GroupImage,
 };

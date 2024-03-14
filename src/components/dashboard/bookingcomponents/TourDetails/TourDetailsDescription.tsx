@@ -1,5 +1,11 @@
 "use client";
-import { CartTourImage, Client01, Client02 } from "@/src/utils/images/images";
+import {
+  CartTourImage,
+  Client01,
+  Client02,
+  CardTourImage2,
+  GroupImage,
+} from "@/src/utils/images/images";
 import { Divider, Grid } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
@@ -30,7 +36,7 @@ const faqs = [
   },
 ];
 
-const Client_TourDetailDescription = () => {
+export default function TourDetailDescription() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [age, setAge] = useState("Pickup Location");
   const [language, setLanguage] = useState("English");
@@ -45,13 +51,17 @@ const Client_TourDetailDescription = () => {
   const RatingStar = "/images/rating-star.png";
 
   return (
-    <div className="py-8 px-4 md:px-20 lg:px-28 gap-10 md:gap-5 sm:gap-0">
-      <Grid container spacing={3}>
+    <div className="mt-8 gap-10 md:gap-5 sm:gap-0">
+      <Grid
+        container
+        spacing={3}
+        className="flex flex-col-reverse md:flex md:flex-row"
+      >
         <Grid item xs={12} md={7}>
           <h2 className="font-bold text-2xl text-black-variant leading-8">
             Tour description
           </h2>
-          <p className="pt-4 text-sm md:text-lg text-[#000] font-mont">
+          <p className="pt-4 text-sm md:text-lg text-[#757575] font-mont">
             Embark on a journey to unforgettable destinations, where breath
             taking landscapes meet Embark on a journey to unforgettable
             destinations, Embark on a journey
@@ -59,12 +69,11 @@ const Client_TourDetailDescription = () => {
           <h3 className="pt-5 mt-4 mb-4 font-bold text-2xl text-black-variant leading-8">
             Tour Highlights
           </h3>
-          <div className="flex gap-4 md:gap-2 overflow-scroll md:overflow-hidden  ">
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
+          <div className="flex gap-4 md:gap-2 overflow-scroll md:overflow-hidden [&::-webkit-scrollbar]:hidden">
+            <Image className="w-64" src={CartTourImage} alt="highligh-01" />
+            <Image className="w-64" src={CardTourImage2} alt="highligh-01" />
           </div>
-          <p className="pt-2 text-sm md:text-lg text-[#000] font-mont">
+          <p className="pt-2 text-sm md:text-lg text-[#757575] font-mont">
             Embark on a journey to unforgettable destinations, where breath
             taking landscapes meet Embark on a journey to unforgettable
             destinations, Embark on a journey
@@ -73,7 +82,7 @@ const Client_TourDetailDescription = () => {
             <h3 className="pt-5 mt-4 font-bold text-2xl text-black-variant leading-8">
               Includes
             </h3>
-            <p className="text-sm md:text-lg text-[#000] font-mont">
+            <p className="text-sm md:text-lg text-[#757575] font-mont">
               Embark on a journey to unforgettable destinations, where breath
               taking landscapes
             </p>
@@ -263,7 +272,7 @@ const Client_TourDetailDescription = () => {
             <h3 className="pt-5 mt-4 font-bold text-2xl text-black-variant leading-8">
               Not Included
             </h3>
-            <p className="text-sm md:text-lg text-[#000] font-mont">
+            <p className="text-sm md:text-lg text-[#757575] font-mont">
               Embark on a journey to unforgettable destinations, where
               breathtaking landscapes
             </p>
@@ -341,14 +350,14 @@ const Client_TourDetailDescription = () => {
             <h3 className="pt-5 mt-4 font-bold text-2xl text-black-variant leading-8">
               Clients Feedback
             </h3>
-            <p className="text-sm md:text-lg text-[#000] font-mont">
+            <p className="text-sm md:text-lg text-[#757575] font-mont">
               See what Our Valuebale Clients Share about there Journey
             </p>
           </div>
           <div className="mb-3 mt-10">
             <div className="flex gap-3 items-center">
               <Image
-                className=" w-20 h-20 object-cover rounded-full "
+                className="w-20 h-20 object-cover rounded-full "
                 src={Client01}
                 alt="client_01"
               />
@@ -362,66 +371,66 @@ const Client_TourDetailDescription = () => {
             <div className="romantic-copy-long-des flex md:px-24 pt-1 mr-1 gap-5">
               <div className="quality">
                 <p>Quality</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Location</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Services</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Price</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
             </div>
-            <p className="md:px-24 pt-2 text-sm md:text-lg text-[#000] font-mont">
+            <p className="md:px-24 pt-2 text-sm md:text-lg text-[#757575] font-mont">
               See what Our Valuebale Clients Share about there Journey See what
               Our Valuebale Clients Share{" "}
             </p>
@@ -444,66 +453,66 @@ const Client_TourDetailDescription = () => {
             <div className="romantic-copy-long-des flex md:px-24 pt-1 mr-1 gap-5">
               <div className="quality">
                 <p>Quality</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Location</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Services</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
               <div className="quality">
                 <p>Price</p>
-                <p className="flex">
+                <div className="flex">
                   {[...Array(5)].map((_, index) => (
                     <div key={index}>
                       <Image
                         src={RatingStar}
                         alt="Star"
-                        width={20}
-                        height={20}
+                        width={16}
+                        height={16}
                       />
                     </div>
                   ))}
-                </p>
+                </div>
               </div>
             </div>
-            <p className="md:px-24 pt-2 text-sm md:text-lg text-[#000] font-mont">
+            <p className="md:px-24 pt-2 text-sm md:text-lg text-[#757575] font-mont">
               See what Our Valuebale Clients Share about there Journey See what
               Our Valuebale Clients Share{" "}
             </p>
@@ -518,10 +527,10 @@ const Client_TourDetailDescription = () => {
                 <p className="text-[#344054] text-xs font-semibold md:font-medium pt-4">
                   Starting Price
                 </p>
-                <p className="text-[#000] text-4xl font-semibold pt-4 flex items-center gap-1">
+                <div className="text-[#000] text-4xl font-semibold pt-4 flex items-center gap-1">
                   <sub>us</sub>
                   <div>$1,143</div>
-                </p>
+                </div>
               </Grid>
             </Grid>
 
@@ -549,6 +558,8 @@ const Client_TourDetailDescription = () => {
                           <Image
                             src="/icons/carticons/marker.png"
                             className="w-4"
+                            width={12}
+                            height={12}
                             alt="Icon"
                           />
                         </InputAdornment>
@@ -586,7 +597,7 @@ const Client_TourDetailDescription = () => {
                   <br />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg bg-[#FBFBFB] outline-none"
+                      className="w-full pl-2 rounded-lg bg-[#FBFBFB] outline-none"
                       slotProps={{
                         textField: { size: "small" },
                       }}
@@ -605,12 +616,35 @@ const Client_TourDetailDescription = () => {
             </Grid>
           </div>
 
-          <div className="font-mont mt-4 pt-8 border rounded-2xl p-6">
+          <div className="font-mont mt-4 pt-8 md:border rounded-2xl p-2 md:p-6">
+            <div className="w-full">
+              <div className="flex justify-center items-center">
+                <Image
+                  src={GroupImage}
+                  className="object-contain w-36"
+                  alt={""}
+                />
+              </div>
+
+              <div className="flex flex-col justify-between items-center my-6">
+                <h1 className="font-semibold text-lg">Groups Booking</h1>
+                <p className="text-center text-[#667085] text-base pt-2">Manage Bookings for larger groups with special pricing  and offers</p>
+              </div>
+
+              <div>
+                <button className="bg-[#FFA500] text-white font-semibold font-mont text-xl px-4 py-3 rounded-lg w-full mt-4">
+                  Book Groups
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="font-mont mt-4 pt-8 md:border rounded-2xl p-2 md:p-6">
             <div className="border-t-4 border-[#FFA500] w-24 mb-4" />
-            <label className="text-[#000] text-2xl font-semibold md:font-medium pt-4">
+            <label className="text-[#000] text-2xl pr-2 md:pr-0 font-semibold md:font-medium pt-4">
               Frequent Asked Question
             </label>
-            <div className=" w-full my-4">
+            <div className="w-full my-4">
               {faqs.map((faq, index) => (
                 <div
                   key={index}
@@ -621,7 +655,7 @@ const Client_TourDetailDescription = () => {
                   } rounded-md mb-4 `}
                 >
                   <button
-                    className="w-full  flex justify-between items-center p-4 focus:outline-none"
+                    className="w-full flex justify-between items-center p-4 focus:outline-none"
                     onClick={() => toggleAccordion(index)}
                   >
                     <span className="font-medium">{faq.question}</span>
@@ -680,6 +714,4 @@ const Client_TourDetailDescription = () => {
       </Grid>
     </div>
   );
-};
-
-export default Client_TourDetailDescription;
+}

@@ -9,21 +9,21 @@ export const KababMenu = () => (
     <path
       d="M9.99984 10.833C10.4601 10.833 10.8332 10.4599 10.8332 9.99967C10.8332 9.53944 10.4601 9.16634 9.99984 9.16634C9.5396 9.16634 9.1665 9.53944 9.1665 9.99967C9.1665 10.4599 9.5396 10.833 9.99984 10.833Z"
       stroke="#98A2B3"
-      stroke-width="1.66667"
+      strokeWidth="1.66667"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
     <path
       d="M9.99984 4.99967C10.4601 4.99967 10.8332 4.62658 10.8332 4.16634C10.8332 3.7061 10.4601 3.33301 9.99984 3.33301C9.5396 3.33301 9.1665 3.7061 9.1665 4.16634C9.1665 4.62658 9.5396 4.99967 9.99984 4.99967Z"
       stroke="#98A2B3"
-      stroke-width="1.66667"
+      strokeWidth="1.66667"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
     <path
       d="M9.99984 16.6663C10.4601 16.6663 10.8332 16.2932 10.8332 15.833C10.8332 15.3728 10.4601 14.9997 9.99984 14.9997C9.5396 14.9997 9.1665 15.3728 9.1665 15.833C9.1665 16.2932 9.5396 16.6663 9.99984 16.6663Z"
       stroke="#98A2B3"
-      stroke-width="1.66667"
+      strokeWidth="1.66667"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -49,7 +49,7 @@ export const GreenChart = () => (
     <path
       d="M1.6665 65C19.852 58.9382 25.7869 35.6316 44.3332 33C61.432 30.5738 70.0267 52.9402 86.9998 49C107.583 44.2218 108.871 2.73299 129.667 1"
       stroke="#12B76A"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -88,7 +88,7 @@ export const RedChart = () => (
     <path
       d="M129.333 65.5C111.148 59.4382 105.213 36.1316 86.6663 33.5C69.5675 31.0738 60.9728 53.4402 43.9997 49.5C23.4167 44.7218 22.1289 3.23299 1.333 1.5"
       stroke="#F04438"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -119,7 +119,7 @@ export const GreenArrow = () => (
     <path
       d="M6.99984 12.8337V1.16699M6.99984 1.16699L1.1665 7.00033M6.99984 1.16699L12.8332 7.00033"
       stroke="#12B76A"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -137,7 +137,7 @@ export const RedArrow = () => (
     <path
       d="M10.6663 4.66699V16.3337M10.6663 16.3337L16.4997 10.5003M10.6663 16.3337L4.83301 10.5003"
       stroke="#F04438"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />

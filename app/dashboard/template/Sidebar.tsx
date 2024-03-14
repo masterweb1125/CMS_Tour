@@ -1,16 +1,30 @@
 "use client";
 import { sidebarBottomItems, sidebarItems } from "@/src/utils/data/sidebar";
 import { AgentAvatarOne, LogoTransparent } from "@/src/utils/images/images";
-import { Divider } from "@mui/material";
+import { Divider, useMediaQuery, useTheme } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Sidebar({ children }: any) {
   const [mobileView, setMobileView] = useState(false);
+  const theme = useTheme();
+  const smallScreen: any = useMediaQuery(theme.breakpoints.up("sm"));
+
+  useEffect(() => {
+    if (smallScreen && mobileView) setMobileView(false);
+  }, [smallScreen, mobileView]);
 
   return (
     <React.Fragment>
+      {mobileView && (
+        <div
+          onClick={() => setMobileView(false)}
+          className="absolute h-screen w-screen bg-[black] z-20"
+          style={{ opacity: 0.4 }}
+        ></div>
+      )}
+
       <button
         data-drawer-target="separator-sidebar"
         data-drawer-toggle="separator-sidebar"
@@ -69,7 +83,7 @@ function Sidebar({ children }: any) {
               {sidebarBottomItems.map(({ title, link, Icon }, index) => (
                 <li key={index}>
                   <Link
-                    href="#"
+                    href={link}
                     className="flex items-center p-2  text-gray-900 transition duration-75 rounded-lg hover:bg-[#FFA500] dark:hover:bg-gray-700 hover:text-white  dark:text-white group"
                   >
                     {Icon}
@@ -78,7 +92,7 @@ function Sidebar({ children }: any) {
                 </li>
               ))}
             </ul>
-
+            <br />
             <Divider />
 
             <div className="px-2 py-4 w-full flex justify-between items-center">
@@ -110,7 +124,7 @@ function Sidebar({ children }: any) {
       </aside>
 
       <div
-        className="p-4 sm:ml-72 h-screen"
+        className="p-4 md:pl-10 md:pr-6 md:py-4 sm:ml-72 h-screen"
         onClick={() => setMobileView(false)}
       >
         {children}

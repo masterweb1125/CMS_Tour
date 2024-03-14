@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import Select from "@mui/material/Select";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -60,7 +61,7 @@ export default function FilterModal({
                   }}
                   IconComponent={() => (
                     <InputAdornment position="end" className="absolute right-2">
-                      <img
+                      <Image
                         src="/icons/carticons/marker.png"
                         className="w-4"
                         alt="Icon"
@@ -81,7 +82,7 @@ export default function FilterModal({
 
                   {!!locations?.length &&
                     locations.map((item, index) => (
-                      <MenuItem value={item}>
+                      <MenuItem key={index} value={item}>
                         <div className="font-mont text-gray-500">{item}</div>
                       </MenuItem>
                     ))}
