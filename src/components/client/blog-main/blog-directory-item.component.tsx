@@ -18,7 +18,7 @@ const Client_BlogDirectoryItem = ({ blog }: { blog: Blogs }) => {
           </h4>
           <div className="flex flex-row justify-between">
             <h2 className="text-2xl font-semibold text-black-variant leading-7">
-              {blog.blogHeading}
+              {blog.blogHeading} 
             </h2>
             <ArrowOutward />
           </div>

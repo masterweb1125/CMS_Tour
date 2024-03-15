@@ -64,7 +64,7 @@ export const sidebarItems = [
       </svg>
     ),
     title: "Commission & Incentive",
-    link: `${prefix}/commisstionandincentive`,
+    link: `${prefix}/commissionandincentive`,
   },
   {
     Icon: (
@@ -152,7 +152,7 @@ export const sidebarBottomItems = [
       </svg>
     ),
     title: "Resource Center",
-    link: "",
+    link: "/dashboard/resourcecenter",
   },
   {
     Icon: (

@@ -27,7 +27,7 @@ function CardComponent({
         <KababMenu />
       </div>
 
-      <p className="text-black text-2xl font-semibold pt-2">{count}</p>
+      <p className="text-black text-2xl font-bold pt-2">{count}</p>
 
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">

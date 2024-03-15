@@ -41,6 +41,7 @@ import RegisterImage from "@/public/images/register.png";
 import DashboardTourDetails from "@/public/images/dashboardtourdetails.png";
 import CardTourImage2 from "@/public/images/cardTourImage2.png";
 import GroupImage from "@/public/images/GroupImage.png";
+import BlogImageAvator from "@/public/images/blogpostavator.png";
 
 export {
   Logo,
@@ -86,4 +87,5 @@ export {
   DashboardTourDetails,
   CardTourImage2,
   GroupImage,
+  BlogImageAvator,
 };

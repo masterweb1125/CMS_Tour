@@ -15,7 +15,7 @@ const columns = [
 
 function DataGrid({ title }: { title: string }) {
   return (
-    <div className="shadow-md rounded-lg">
+    <div className="shadow-4xl rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
         <Grid item xs={12} md={9}>
           <h1 className="text-2xl font-semibold">{title}</h1>
