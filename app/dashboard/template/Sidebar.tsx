@@ -4,12 +4,14 @@ import { AgentAvatarOne, LogoTransparent } from "@/src/utils/images/images";
 import { Divider, useMediaQuery, useTheme } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 function Sidebar({ children }: any) {
   const [mobileView, setMobileView] = useState(false);
   const theme = useTheme();
   const smallScreen: any = useMediaQuery(theme.breakpoints.up("sm"));
+  const pathname = usePathname();
 
   useEffect(() => {
     if (smallScreen && mobileView) setMobileView(false);
@@ -65,32 +67,47 @@ function Sidebar({ children }: any) {
             />
           </Link>
           <ul className="space-y-2 font-medium ">
-            {sidebarItems.map(({ title, link, Icon }, index) => (
-              <li key={index}>
-                <Link
-                  href={link}
-                  className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-[#FFA500] hover:text-white group"
-                >
-                  {Icon}
-                  <span className="ms-3">{title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <div className="absolute bottom-0 w-64 ">
-            <ul className="space-y-2 font-medium border-gray-200 dark:border-gray-700">
-              {sidebarBottomItems.map(({ title, link, Icon }, index) => (
+            {sidebarItems(pathname).map(
+              (
+                {
+                  title,
+                  link,
+                  Icon,
+                }: { title: string; link: string; Icon: any },
+                index
+              ) => (
                 <li key={index}>
                   <Link
                     href={link}
-                    className="flex items-center p-2  text-gray-900 transition duration-75 rounded-lg hover:bg-[#FFA500] dark:hover:bg-gray-700 hover:text-white  dark:text-white group"
+                    className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-[#FFA500] hover:text-white group ${
+                      pathname === link ? "bg-[#FFA500] text-white" : ""
+                    }`}
                   >
                     {Icon}
                     <span className="ms-3">{title}</span>
                   </Link>
                 </li>
-              ))}
+              )
+            )}
+          </ul>
+
+          <div className="absolute bottom-0 w-64 ">
+            <ul className="space-y-2 font-medium border-gray-200 dark:border-gray-700">
+              {sidebarBottomItems(pathname).map(
+                ({ title, link, Icon }, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link}
+                      className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-[#FFA500] hover:text-white group ${
+                        pathname === link ? "bg-[#FFA500] text-white" : ""
+                      }`}
+                    >
+                      {Icon}
+                      <span className="ms-3">{title}</span>
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
             <br />
             <Divider />

@@ -1,6 +1,8 @@
+import { usePathname } from "next/navigation";
+
 export const prefix: string = "/dashboard";
 
-export const sidebarItems = [
+export const sidebarItems = (pathname: string) => [
   {
     Icon: (
       <svg
@@ -10,7 +12,9 @@ export const sidebarItems = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === prefix ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
@@ -31,7 +35,9 @@ export const sidebarItems = [
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/booking` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M2 11.9996L11.6422 16.8207C11.7734 16.8863 11.839 16.9191 11.9078 16.932C11.9687 16.9434 12.0313 16.9434 12.0922 16.932C12.161 16.9191 12.2266 16.8863 12.3578 16.8207L22 11.9996M2 16.9996L11.6422 21.8207C11.7734 21.8863 11.839 21.9191 11.9078 21.932C11.9687 21.9434 12.0313 21.9434 12.0922 21.932C12.161 21.9191 12.2266 21.8863 12.3578 21.8207L22 16.9996M2 6.99958L11.6422 2.17846C11.7734 2.11287 11.839 2.08008 11.9078 2.06717C11.9687 2.05574 12.0313 2.05574 12.0922 2.06717C12.161 2.08008 12.2266 2.11287 12.3578 2.17846L22 6.99958L12.3578 11.8207C12.2266 11.8863 12.161 11.9191 12.0922 11.932C12.0313 11.9434 11.9687 11.9434 11.9078 11.932C11.839 11.9191 11.7734 11.8863 11.6422 11.8207L2 6.99958Z"
@@ -53,7 +59,9 @@ export const sidebarItems = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/commissionandincentive` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
@@ -74,7 +82,9 @@ export const sidebarItems = [
         viewBox="0 0 22 22"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/manageclients` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
@@ -95,7 +105,9 @@ export const sidebarItems = [
         viewBox="0 0 22 22"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/marketingtools` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
@@ -116,7 +128,9 @@ export const sidebarItems = [
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/chats` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M6.09436 11.2288C6.03221 10.8282 5.99996 10.4179 5.99996 10C5.99996 5.58172 9.60525 2 14.0526 2C18.4999 2 22.1052 5.58172 22.1052 10C22.1052 10.9981 21.9213 11.9535 21.5852 12.8345C21.5154 13.0175 21.4804 13.109 21.4646 13.1804C21.4489 13.2512 21.4428 13.301 21.4411 13.3735C21.4394 13.4466 21.4493 13.5272 21.4692 13.6883L21.8717 16.9585C21.9153 17.3125 21.9371 17.4895 21.8782 17.6182C21.8266 17.731 21.735 17.8205 21.6211 17.8695C21.4911 17.9254 21.3146 17.8995 20.9617 17.8478L17.7765 17.3809C17.6101 17.3565 17.527 17.3443 17.4512 17.3448C17.3763 17.3452 17.3245 17.3507 17.2511 17.3661C17.177 17.3817 17.0823 17.4172 16.893 17.4881C16.0097 17.819 15.0524 18 14.0526 18C13.6344 18 13.2237 17.9683 12.8227 17.9073M7.63158 22C10.5965 22 13 19.5376 13 16.5C13 13.4624 10.5965 11 7.63158 11C4.66668 11 2.26316 13.4624 2.26316 16.5C2.26316 17.1106 2.36028 17.6979 2.53955 18.2467C2.61533 18.4787 2.65322 18.5947 2.66566 18.6739C2.67864 18.7567 2.68091 18.8031 2.67608 18.8867C2.67145 18.9668 2.65141 19.0573 2.61134 19.2383L2 22L4.9948 21.591C5.15827 21.5687 5.24 21.5575 5.31137 21.558C5.38652 21.5585 5.42641 21.5626 5.50011 21.5773C5.5701 21.5912 5.67416 21.6279 5.88227 21.7014C6.43059 21.8949 7.01911 22 7.63158 22Z"
@@ -131,7 +145,7 @@ export const sidebarItems = [
   },
 ];
 
-export const sidebarBottomItems = [
+export const sidebarBottomItems = (pathname: string) => [
   {
     Icon: (
       <svg
@@ -141,7 +155,9 @@ export const sidebarBottomItems = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/resourcecenter` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
@@ -152,7 +168,7 @@ export const sidebarBottomItems = [
       </svg>
     ),
     title: "Resource Center",
-    link: "/dashboard/resourcecenter",
+    link: `${prefix}/resourcecenter`,
   },
   {
     Icon: (
@@ -163,7 +179,9 @@ export const sidebarBottomItems = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/helpandsupport` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
@@ -174,7 +192,7 @@ export const sidebarBottomItems = [
       </svg>
     ),
     title: "Help & Support",
-    link: "",
+    link: `${prefix}/helpandsupport`,
   },
   {
     Icon: (
@@ -184,6 +202,9 @@ export const sidebarBottomItems = [
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${prefix}/settings` ? "stroke-white" : ""
+        } `}
       >
         <path
           d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
@@ -202,6 +223,6 @@ export const sidebarBottomItems = [
       </svg>
     ),
     title: "Settings",
-    link: "",
+    link: `${prefix}/settings`,
   },
 ];
