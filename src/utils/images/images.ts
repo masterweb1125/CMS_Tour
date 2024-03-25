@@ -43,6 +43,8 @@ import CardTourImage2 from "@/public/images/cardTourImage2.png";
 import GroupImage from "@/public/images/GroupImage.png";
 import BlogImageAvator from "@/public/images/blogpostavator.png";
 import SupplierRegister from "@/public/images/supplierregister.png";
+import TourEditImageTwo from "@/public/images/touredittwo.png";
+import TourEditImageOne from "@/public/images/toureditone.png";
 
 export {
   Logo,
@@ -90,4 +92,6 @@ export {
   GroupImage,
   BlogImageAvator,
   SupplierRegister,
+  TourEditImageTwo,
+  TourEditImageOne,
 };

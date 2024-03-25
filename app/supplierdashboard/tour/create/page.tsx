@@ -1,10 +1,30 @@
 "use client";
 import DashboardHeader from "@/src/components/supplierdashboard/dashboardComponents/DashboardHeader";
-import { Grid, InputAdornment, TextField } from "@mui/material";
+import {
+  Divider,
+  Grid,
+  InputAdornment,
+  TextareaAutosize,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
+const itemsList = [
+  "Dinner",
+  "Hotel",
+  "Room",
+  "Music",
+  "Food",
+  "Pick Up",
+  "Work",
+];
+
 function Booking() {
+  const [whatIncludes, setWhatIncludes] = useState<any>([]);
+  const [whatNotIncludes, setWhatNotIncludes] = useState<any>([]);
+
   return (
     <div>
       <DashboardHeader name="Jhon Christopher" />
@@ -304,6 +324,247 @@ function Booking() {
                 // ),
               }}
             />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="flex justify-center items-center gap-4">
+              <h1 className="font-semibold text-sm">Tour Description</h1>
+              <div className="flex-1">
+                <Divider />
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <label className="text-[#344054] text-sm font-medium">
+              Tour Description <span className="text-red-500">*</span>
+            </label>
+            <TextareaAutosize
+              className="w-full border-2 rounded-lg p-2 text-sm"
+              style={{ height: "130px" }}
+              placeholder="Tour Description"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <label className="text-[#344054] text-sm font-medium">
+              Upload Image <span className="text-red-500">*</span>
+            </label>
+            <br />
+            <TextField
+              type="file"
+              size="small"
+              className="w-full"
+              InputProps={{
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <label className="text-[#344054] text-sm font-medium">
+              Upload Video <span className="text-red-500">*</span>
+            </label>
+            <br />
+            <TextField
+              type="file"
+              size="small"
+              className="w-full"
+              InputProps={{
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="flex justify-center items-center gap-4">
+              <h1 className="font-semibold text-sm">Add What’s Include</h1>
+              <div className="flex-1">
+                <Divider />
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <label className="text-[#344054] text-sm font-medium">
+              Thinks Included <span className="text-red-500">*</span>
+            </label>
+
+            <div className="w-full border-2 rounded-lg p-2 text-sm h-24 overflow-y-scroll flex gap-2 flex-wrap">
+              {!!whatIncludes?.length &&
+                whatIncludes.map((value: any, index: number) => (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border px-2 py-1 rounded-md font-medium h-8 flex items-center gap-1 transition-all select-none"
+                  >
+                    <div>{value}</div>
+                    <svg
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setWhatIncludes((prev: any) =>
+                          prev.filter((v: string) => v !== value)
+                        )
+                      }
+                      width="8"
+                      height="8"
+                      viewBox="0 0 8 8"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 1L1 7M1 1L7 7"
+                        stroke="#98A2B3"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                ))}
+            </div>
+
+            <div className="flex gap-2 mt-3 select-none">
+              {itemsList.map((value, index) =>
+                whatIncludes?.includes(value) ||
+                whatNotIncludes?.includes(value) ? (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border cursor-not-allowed px-2 py-1 rounded-md font-medium"
+                  >
+                    {value}
+                  </div>
+                ) : (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border cursor-pointer px-2 py-1 rounded-md font-medium"
+                    onClick={() => {
+                      setWhatIncludes((prev: any) => [...prev, value]);
+                    }}
+                  >
+                    {value}
+                  </div>
+                )
+              )}
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="flex justify-center items-center gap-4">
+              <h1 className="font-semibold text-sm">Add What’s Not Include</h1>
+              <div className="flex-1">
+                <Divider />
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <label className="text-[#344054] text-sm font-medium">
+              Thinks Not Included <span className="text-red-500">*</span>
+            </label>
+
+            <div className="w-full border-2 rounded-lg p-2 text-sm h-24 overflow-y-scroll flex gap-2 flex-wrap">
+              {!!whatNotIncludes?.length &&
+                whatNotIncludes.map((value: any, index: number) => (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border px-2 py-1 rounded-md font-medium h-8 flex items-center gap-1 transition-all select-none"
+                  >
+                    <div>{value}</div>
+                    <svg
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setWhatNotIncludes((prev: any) =>
+                          prev.filter((v: string) => v !== value)
+                        )
+                      }
+                      width="8"
+                      height="8"
+                      viewBox="0 0 8 8"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7 1L1 7M1 1L7 7"
+                        stroke="#98A2B3"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                ))}
+            </div>
+
+            <div className="flex gap-2 mt-3 select-none">
+              {itemsList.map((value, index) =>
+                whatIncludes?.includes(value) ||
+                whatNotIncludes?.includes(value) ? (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border cursor-not-allowed px-2 py-1 rounded-md font-medium"
+                  >
+                    {value}
+                  </div>
+                ) : (
+                  <div
+                    key={index}
+                    className="text-sm text-[#344054] border cursor-pointer px-2 py-1 rounded-md font-medium"
+                    onClick={() => {
+                      setWhatNotIncludes((prev: any) => [...prev, value]);
+                    }}
+                  >
+                    {value}
+                  </div>
+                )
+              )}
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="flex justify-center items-center gap-4">
+              <h1 className="font-semibold text-sm">Add Important Note</h1>
+              <div className="flex-1">
+                <Divider />
+              </div>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <label className="text-[#344054] text-sm font-medium">
+              Instructions <span className="text-red-500">*</span>
+            </label>
+            <TextareaAutosize
+              className="w-full border-2 rounded-lg p-2 text-sm"
+              style={{ height: "130px" }}
+              placeholder="Enter Per Child Price"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <div className="flex items-end justify-end gap-3">
+              <button className="text-black font-mont text-sm font-medium px-4 py-2 rounded-md ">
+                Add to Draft
+              </button>
+              <button className="bg-[#FFA500] text-white font-mont text-sm font-medium px-4 py-2 rounded-md flex gap-1 items-center">
+                <div>Upload Tour</div>
+                <div>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.66732 6.76759C1.16482 6.43123 0.833984 5.85842 0.833984 5.20833C0.833984 4.23185 1.58045 3.42971 2.53388 3.3414C2.72891 2.15505 3.75909 1.25 5.00065 1.25C6.24222 1.25 7.27239 2.15505 7.46743 3.3414C8.42086 3.42971 9.16732 4.23185 9.16732 5.20833C9.16732 5.85842 8.83648 6.43123 8.33398 6.76759M3.33398 6.66667L5.00065 5M5.00065 5L6.66732 6.66667M5.00065 5V8.75"
+                      stroke="white"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </Grid>
         </Grid>
       </div>

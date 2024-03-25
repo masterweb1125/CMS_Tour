@@ -223,6 +223,7 @@ export const sidebarBottomItems = (pathname: string) => [
     title: "Settings",
     link: `${prefix}/settings`,
   },
+  
 ];
 
 const supplierDashboardPrefix = "/supplierdashboard";
@@ -302,6 +303,75 @@ export const supplierSidebarItems = (pathname: string) => [
     ),
     title: "Commission & Incentive",
     link: `${supplierDashboardPrefix}/commissionandincentive`,
+  },
+  {
+    Icon: (
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${supplierDashboardPrefix}/manageclients` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Manage Clients",
+    link: `${supplierDashboardPrefix}/manageclients`,
+  },
+  {
+    Icon: (
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${supplierDashboardPrefix}/marketingtools` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Marketing Tools",
+    link: `${supplierDashboardPrefix}/marketingtools`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${supplierDashboardPrefix}/chats` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M6.09436 11.2288C6.03221 10.8282 5.99996 10.4179 5.99996 10C5.99996 5.58172 9.60525 2 14.0526 2C18.4999 2 22.1052 5.58172 22.1052 10C22.1052 10.9981 21.9213 11.9535 21.5852 12.8345C21.5154 13.0175 21.4804 13.109 21.4646 13.1804C21.4489 13.2512 21.4428 13.301 21.4411 13.3735C21.4394 13.4466 21.4493 13.5272 21.4692 13.6883L21.8717 16.9585C21.9153 17.3125 21.9371 17.4895 21.8782 17.6182C21.8266 17.731 21.735 17.8205 21.6211 17.8695C21.4911 17.9254 21.3146 17.8995 20.9617 17.8478L17.7765 17.3809C17.6101 17.3565 17.527 17.3443 17.4512 17.3448C17.3763 17.3452 17.3245 17.3507 17.2511 17.3661C17.177 17.3817 17.0823 17.4172 16.893 17.4881C16.0097 17.819 15.0524 18 14.0526 18C13.6344 18 13.2237 17.9683 12.8227 17.9073M7.63158 22C10.5965 22 13 19.5376 13 16.5C13 13.4624 10.5965 11 7.63158 11C4.66668 11 2.26316 13.4624 2.26316 16.5C2.26316 17.1106 2.36028 17.6979 2.53955 18.2467C2.61533 18.4787 2.65322 18.5947 2.66566 18.6739C2.67864 18.7567 2.68091 18.8031 2.67608 18.8867C2.67145 18.9668 2.65141 19.0573 2.61134 19.2383L2 22L4.9948 21.591C5.15827 21.5687 5.24 21.5575 5.31137 21.558C5.38652 21.5585 5.42641 21.5626 5.50011 21.5773C5.5701 21.5912 5.67416 21.6279 5.88227 21.7014C6.43059 21.8949 7.01911 22 7.63158 22Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Chats",
+    link: `${supplierDashboardPrefix}/chats`,
   },
 ];
 

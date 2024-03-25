@@ -16,9 +16,11 @@ function QuickTabs() {
           <button className="border-[#ffa500] text-black border font-mont text-base font-semibold px-4 py-2 rounded-md">
             Tour inquiries
           </button>
-          <button className="border-[#ffa500] text-black border font-mont text-base font-semibold px-4 py-2 rounded-md">
-            Edit Tour
-          </button>
+          <Link href="/supplierdashboard/tour/edit">
+            <button className="border-[#ffa500] text-black border font-mont text-base font-semibold px-4 py-2 rounded-md">
+              Edit Tour
+            </button>
+          </Link>
           <Link href="/supplierdashboard/tour/create">
             <button className="bg-[#FFA500] text-white font-semibold text-base px-4 py-2 rounded-md">
               Create Tour
