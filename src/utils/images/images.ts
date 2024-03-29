@@ -45,6 +45,7 @@ import BlogImageAvator from "@/public/images/blogpostavator.png";
 import SupplierRegister from "@/public/images/supplierregister.png";
 import TourEditImageTwo from "@/public/images/touredittwo.png";
 import TourEditImageOne from "@/public/images/toureditone.png";
+import AdminRegister from "@/public/images/adminregister.png";
 
 export {
   Logo,
@@ -94,4 +95,5 @@ export {
   SupplierRegister,
   TourEditImageTwo,
   TourEditImageOne,
+  AdminRegister,
 };

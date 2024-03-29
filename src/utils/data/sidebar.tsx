@@ -223,7 +223,6 @@ export const sidebarBottomItems = (pathname: string) => [
     title: "Settings",
     link: `${prefix}/settings`,
   },
-  
 ];
 
 const supplierDashboardPrefix = "/supplierdashboard";
@@ -313,7 +312,9 @@ export const supplierSidebarItems = (pathname: string) => [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
-          pathname === `${supplierDashboardPrefix}/manageclients` ? "stroke-white" : ""
+          pathname === `${supplierDashboardPrefix}/manageclients`
+            ? "stroke-white"
+            : ""
         } `}
       >
         <path
@@ -336,7 +337,9 @@ export const supplierSidebarItems = (pathname: string) => [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
-          pathname === `${supplierDashboardPrefix}/marketingtools` ? "stroke-white" : ""
+          pathname === `${supplierDashboardPrefix}/marketingtools`
+            ? "stroke-white"
+            : ""
         } `}
       >
         <path
@@ -460,5 +463,315 @@ export const supplierBottomItems = (pathname: string) => [
     ),
     title: "Settings",
     link: `${supplierDashboardPrefix}/settings`,
+  },
+];
+
+const adminSidebarItems = "/admin";
+
+export const adminSidebar = (pathname: string) => [
+  {
+    Icon: (
+      <svg
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === adminSidebarItems ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Dashboard",
+    link: adminSidebarItems,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/booking` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M2 11.9996L11.6422 16.8207C11.7734 16.8863 11.839 16.9191 11.9078 16.932C11.9687 16.9434 12.0313 16.9434 12.0922 16.932C12.161 16.9191 12.2266 16.8863 12.3578 16.8207L22 11.9996M2 16.9996L11.6422 21.8207C11.7734 21.8863 11.839 21.9191 11.9078 21.932C11.9687 21.9434 12.0313 21.9434 12.0922 21.932C12.161 21.9191 12.2266 21.8863 12.3578 21.8207L22 16.9996M2 6.99958L11.6422 2.17846C11.7734 2.11287 11.839 2.08008 11.9078 2.06717C11.9687 2.05574 12.0313 2.05574 12.0922 2.06717C12.161 2.08008 12.2266 2.11287 12.3578 2.17846L22 6.99958L12.3578 11.8207C12.2266 11.8863 12.161 11.9191 12.0922 11.932C12.0313 11.9434 11.9687 11.9434 11.9078 11.932C11.839 11.9191 11.7734 11.8863 11.6422 11.8207L2 6.99958Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Booking",
+    link: `${adminSidebarItems}/booking`,
+  },
+  {
+    Icon: (
+      <svg
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/track-tour` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M3 10.5648C3 9.99045 3 9.70327 3.07403 9.43881C3.1396 9.20454 3.24737 8.9842 3.39203 8.78861C3.55534 8.56781 3.78202 8.3915 4.23539 8.03888L11.0177 2.76375C11.369 2.4905 11.5447 2.35388 11.7387 2.30136C11.9098 2.25502 12.0902 2.25502 12.2613 2.30136C12.4553 2.35388 12.631 2.4905 12.9823 2.76376L19.7646 8.03888C20.218 8.3915 20.4447 8.56781 20.608 8.78861C20.7526 8.9842 20.8604 9.20454 20.926 9.43881C21 9.70327 21 9.99045 21 10.5648V17.7997C21 18.9198 21 19.4799 20.782 19.9077C20.5903 20.284 20.2843 20.59 19.908 20.7818C19.4802 20.9997 18.9201 20.9997 17.8 20.9997H6.2C5.07989 20.9997 4.51984 20.9997 4.09202 20.7818C3.71569 20.59 3.40973 20.284 3.21799 19.9077C3 19.4799 3 18.9198 3 17.7997V10.5648Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Track Tour",
+    link: `${adminSidebarItems}/track-tour`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/chats` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M6.09436 11.2288C6.03221 10.8282 5.99996 10.4179 5.99996 10C5.99996 5.58172 9.60525 2 14.0526 2C18.4999 2 22.1052 5.58172 22.1052 10C22.1052 10.9981 21.9213 11.9535 21.5852 12.8345C21.5154 13.0175 21.4804 13.109 21.4646 13.1804C21.4489 13.2512 21.4428 13.301 21.4411 13.3735C21.4394 13.4466 21.4493 13.5272 21.4692 13.6883L21.8717 16.9585C21.9153 17.3125 21.9371 17.4895 21.8782 17.6182C21.8266 17.731 21.735 17.8205 21.6211 17.8695C21.4911 17.9254 21.3146 17.8995 20.9617 17.8478L17.7765 17.3809C17.6101 17.3565 17.527 17.3443 17.4512 17.3448C17.3763 17.3452 17.3245 17.3507 17.2511 17.3661C17.177 17.3817 17.0823 17.4172 16.893 17.4881C16.0097 17.819 15.0524 18 14.0526 18C13.6344 18 13.2237 17.9683 12.8227 17.9073M7.63158 22C10.5965 22 13 19.5376 13 16.5C13 13.4624 10.5965 11 7.63158 11C4.66668 11 2.26316 13.4624 2.26316 16.5C2.26316 17.1106 2.36028 17.6979 2.53955 18.2467C2.61533 18.4787 2.65322 18.5947 2.66566 18.6739C2.67864 18.7567 2.68091 18.8031 2.67608 18.8867C2.67145 18.9668 2.65141 19.0573 2.61134 19.2383L2 22L4.9948 21.591C5.15827 21.5687 5.24 21.5575 5.31137 21.558C5.38652 21.5585 5.42641 21.5626 5.50011 21.5773C5.5701 21.5912 5.67416 21.6279 5.88227 21.7014C6.43059 21.8949 7.01911 22 7.63158 22Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Chat",
+    link: `${adminSidebarItems}/chats`,
+  },
+  {
+    Icon: (
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/marketingtools`
+            ? "stroke-white"
+            : ""
+        } `}
+      >
+        <path
+          d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Suppliers",
+    link: `${adminSidebarItems}/marketingtools`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/reviews` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M18.5 16C20.433 16 22 13.0899 22 9.5C22 5.91015 20.433 3 18.5 3M18.5 16C16.567 16 15 13.0899 15 9.5C15 5.91015 16.567 3 18.5 3M18.5 16L5.44354 13.6261C4.51605 13.4575 4.05231 13.3731 3.67733 13.189C2.91447 12.8142 2.34636 12.1335 2.11414 11.3159C2 10.914 2 10.4427 2 9.5C2 8.5573 2 8.08595 2.11414 7.68407C2.34636 6.86649 2.91447 6.18577 3.67733 5.81105C4.05231 5.62685 4.51605 5.54254 5.44354 5.3739L18.5 3M5 14L5.39386 19.514C5.43126 20.0376 5.44996 20.2995 5.56387 20.4979C5.66417 20.6726 5.81489 20.8129 5.99629 20.9005C6.20232 21 6.46481 21 6.98979 21H8.7722C9.37234 21 9.67242 21 9.89451 20.8803C10.0897 20.7751 10.2443 20.6081 10.3342 20.4055C10.4365 20.1749 10.4135 19.8757 10.3675 19.2773L10 14.5"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Reviews",
+    link: `${adminSidebarItems}/reviews`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/agencies` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M11.5 5H11.9344C14.9816 5 16.5053 5 17.0836 5.54729C17.5836 6.02037 17.8051 6.71728 17.6702 7.39221C17.514 8.17302 16.2701 9.05285 13.7823 10.8125L9.71772 13.6875C7.2299 15.4471 5.98599 16.327 5.82984 17.1078C5.69486 17.7827 5.91642 18.4796 6.41636 18.9527C6.99474 19.5 8.51836 19.5 11.5656 19.5H12.5M8 5C8 6.65685 6.65685 8 5 8C3.34315 8 2 6.65685 2 5C2 3.34315 3.34315 2 5 2C6.65685 2 8 3.34315 8 5ZM22 19C22 20.6569 20.6569 22 19 22C17.3431 22 16 20.6569 16 19C16 17.3431 17.3431 16 19 16C20.6569 16 22 17.3431 22 19Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Agencies",
+    link: `${adminSidebarItems}/agencies`,
+  },
+  {
+    Icon: (
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/reports` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M11 1C12.3132 1 13.6136 1.25866 14.8268 1.76121C16.0401 2.26375 17.1425 3.00035 18.0711 3.92893C18.9997 4.85752 19.7363 5.95991 20.2388 7.17317C20.7413 8.38643 21 9.68679 21 11M11 1V11M11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5229 21 11M11 1C16.5228 1 21 5.47716 21 11M21 11L11 11M21 11C21 12.5781 20.6265 14.1338 19.9101 15.5399C19.1936 16.946 18.1546 18.1626 16.8779 19.0902L11 11"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Reports",
+    link: `${adminSidebarItems}/reports`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/wallets` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M16 8.00007V4.50073C16 3.66899 16 3.25312 15.8248 2.99755C15.6717 2.77425 15.4346 2.62257 15.1678 2.57715C14.8623 2.52517 14.4847 2.69944 13.7295 3.04799L4.85901 7.14206C4.18551 7.45291 3.84875 7.60834 3.60211 7.84939C3.38406 8.06249 3.21762 8.32262 3.1155 8.6099C3 8.93486 3 9.30575 3 10.0475V15.0001M16.5 14.5001H16.51M3 11.2001L3 17.8001C3 18.9202 3 19.4802 3.21799 19.9081C3.40973 20.2844 3.71569 20.5903 4.09202 20.7821C4.51984 21.0001 5.07989 21.0001 6.2 21.0001H17.8C18.9201 21.0001 19.4802 21.0001 19.908 20.7821C20.2843 20.5903 20.5903 20.2844 20.782 19.9081C21 19.4802 21 18.9202 21 17.8001V11.2001C21 10.08 21 9.51992 20.782 9.09209C20.5903 8.71577 20.2843 8.40981 19.908 8.21806C19.4802 8.00007 18.9201 8.00007 17.8 8.00007L6.2 8.00007C5.0799 8.00007 4.51984 8.00007 4.09202 8.21806C3.7157 8.40981 3.40973 8.71577 3.21799 9.09209C3 9.51991 3 10.08 3 11.2001ZM17 14.5001C17 14.7762 16.7761 15.0001 16.5 15.0001C16.2239 15.0001 16 14.7762 16 14.5001C16 14.2239 16.2239 14.0001 16.5 14.0001C16.7761 14.0001 17 14.2239 17 14.5001Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Wallets",
+    link: `${adminSidebarItems}/wallets`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/raferrals` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"
+          stroke="black"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Raferrals",
+    link: `${adminSidebarItems}/raferrals`,
+  },
+  {
+    Icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/discounts` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M4 19H7M13 19H16M15.5 4.5V12.5M1 4.2L1 12.8C1 13.9201 1 14.4802 1.21799 14.908C1.40973 15.2843 1.71569 15.5903 2.09202 15.782C2.51984 16 3.07989 16 4.2 16L15.8 16C16.9201 16 17.4802 16 17.908 15.782C18.2843 15.5903 18.5903 15.2843 18.782 14.908C19 14.4802 19 13.9201 19 12.8V4.2C19 3.0799 19 2.51984 18.782 2.09202C18.5903 1.7157 18.2843 1.40974 17.908 1.21799C17.4802 1 16.9201 1 15.8 1L4.2 1C3.0799 1 2.51984 1 2.09202 1.21799C1.7157 1.40973 1.40973 1.71569 1.21799 2.09202C1 2.51984 1 3.07989 1 4.2ZM9.5 8.5C9.5 9.88071 8.38071 11 7 11C5.61929 11 4.5 9.88071 4.5 8.5C4.5 7.11929 5.61929 6 7 6C8.38071 6 9.5 7.11929 9.5 8.5Z"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Discounts",
+    link: `${adminSidebarItems}/discounts`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/shiftmanagement`
+            ? "stroke-white"
+            : ""
+        } `}
+      >
+        <path
+          d="M18 15L21 18M21 18L18 21M21 18H18.5689C17.6297 18 17.1601 18 16.7338 17.8705C16.3564 17.7559 16.0054 17.5681 15.7007 17.3176C15.3565 17.0348 15.096 16.644 14.575 15.8626L14.3333 15.5M18 3L21 6M21 6L18 9M21 6H18.5689C17.6297 6 17.1601 6 16.7338 6.12945C16.3564 6.24406 16.0054 6.43194 15.7007 6.68236C15.3565 6.96523 15.096 7.35597 14.575 8.13744L9.42496 15.8626C8.90398 16.644 8.64349 17.0348 8.29933 17.3176C7.99464 17.5681 7.64357 17.7559 7.2662 17.8705C6.83994 18 6.37033 18 5.43112 18H3M3 6H5.43112C6.37033 6 6.83994 6 7.2662 6.12945C7.64357 6.24406 7.99464 6.43194 8.29933 6.68236C8.64349 6.96523 8.90398 7.35597 9.42496 8.13744L9.66667 8.5"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Shift Management",
+    link: `${adminSidebarItems}/shiftmanagement`,
+  },
+  {
+    Icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
+          pathname === `${adminSidebarItems}/affliatemanagement` ? "stroke-white" : ""
+        } `}
+      >
+        <path
+          d="M9.99996 13C10.4294 13.5741 10.9773 14.0491 11.6065 14.3929C12.2357 14.7367 12.9315 14.9411 13.6466 14.9923C14.3617 15.0435 15.0795 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4507 9.59695 21.9547 8.33394 21.9433 7.02296C21.9319 5.71198 21.4061 4.45791 20.479 3.53087C19.552 2.60383 18.2979 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997M14 11C13.5705 10.4258 13.0226 9.95078 12.3934 9.60703C11.7642 9.26327 11.0684 9.05885 10.3533 9.00763C9.63816 8.95641 8.92037 9.0596 8.24861 9.31018C7.57685 9.56077 6.96684 9.9529 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.542 3.52086 20.4691C4.4479 21.3961 5.70197 21.9219 7.01295 21.9333C8.32393 21.9447 9.58694 21.4408 10.53 20.53L12.24 18.82"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    title: "Affliate Management",
+    link: `${adminSidebarItems}/affliatemanagement`,
   },
 ];
