@@ -1,11 +1,9 @@
 "use client";
 import {
-  CardTourImage2,
-  CartTourImage,
   Client01,
   Client02,
   TourEditImageOne,
-  TourEditImageTwo,
+  TourEditImageTwo
 } from "@/src/utils/images/images";
 import { Divider, Grid } from "@mui/material";
 import Image from "next/image";

@@ -24,7 +24,7 @@ function Chats() {
         </Grid>
       </Grid>
 
-      <Grid container>
+      <Grid container className="gap-3 md:gap-0 ">
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Total Revenue"

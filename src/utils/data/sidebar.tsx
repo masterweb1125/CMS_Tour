@@ -502,7 +502,7 @@ export const adminSidebar = (pathname: string) => [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
-          pathname === `${adminSidebarItems}/booking` ? "stroke-white" : ""
+          pathname === `${adminSidebarItems}` ? "stroke-white" : ""
         } `}
       >
         <path
@@ -514,7 +514,7 @@ export const adminSidebar = (pathname: string) => [
       </svg>
     ),
     title: "Booking",
-    link: `${adminSidebarItems}/booking`,
+    link: `${adminSidebarItems}`,
   },
   {
     Icon: (
