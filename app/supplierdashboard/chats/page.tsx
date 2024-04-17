@@ -174,7 +174,7 @@ function Chats() {
   useEffect(() => {
     if (!smallScreen) setChangeScreen(false);
     if (smallScreen && selectedUser) setChangeScreen(true);
-  }, [smallScreen]);
+  }, [smallScreen, selectedUser]);
 
   const backScreen = () => {
     try {

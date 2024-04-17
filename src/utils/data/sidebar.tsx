@@ -572,7 +572,7 @@ export const adminSidebar = (pathname: string) => [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`w-5 h-5 stroke-black transition duration-75 dark:text-gray-400 group-hover:stroke-white dark:group-hover:text-white ${
-          pathname === `${adminSidebarItems}/marketingtools`
+          pathname === `${adminSidebarItems}/supplier`
             ? "stroke-white"
             : ""
         } `}
@@ -586,7 +586,7 @@ export const adminSidebar = (pathname: string) => [
       </svg>
     ),
     title: "Suppliers",
-    link: `${adminSidebarItems}/marketingtools`,
+    link: `${adminSidebarItems}/supplier`,
   },
   {
     Icon: (
@@ -693,7 +693,6 @@ export const adminSidebar = (pathname: string) => [
       >
         <path
           d="M2 10C2 10 2.12132 9.15076 5.63604 5.63604C9.15076 2.12132 14.8492 2.12132 18.364 5.63604C19.6092 6.88131 20.4133 8.40072 20.7762 10M2 10V4M2 10H8M22 14C22 14 21.8787 14.8492 18.364 18.364C14.8492 21.8787 9.15076 21.8787 5.63604 18.364C4.39076 17.1187 3.58669 15.5993 3.22383 14M22 14V20M22 14H16"
-          stroke="black"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

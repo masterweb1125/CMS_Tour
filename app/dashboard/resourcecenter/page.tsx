@@ -20,7 +20,7 @@ function CommissionAndIncentive() {
 
       <Grid container mt={1} spacing={1}>
         {blogs.map((item, index) => (
-          <Grid item xs={12} md={4} lg={3}>
+          <Grid key={index} item xs={12} md={4} lg={3}>
             <BlogPostCard blog={item} key={index} />
           </Grid>
         ))}
@@ -41,7 +41,7 @@ function CommissionAndIncentive() {
 
       <Grid container mt={1} spacing={1}>
         {blogs.map((item, index) => (
-          <Grid item xs={12} md={4} lg={3}>
+          <Grid key={index} item xs={12} md={4} lg={3}>
             <BlogPostCard blog={item} key={index} />
           </Grid>
         ))}
