@@ -1,14 +1,13 @@
 "use client";
-import { Button, ButtonGroup, Grid } from "@mui/material";
+import { LogoTransparent } from "@/src/utils/images/images";
+import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React, { useState } from "react";
-import SearchInput from "../../dashboard/dashboardComponents/SearchInput";
 import BookingReports from "./GridLists/BookingReports";
 import RevenueReports from "./GridLists/RevenueReports";
-import SupplierReports from "./GridLists/SupplierReports";
-import CustomerBehavior from "./GridLists/CustomerBehavior";
+import Image from "next/image"
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,8 +51,56 @@ function DataGridTabs({ title }: { title: string }) {
   ];
 
   return (
-    <div className="">
-      <Grid container>
+    <div className="border rounded-lg mt-4">
+      <Grid container className="px-5">
+        <Grid item xs={12}>
+          <Grid container className="mt-4">
+            <Grid item xs={12} md={2} className="flex items-center justify-center">
+              <Image src={LogoTransparent} width={100} height={100} className="object-contain" alt="" />
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <table cellPadding={4}>
+                <tr className="text-sm">
+                  <td className="font-semibold">Company Name: </td>
+                  <td>Travel*&Co.</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Email Address:  </td>
+                  <td>noraizraja2121@gmail.com</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">last Name: </td>
+                  <td>shahid raja </td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Facial Number:</td>
+                  <td>9829282922</td>
+                </tr>
+              </table>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <table cellPadding={4}>
+                <tr className="text-sm">
+                  <td className="font-semibold">office Number: </td>
+                  <td>02003232323</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Country:   </td>
+                  <td>Pakistan</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Occupation: </td>
+                  <td>software engineer  </td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">emergency number: </td>
+                  <td> 9829282922</td>
+                </tr>
+              </table>
+            </Grid>
+          </Grid>
+        </Grid>
+
         <Grid
           item
           xs={12}

@@ -25,7 +25,7 @@ function CardComponent({
   const percentageFlag = count > "15%";
 
   return (
-    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       {title && (
         <div className="flex justify-between items-center">
           <h5 className="mb-2 text-sm font-semibold tracking-tight text-gray-900 dark:text-white">

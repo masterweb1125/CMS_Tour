@@ -2,7 +2,7 @@
 import SupplierGrid from "@/src/components/admin/supplier/SupplierGrid";
 import { Grid } from "@mui/material";
 
-function Reports() {
+function Supplier() {
   return (
     <div>
       <Grid container>
@@ -14,4 +14,4 @@ function Reports() {
   );
 }
 
-export default Reports;
+export default Supplier;
