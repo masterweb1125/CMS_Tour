@@ -60,9 +60,9 @@ const Client_TourDetailDescription = () => {
             Tour Highlights
           </h3>
           <div className="flex gap-4 md:gap-2 overflow-scroll md:overflow-hidden  ">
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
-            <Image className="w-48" src={CartTourImage} alt="highligh-01" />
+            <Image className="w-48" width={48} height={48} src={CartTourImage} alt="highligh-01" />
+            <Image className="w-48" width={48} height={48} src={CartTourImage} alt="highligh-01" />
+            <Image className="w-48" width={48} height={48} src={CartTourImage} alt="highligh-01" />
           </div>
           <p className="pt-2 text-sm md:text-lg text-[#000] font-mont">
             Embark on a journey to unforgettable destinations, where breath
@@ -549,11 +549,13 @@ const Client_TourDetailDescription = () => {
                           <Image
                             src="/icons/carticons/marker.png"
                             className="w-4"
+                            width={10}
+                            height={10}
                             alt="Icon"
                           />
                         </InputAdornment>
                       )}
-                      renderValue={(v) => (
+                      renderValue={(v: any) => (
                         <div className="text-gray-500 font-mont">{v}</div>
                       )}
                     >
@@ -614,11 +616,10 @@ const Client_TourDetailDescription = () => {
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className={`${
-                    activeIndex === index
+                  className={`${activeIndex === index
                       ? "bg-white border-white shadow-lg "
                       : "bg-[#FBFBFB] border-gray-200"
-                  } rounded-md mb-4 `}
+                    } rounded-md mb-4 `}
                 >
                   <button
                     className="w-full  flex justify-between items-center p-4 focus:outline-none"
@@ -626,16 +627,14 @@ const Client_TourDetailDescription = () => {
                   >
                     <span className="font-medium">{faq.question}</span>
                     <div
-                      className={`p-2 rounded-lg h-max w-max ${
-                        activeIndex === index ? "bg-[#FFA500]" : "bg-[#FFF8EC]"
-                      } `}
+                      className={`p-2 rounded-lg h-max w-max ${activeIndex === index ? "bg-[#FFA500]" : "bg-[#FFF8EC]"
+                        } `}
                     >
                       <svg
-                        className={`fill-black   ${
-                          activeIndex === index
+                        className={`fill-black   ${activeIndex === index
                             ? "bg-[#FFA500] fill-white"
                             : "bg-[#FFF8EC]"
-                        } `}
+                          } `}
                         width="16"
                         height="16"
                         xmlns="http://www.w3.org/2000/svg"
@@ -645,29 +644,26 @@ const Client_TourDetailDescription = () => {
                           width="16"
                           height="2"
                           rx="1"
-                          className={`transform origin-center transition duration-200 ease-out ${
-                            activeIndex === index && "!rotate-180"
-                          }`}
+                          className={`transform origin-center transition duration-200 ease-out ${activeIndex === index && "!rotate-180"
+                            }`}
                         />
                         <rect
                           y="7"
                           width="16"
                           height="2"
                           rx="1"
-                          className={`transform origin-center rotate-90 transition duration-200 ease-out ${
-                            activeIndex === index && "!rotate-180"
-                          }`}
+                          className={`transform origin-center rotate-90 transition duration-200 ease-out ${activeIndex === index && "!rotate-180"
+                            }`}
                         />
                       </svg>
                     </div>
                   </button>
                   {activeIndex === index && (
                     <div
-                      className={`transform px-4 pt-0 pb-6 grid transition-all duration-500 ease-in-out ${
-                        activeIndex === index
+                      className={`transform px-4 pt-0 pb-6 grid transition-all duration-500 ease-in-out ${activeIndex === index
                           ? " grid-rows-[1fr] opacity-100"
                           : "grid-rows-[0fr] opacity-0 "
-                      }`}
+                        }`}
                     >
                       <p className="text-[#6F6C90] text-xs ">{faq.answer}</p>
                     </div>

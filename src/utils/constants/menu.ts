@@ -5,16 +5,16 @@ export const mainMenu = [
   },
   {
     text: "Destinations",
-    link: "/destination",
+    link: "/explore-more",
   },
-  {
-    text: "Blog",
-    link: "#",
-  },
-  {
-    text: "Tour types",
-    link: "#",
-  },
+  // {
+  //   text: "Blog",
+  //   link: "#",
+  // },
+  // {
+  //   text: "Tour types",
+  //   link: "#",
+  // },
   {
     text: "About us",
     link: "#",

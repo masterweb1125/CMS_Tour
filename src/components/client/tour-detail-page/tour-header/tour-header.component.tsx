@@ -19,7 +19,7 @@ const Client_TourDetailHeader = () => {
             </h1>
             <div className="flex flex-row justify-start md:flex-col gap-2">
               <div className="flex flex-row gap-2 items-center">
-                <Image src={LocationIcon} alt="" />
+                <Image src={LocationIcon} alt="" width={20}/>
                 <span className="description font-medium">
                   Main Street Cafe
                 </span>

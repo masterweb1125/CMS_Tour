@@ -64,6 +64,8 @@ export default function FilterModal({
                       <Image
                         src="/icons/carticons/marker.png"
                         className="w-4"
+                        width={10}
+                        height={10}
                         alt="Icon"
                       />
                     </InputAdornment>
