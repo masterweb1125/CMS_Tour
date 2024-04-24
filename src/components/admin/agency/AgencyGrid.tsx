@@ -145,12 +145,16 @@ function BasicMenu({ onSetData, setScreenView }: { onSetData?: any; setScreenVie
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleMenuItemClick = () => {
+        handleClose();
+        setScreenView();
+    };
 
     return (
         <div className="cursor-pointer">
-            <div onClick={handleClick}>
+            <button onClick={handleClick}>
                 <KababMenu />
-            </div>
+            </button>
 
             <Menu
                 id="basic-menu"
@@ -161,7 +165,7 @@ function BasicMenu({ onSetData, setScreenView }: { onSetData?: any; setScreenVie
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose} className="font-mont text-xs" onClick={setScreenView}>View Details</MenuItem>
+                <MenuItem className="font-mont text-xs" onClick={handleMenuItemClick}>View Details</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Deactivate Agency</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Chat</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Blacklist agency</MenuItem>
