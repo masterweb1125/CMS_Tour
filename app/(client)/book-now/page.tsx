@@ -8,12 +8,13 @@ const Client_TourDetail = () => {
     <React.Fragment>
       <Client_Hero
         bgImage={AddToCard.src}
-        title={"Radiance of Our Sunset Escapes"}
+        title={"Explore The World"}
         subTitleWidth="w-4/6"
         child={""}
         subTitle={
-          "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet vibrant cultures. Your adventure of a lifetime starts right here!"
+          "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet"
         }
+        smallText={true}
       />
       <CartPage />
     </React.Fragment>

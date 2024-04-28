@@ -1,8 +1,8 @@
 import { Blogs } from "@/src/types/client/blogs.types";
 import Link from "next/link";
 import React from "react";
+import BlogPostCard from "../../supplierdashboard/resourceandcenter/BlogPostCard";
 import Client_Container from "../container/container.component";
-import Client_BlogDirectoryItem from "./blog-directory-item.component";
 
 type BlogsProps = {
   blogs: Array<Blogs> | undefined;
@@ -37,11 +37,12 @@ const Client_BlogTourDirectory = ({
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
         {blogs?.map((blogItem, index) => {
-          return <Client_BlogDirectoryItem key={index} blog={blogItem} />;
+          return <BlogPostCard blog={blogItem} />;
         })}
       </div>
+      {/* return <Client_BlogDirectoryItem key={index} blog={blogItem} />; */}
     </Client_Container>
   );
 };

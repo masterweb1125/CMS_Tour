@@ -9,11 +9,12 @@ const Client_TourDetail = () => {
     <>
       <Client_Hero
         bgImage={ExploreWorldCover.src}
-        title={"Radiance of Our Sunset Escapes"}
+        title={"Explore The World"}
         subTitleWidth="w-3/6"
+        smallText={true}
         child={""}
         subTitle={
-          "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet vibrant cultures. Your adventure of a lifetime starts right here!"
+          "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet"
         }
       />
 

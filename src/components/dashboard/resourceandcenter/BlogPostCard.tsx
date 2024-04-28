@@ -2,6 +2,7 @@ import { Blogs } from "@/src/types/client/blogs.types";
 import { BlogImageAvator } from "@/src/utils/images/images";
 import { ArrowOutward } from "@mui/icons-material";
 import Image from "next/image";
+import Link from "next/link";
 
 const BlogPostCard = ({ blog }: { blog: Blogs }) => {
   return (
@@ -13,7 +14,7 @@ const BlogPostCard = ({ blog }: { blog: Blogs }) => {
       <div className="card-content">
         <div className="flex flex-row justify-between mb-2">
           <h2 className="text-base font-semibold text-black-variant">
-            {blog.blogHeading}
+            <Link href="/user/blogs/blogdetails">{blog.blogHeading}</Link>
           </h2>
           <ArrowOutward />
         </div>

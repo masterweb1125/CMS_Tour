@@ -6,11 +6,11 @@ export default function Hero() {
     <Client_Hero
       bgImage={HelpAndSupport.src}
       title={"Explore The World"}
-      subTitleWidth="w-4/6"
       minHeight="min-h-[382px]"
       subTitle={
         "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet "
       }
+      smallText
     />
   );
 }

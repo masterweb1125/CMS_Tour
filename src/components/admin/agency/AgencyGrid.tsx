@@ -139,22 +139,18 @@ export default AgencyGrid;
 function BasicMenu({ onSetData, setScreenView }: { onSetData?: any; setScreenView: any }) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleMenuItemClick = () => {
-        handleClose();
-        setScreenView();
-    };
 
     return (
         <div className="cursor-pointer">
-            <button onClick={handleClick}>
+            <div onClick={handleClick}>
                 <KababMenu />
-            </button>
+            </div>
 
             <Menu
                 id="basic-menu"
@@ -165,7 +161,7 @@ function BasicMenu({ onSetData, setScreenView }: { onSetData?: any; setScreenVie
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem className="font-mont text-xs" onClick={handleMenuItemClick}>View Details</MenuItem>
+                <MenuItem onClick={() => {handleClose(); setScreenView();}} className="font-mont text-xs">View Details</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Deactivate Agency</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Chat</MenuItem>
                 <MenuItem onClick={handleClose} className="font-mont text-xs">Blacklist agency</MenuItem>

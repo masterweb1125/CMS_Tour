@@ -26,6 +26,7 @@ const ClientPage = () => {
         title={"Explore the Unforgettable Adventures"}
         subTitleWidth="w-4/6"
         child={<Client_BrowseForm />}
+        minHeight="min-h-screen"
         subTitle={
           "Embark on a journey to unforgettable destinations, where breathtaking landscapes meet vibrant cultures. Your adventure of a lifetime starts right here!"
         }

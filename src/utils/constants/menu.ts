@@ -7,10 +7,10 @@ export const mainMenu = [
     text: "Destinations",
     link: "/explore-more",
   },
-  // {
-  //   text: "Blog",
-  //   link: "#",
-  // },
+  {
+    text: "Blog",
+    link: "/user/blogs",
+  },
   // {
   //   text: "Tour types",
   //   link: "#",

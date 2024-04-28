@@ -46,6 +46,9 @@ import SupplierRegister from "@/public/images/supplierregister.png";
 import TourEditImageTwo from "@/public/images/touredittwo.png";
 import TourEditImageOne from "@/public/images/toureditone.png";
 import AdminRegister from "@/public/images/adminregister.png";
+import BlogImagePost from "@/public/images/blog-image.png"
+import BlogDetailsImagePost from "@/public/images/blogdetails.png"
+
 
 export {
   Logo,
@@ -96,4 +99,6 @@ export {
   TourEditImageTwo,
   TourEditImageOne,
   AdminRegister,
+  BlogImagePost,
+  BlogDetailsImagePost
 };
