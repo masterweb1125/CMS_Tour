@@ -27,7 +27,7 @@ const Client_TourDetail = () => {
           <Grid container mb={3} spacing={3}>
             <Grid item xs={12}>
               <div>
-                <Image src={BlogDetailsImagePost} />
+                <Image src={BlogDetailsImagePost} alt="" />
               </div>
             </Grid>
             <Grid item xs={12}>
@@ -113,7 +113,7 @@ const Client_TourDetail = () => {
 
             {blogs.map((item, index) => (
               <Grid item xs={12} md={3} key={index}>
-                <BlogPostCard blog={item} />
+                <BlogPostCard blog={item} key={index} />
               </Grid>
             ))}
           </Grid>

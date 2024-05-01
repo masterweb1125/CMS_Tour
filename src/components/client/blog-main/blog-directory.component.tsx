@@ -39,7 +39,7 @@ const Client_BlogTourDirectory = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
         {blogs?.map((blogItem, index) => {
-          return <BlogPostCard blog={blogItem} />;
+          return <BlogPostCard blog={blogItem} key={index} />;
         })}
       </div>
       {/* return <Client_BlogDirectoryItem key={index} blog={blogItem} />; */}
