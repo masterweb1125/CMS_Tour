@@ -1,8 +1,7 @@
 import Client_Footer from "@/src/components/client/footer/footer.component";
 import Client_Header from "@/src/components/client/header/header.component";
 import { inter, montserrat } from "@/src/utils/fonts/fonts";
-import "../../globals.css";
-
+import "../globals.css";
 
 export default function ClientRootLayout({
   children,

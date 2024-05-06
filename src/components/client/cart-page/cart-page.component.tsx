@@ -6,10 +6,7 @@ import { Divider, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-import { API_DOMAIN } from "@/src/redux/service/APIs";
+
 const faqs = [
   {
     question: "What your Package Includes",
@@ -70,33 +67,6 @@ const CartPage = () => {
 
   const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);
-  };
-
-
-  const handlePaymentMethod = async (e: any) => {
-    //  toast.success("handle payment gateway");
-
-    try {
-      const stripe = await loadStripe(
-        "pk_test_51O6V53SBrvDov9Oi9N6h5QClQYWyvDv4fuwJ9d8CEI1QjxbtYICkWmCx1UhhhoTkcCQ2LkGQlPSNgQ8lvKF69sKb00Q34sn3gN"
-      );
-
-      const amount = 50;
-
-      const res = await API_DOMAIN.post(`/api/v1/payment/checkout`, {
-        amount: amount,
-      });
-
-      console.log("payment done res: ", res.data);
-
-      const session_id = res?.data.id;
-      const result = stripe?.redirectToCheckout({
-        sessionId: session_id,
-      });
-    } catch (error) {
-      console.log("stripe res: ", error);
-      toast.error("Stripe response error");
-    }
   };
 
   return (
@@ -501,7 +471,7 @@ const CartPage = () => {
                   By proceeding to payment, you agree to our Terms &
                   conditions - Privacy policy
                 </p>
-                <button onClick={handlePaymentMethod} className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4">
+                <button className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4">
                   Pay Now
                 </button>
               </div>

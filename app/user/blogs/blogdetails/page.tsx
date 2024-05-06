@@ -1,9 +1,8 @@
-import BreadCrame from "@/src/components/client/blog-main/breadcrame";
-import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import BreadCrame from "@/src/components/client/blog-main/BreadCrame";
 import BlogPostCard from "@/src/components/dashboard/resourceandcenter/BlogPostCard";
 import { blogs } from "@/src/utils/data/blogs";
-import { BlogDetailsImagePost, BlogImagePost } from "@/src/utils/images/images";
-import { Grid, Container } from "@mui/material";
+import { BlogDetailsImagePost } from "@/src/utils/images/images";
+import { Container, Grid } from "@mui/material";
 import Image from "next/image";
 
 let list = ["Home", "Blogs", "Travel Instructions"];
