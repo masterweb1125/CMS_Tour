@@ -1,12 +1,71 @@
+"use client";
+import { SignUp_validate } from "@/src/schema/Signup";
 import { LogoTransparent, RegisterImage } from "@/src/utils/images/images";
 import { Grid } from "@mui/material";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ToastNotification } from "@/src/utils/ShowNotification";
+import { GenerateOTP } from "@/src/utils/GenerateOTP";
+import { useState } from "react";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
+import { LuLoader2 } from "react-icons/lu";
+import OTPModal from "@/src/components/client/otp/OTPModel";
+import toast from "react-hot-toast";
+
 
 const Register = () => {
+  const [loading, setloading] = useState<boolean>(false);
+  const [customGeneratedOTP, setcustomGeneratedOTP] = useState();
+  const [userData, setuserData] = useState();
+  const [OTPDialoug, setOTPDialoug] = useState(false);
+
+
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  }: any = useForm<any>({
+    resolver: yupResolver(SignUp_validate),
+  });
+
+  // Submit data
+  const onSubmit = async (data: any) => {
+    setloading(false);
+    console.log("formdata : ", data);
+    setuserData(data);
+    const generateOTP: any = GenerateOTP();
+    console.log("random OTP generated is: ", generateOTP);
+    setcustomGeneratedOTP(generateOTP);
+      setOTPDialoug(true);
+    
+    
+    try {
+      await API_DOMAIN.post(`/api/v1/auth/verifyemail`, {
+        email: data.email,
+        OTP: generateOTP,
+      });
+      setloading(false);
+      setOTPDialoug(true);
+    } catch (error) {
+      toast.error("Email verification failed, try again!", {
+        style: { width: "auto", height: "auto" },
+        duration: 3000,
+      });
+      console.log("something went wrong, while verifying email: ", error);
+      setloading(false);
+    }
+  };
+
   return (
     <Grid container spacing={2} className="md:pl-2">
       <Grid item xs={12} md={7}>
-        <form className="flex flex-col items-center h-full justify-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-center h-full justify-center"
+        >
           <Grid container>
             <Grid item xs={12} md={12}>
               <div className="flex flex-col items-start justify-start">
@@ -31,6 +90,7 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("company_name")}
                   placeholder="Company Name"
                 />
               </div>
@@ -44,8 +104,12 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("firstName")}
                   placeholder="Name"
                 />
+                <div className="text-sm text-red-500">
+                  {errors.firstName?.message}
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -57,6 +121,7 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("lastName")}
                   placeholder="Last Name"
                 />
               </div>
@@ -70,8 +135,12 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("email")}
                   placeholder="Email"
                 />
+                <div className="text-sm text-red-500">
+                  {errors.email?.message}
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -83,6 +152,7 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("Facial_no")}
                   placeholder="Facial Number, RNC, EIN,VATNUMBER"
                 />
               </div>
@@ -96,8 +166,12 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("password")}
                   placeholder="Password"
                 />
+                <div className="text-sm text-red-500">
+                  {errors.password?.message}
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -106,7 +180,11 @@ const Register = () => {
                   Country
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
+
+                <select
+                  className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                  {...register("country")}
+                >
                   <option>Select Country</option>
                 </select>
               </div>
@@ -117,7 +195,10 @@ const Register = () => {
                   Office Number
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
+                <select
+                  className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                  {...register("office_no")}
+                >
                   <option>Select Office Number</option>
                 </select>
               </div>
@@ -128,7 +209,10 @@ const Register = () => {
                   Cell Phone
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
+                <select
+                  className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                  {...register("cell_phone")}
+                >
                   <option>Select Cell Phone</option>
                 </select>
               </div>
@@ -142,14 +226,26 @@ const Register = () => {
                 <input
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                   type="text"
+                  {...register("occupation")}
                   placeholder="Occupation"
                 />
               </div>
             </Grid>
             <Grid item xs={12} md={6}>
               <div className="form-group">
-                <button className="bg-[#FFA500] text-white font-mont text-base px-4 py-2 rounded-md mt-4">
-                  Register Now
+                <button
+                  type="submit"
+                  className="bg-[#FFA500] text-white font-mont text-base px-4 py-2 rounded-md mt-4"
+                >
+                  {loading ? (
+                    <span className="animate-spin flex justify-center items-center text-[1.6rem] text-white">
+                      <LuLoader2 />
+                    </span>
+                  ) : (
+                    <span className="text-white text-[1rem] font-bold tracking-[0.16rem]">
+                      Create Account
+                    </span>
+                  )}
                 </button>
               </div>
             </Grid>
@@ -165,6 +261,14 @@ const Register = () => {
           />
         </div>
       </Grid>
+
+      {OTPDialoug && (
+        <OTPModal
+          setOTPDialoug={setOTPDialoug}
+          generatedOTP={customGeneratedOTP}
+          userData={userData}
+        />
+      )}
     </Grid>
   );
 };
