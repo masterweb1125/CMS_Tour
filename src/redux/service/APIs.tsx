@@ -23,26 +23,22 @@ export const EmailVerification = async (
 };
 
 // creating new user
-export const CreatingUser = async (
-  dispatch: Dispatch,
-  userData: any
-): Promise<any> => {
-  console.log("userData at API section", userData);
-  try {
-    const res = await API_DOMAIN.post(`/api/v1/auth/signup`, userData);
-    dispatch(setUserData(userData));
-    console.log("create a user response: ", res.data);
-    return res.status;
-  } catch (err: any) {
-    console.log("create a user error: ", err?.response);
-    return err?.response?.status;
-  }
+export const CreatingUser = async (dispatch: Dispatch, userData: any): Promise<any> => {
+    try {
+        const res = await API_DOMAIN.post(`/api/v1/auth/signup`, userData);
+            dispatch(setUserData(res.data?.data));
+        return res.status;
+    } catch (err: any) {
+        console.log("create a user error: ", err?.response);
+        return err?.response?.status;
+
+    }
 };
 
 export const LoginAPI = async (dispatch: Dispatch, userData: any) => {
   try {
     const res = await API_DOMAIN.post(`/api/v1/auth/signin`, userData);
-    dispatch(setUserData(res.data));
+    dispatch(setUserData(res.data?.data));
     return res.status;
   } catch (err: any) {
     console.log("Something went wrong while login", err?.response);

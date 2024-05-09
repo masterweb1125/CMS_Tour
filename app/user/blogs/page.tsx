@@ -1,4 +1,4 @@
-import BreadCrame from "@/src/components/client/blog-main/BreadCrame";
+import BreadCrame from "@/src/components/client/blog-main/Blog_profile_breadcrame";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
 import BlogPostCard from "@/src/components/dashboard/resourceandcenter/BlogPostCard";
 import { blogs } from "@/src/utils/data/blogs";

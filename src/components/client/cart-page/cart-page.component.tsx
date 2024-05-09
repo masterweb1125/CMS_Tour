@@ -6,10 +6,145 @@ import { Divider, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  usePayPalScriptReducer,
+  FUNDING,
+} from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
+
+interface CartItem {
+  sku: string;
+  quantity: number;
+}
+
+const style: any = { layout: "vertical" };
+// ---------- old create order ---------
+function createOrder(): Promise<string> {
+  return fetch(
+    "https://react-paypal-js-storybook.fly.dev/api/paypal/create-order",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart: [
+          {
+            sku: "1blwyeo8",
+            quantity: 2,
+          },
+        ],
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then((order: { id: string }) => {
+      return order.id;
+    });
+}
+
+
+// ----------------- new one -----------------
+
+// function createOrder(): Promise<string> {
+//   // Send the amount along with the order creation request
+//   return fetch("https://api.paypal.com/v2/checkout/orders", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer YOUR_PAYPAL_ACCESS_TOKEN`,
+//     },
+//     body: JSON.stringify({
+//       intent: "CAPTURE",
+//       purchase_units: [
+//         {
+//           amount: {
+//             currency_code: "USD",
+//             value: "20.00", // Explicitly set the amount to $20.00
+//           },
+//         },
+//       ],
+//     }),
+//   })
+//     .then((response) => response.json())
+//     .then((order: { id: string }) => {
+//       return order.id;
+//     });
+// }
+
+
+
+
+// ---------- old one onApprove function ------
+// function onApprove(data: { orderID: string }): Promise<void> {
+//   return fetch(
+//     "https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order",
+//     {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         orderID: data.orderID,
+//       }),
+//     }
+//   )
+//     .then((response) => response.json())
+//     .then((orderData: any) => {
+//       // Your code here after capture the order
+//     });
+// }
+
+// ----------- new one onApprove func-----------
+function onApprove(data: { orderID: string }): Promise<void> {
+  console.log("data in the onApprove function: ", data);
+
+  // Log the successful transaction response
+  return Promise.resolve(console.log("Transaction completed successfully"));
+}
+
+
+
+
+const ButtonWrapper: React.FC<{ showSpinner: boolean }> = ({ showSpinner }) => {
+  const [{ isPending }] = usePayPalScriptReducer();
+
+  return (
+    <>
+      {showSpinner && isPending && <div className="spinner" />}
+      <PayPalButtons
+        style={style}
+        disabled={false}
+        forceReRender={[style]}
+        fundingSource={FUNDING.PAYPAL}
+        createOrder={createOrder}
+        onApprove={onApprove}
+      />
+      <PayPalButtons
+        style={style}
+        disabled={false}
+        forceReRender={[style]}
+        fundingSource={FUNDING.PAYLATER}
+        createOrder={createOrder}
+        onApprove={onApprove}
+      />
+      <PayPalButtons
+        style={style}
+        disabled={false}
+        forceReRender={[style]}
+        fundingSource={FUNDING.CARD}
+        createOrder={createOrder}
+        onApprove={onApprove}
+      />
+    </>
+  );
+};
+
 const faqs = [
   {
     question: "What your Package Includes",
@@ -27,6 +162,9 @@ const faqs = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, ",
   },
 ];
+
+
+
 
 const CartPage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -71,6 +209,7 @@ const CartPage = () => {
   const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);
   };
+
 
 
   const handlePaymentMethod = async (e: any) => {

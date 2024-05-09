@@ -48,6 +48,7 @@ import TourEditImageOne from "@/public/images/toureditone.png";
 import AdminRegister from "@/public/images/adminregister.png";
 import BlogImagePost from "@/public/images/blog-image.png"
 import BlogDetailsImagePost from "@/public/images/blogdetails.png"
+import GroupAvatarImage from "@/public/images/group-avatar-image.png"
 
 
 export {
@@ -100,5 +101,6 @@ export {
   TourEditImageOne,
   AdminRegister,
   BlogImagePost,
-  BlogDetailsImagePost
+  BlogDetailsImagePost,
+  GroupAvatarImage
 };

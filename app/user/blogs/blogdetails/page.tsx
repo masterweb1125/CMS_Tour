@@ -1,9 +1,8 @@
-import BreadCrame from "@/src/components/client/blog-main/BreadCrame";
-import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import BreadCrame from "@/src/components/client/blog-main/Blog_profile_breadcrame";
 import BlogPostCard from "@/src/components/dashboard/resourceandcenter/BlogPostCard";
 import { blogs } from "@/src/utils/data/blogs";
-import { BlogDetailsImagePost, BlogImagePost } from "@/src/utils/images/images";
-import { Grid, Container } from "@mui/material";
+import { BlogDetailsImagePost } from "@/src/utils/images/images";
+import { Container, Grid } from "@mui/material";
 import Image from "next/image";
 
 let list = ["Home", "Blogs", "Travel Instructions"];
@@ -27,7 +26,7 @@ const Client_TourDetail = () => {
           <Grid container mb={3} spacing={3}>
             <Grid item xs={12}>
               <div>
-                <Image src={BlogDetailsImagePost} alt={""} />
+                <Image src={BlogDetailsImagePost} alt="" />
               </div>
             </Grid>
             <Grid item xs={12}>
@@ -113,7 +112,7 @@ const Client_TourDetail = () => {
 
             {blogs.map((item, index) => (
               <Grid item xs={12} md={3} key={index}>
-                <BlogPostCard blog={item} />
+                <BlogPostCard blog={item} key={index} />
               </Grid>
             ))}
           </Grid>

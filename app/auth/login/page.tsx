@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { ToastNotification } from "@/src/utils/ShowNotification";
 import toast from "react-hot-toast";
 
 
@@ -31,7 +30,7 @@ const Login = () => {
             style: { width: "auto", height: "auto" },
             duration: 3000,
           });
-          navigate.push("/");
+          navigate.push("/user/profile/update-profile");
         } else if (res === 400) {
           toast.error("Incorrect login credentials", {
             style: { width: "auto", height: "auto" },
@@ -42,7 +41,6 @@ const Login = () => {
             style: { width: "auto", height: "auto" },
             duration: 3000,
           });
-
         }
       } catch (error) {
         toast.error("Something went wrong", {

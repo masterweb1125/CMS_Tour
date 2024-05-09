@@ -32,7 +32,7 @@ const OTPModal = ({ setOTPDialoug, generatedOTP, userData }:any) => {
             });
         
           setOTPDialoug((prev:any) => !prev);
-          navigate.push("/");
+          navigate.push("/user/profile/update-profile");
         } else if (res === 400) {
           toast.error("Email address has already registered", {
             style: { width: "auto", height: "auto" },
