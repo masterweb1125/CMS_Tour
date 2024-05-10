@@ -1,12 +1,14 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 
-function SearchInput({ ...other }) {
+function SearchInput({ value, onChange, ...other }:any) {
   return (
     <TextField
       className="w-full font-mont"
       placeholder="Search"
       size="small"
+      value={value}
+      onChange={onChange}
       {...other}
       InputProps={{
         startAdornment: (
