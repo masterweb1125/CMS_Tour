@@ -57,7 +57,7 @@ function ModelView({ handleClose, open }: { handleClose: any; open: any }) {
         <Box sx={style}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
-              <Image src={LogoTransparent} className="w-12" />
+              <Image src={LogoTransparent} className="w-12" alt="image" />
             </Grid>
             <Grid item xs={12} md={8}>
               <h1 className="mt-8 text-xl font-semibold">
@@ -96,7 +96,7 @@ function ModelView({ handleClose, open }: { handleClose: any; open: any }) {
             <Grid item xs={12}>
               <p className="text-sm">
                 <i>
-                  We're thrilled to confirm your <b>5-day Maldives getaway</b>{" "}
+                  We&apos;re thrilled to confirm your <b>5-day Maldives getaway</b>{" "}
                   from January <b>6th to January 11th, 2024,</b> with{" "}
                   <b>reference number 182938.</b> Enjoying daily breakfast,
                   airport transfers, and more. Ensure your passport is valid and
@@ -149,7 +149,7 @@ function ModelView({ handleClose, open }: { handleClose: any; open: any }) {
                 </div>
                 <div className="mt-2">
                   <i className="text-sm">
-                    We're thrilled to confirm your 5-day Maldives getaway from
+                    We&apos;re thrilled to confirm your 5-day Maldives getaway from
                     January 6th to January 11th, 2024, with reference number
                     182938. Enjoying daily breakfast, airport transfers
                   </i>
