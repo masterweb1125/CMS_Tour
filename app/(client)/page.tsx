@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Client_Hero from "@/src/components/client/hero-section/hero.component";
 import {

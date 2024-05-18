@@ -15,7 +15,6 @@ type Props = {
 
 const Client_Header = (props: Props) => {
   const user: any = useSelector((root: any) => root?.User?.UserInfo);
-  console.log("user data: ", user)
   const dispatch = useDispatch();
   const navigate = useRouter();
 

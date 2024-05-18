@@ -30,7 +30,7 @@ const faqs = [
   },
 ];
 
-const Client_TourDetailDescription = () => {
+const Client_TourDetailDescription = ({tour}:any) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [age, setAge] = useState("Pickup Location");
   const [language, setLanguage] = useState("English");
@@ -520,7 +520,7 @@ const Client_TourDetailDescription = () => {
                 </p>
                 <p className="text-[#000] text-4xl font-semibold pt-4 flex items-center gap-1">
                   <sub>us</sub>
-                  <div>$1,143</div>
+                  <div>${tour?.price}</div>
                 </p>
               </Grid>
             </Grid>

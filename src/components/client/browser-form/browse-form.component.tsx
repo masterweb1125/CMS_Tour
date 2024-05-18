@@ -1,21 +1,31 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { IconButton, InputLabel, NativeSelect } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import toast from "react-hot-toast";
-
+import { useDispatch } from "react-redux";
+import { Filters } from "@/src/redux/features/general.slice";
 type Props = {};
 
 const Client_BrowseForm = (props: Props) => {
-  const [destination, setDestination] = React.useState("");
+  const [formData, setFormData] = useState({
+    destination: "",
+    category: "",
+    duration: "",
+    price: "",
+  });
+
+  const dispatch = useDispatch();
+
+  const handleInputChange = (e:any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
 
   const handleSearch = (e:any) => {
     e.preventDefault();
-    toast.success("This functionality is in progress", {
-      style: { width: "auto", height: "auto" },
-      duration: 3000,
-    });
+    dispatch(Filters(formData))
+  
 }
 
   return (
@@ -32,6 +42,8 @@ const Client_BrowseForm = (props: Props) => {
             <select
               id="destination"
               name="destination"
+              value={formData.destination}
+              onChange={handleInputChange}
               className="border border-r-[16px] border-transparent min-w-56 p-4 mt-1 block w-full border-gray-300 text-black bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:white sm:text-sm"
             >
               <option value="">Select Destination</option>
@@ -54,6 +66,8 @@ const Client_BrowseForm = (props: Props) => {
             <select
               id="category"
               name="category"
+              value={formData.category}
+              onChange={handleInputChange}
               className="border border-r-[16px] border-transparent min-w-56 p-4 mt-1 block w-full border-gray-300 text-black bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:white sm:text-sm"
             >
               <option value="">Select Tour Category</option>
@@ -73,14 +87,17 @@ const Client_BrowseForm = (props: Props) => {
             </label>
             <select
               id="days"
-              name="days"
+              name="duration"
+              value={formData.duration}
+              onChange={handleInputChange}
               className="border border-r-[16px] border-transparent min-w-56 p-4 mt-1 block w-full border-gray-300 text-black bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:white sm:text-sm"
             >
               <option value="">Select Number of Days</option>
-              <option value="option1">1-3 days</option>
-              <option value="option2">4-6 days</option>
-              <option value="option3">7-12 days</option>
-              <option value="option3">15+ days</option>
+              <option value="1 - 3">1-3 days</option>
+              <option value="4 - 6">4-6 days</option>
+              <option value="7 - 10">7-12 days</option>
+              <option value="10 - 15">10-15 days</option>
+              <option value="15 - 30">15-30 days</option>
             </select>
           </div>
 
@@ -94,13 +111,15 @@ const Client_BrowseForm = (props: Props) => {
             <select
               id="price"
               name="price"
+              value={formData.price}
+              onChange={handleInputChange}
               className="border border-r-[16px] border-transparent min-w-56 p-4 mt-1 block w-full border-gray-300 text-black bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:white sm:text-sm"
             >
               <option value="">Select Price Range</option>
-              <option value="option1">200$ - 350$</option>
-              <option value="option2">400$ - 700$ </option>
-              <option value="option2">700$ - 1000$ </option>
-              <option value="option2">1000$ - 1800$ </option>
+              <option value="50-100">$50 - $100</option>
+              <option value="100-500">$100 - $500 </option>
+              <option value="500-1000">$500 - $1000</option>
+              <option value="1000-2000">1k$ - $2k </option>
             </select>
           </div>
 

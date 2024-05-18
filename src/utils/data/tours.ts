@@ -15,6 +15,7 @@ import   {
 export const tours:Tours[]=[
  
   {
+    id: 1,
     name: 'City of Light London',
     price: 999,
     category: "adventure",
@@ -27,6 +28,7 @@ export const tours:Tours[]=[
   },
   
   {
+    id: 2,
     name: 'Capital of France, Paris',
     price: 900,
     category: "ecotoursim",
@@ -39,6 +41,7 @@ export const tours:Tours[]=[
   },
 
   {
+    id: 3,
     name: 'Serenity in Seoul',
     price: 849,
     category: "cultural",
@@ -50,6 +53,7 @@ export const tours:Tours[]=[
     favorite:false,
   },
   {
+    id: 4,
     name: 'Mystical Marrakech',
     price: 99,
     category: "educational",
@@ -61,6 +65,7 @@ export const tours:Tours[]=[
     favorite:false,
   },
   {
+    id: 5,
     name: 'Rome Reverie',
     price: 399,
     coverPic: Swiss.src,
@@ -71,6 +76,7 @@ export const tours:Tours[]=[
     favorite:false,
   },
   {
+    id: 6,
     name: 'Tokyo Tranquility',
     price: 1099,
     coverPic: Japan.src,
@@ -81,6 +87,7 @@ export const tours:Tours[]=[
     favorite:false,
   },
   {
+    id: 7,
     name: 'Barcelona Bliss',
     price: 749,
     coverPic:Italy.src,

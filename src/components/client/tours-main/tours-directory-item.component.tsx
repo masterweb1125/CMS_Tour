@@ -85,7 +85,7 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
           Book Now
         </button>
 
-        <Link className="w-full" href="/tour-detail">
+        <Link className="w-full" href={`/tour-detail/${tour.id}`}>
           <button
             type="submit"
             className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-gray-variant text-black-variant font-semibold text-xs leading-4"

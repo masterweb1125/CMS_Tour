@@ -3,6 +3,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 // import ThemeChange from "./features/ThemeChange";
 // import riskprofile from "./features/riskprofile";
 import UserSlice from "./features/User.Slice";
+import generalSlice from "./features/general.slice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import {
   persistReducer,
@@ -37,11 +38,12 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: [""], // reducers that we dont want to add in persist store
+  blacklist: ["general"], // reducers that we dont want to add in persist store
 };
 
 const reducer = combineReducers({
   User: UserSlice,
+  general: generalSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
