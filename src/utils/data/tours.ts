@@ -13,19 +13,35 @@ import   {
 } from '@/src/utils/images/images'
 
 export const tours:Tours[]=[
+ 
   {
     name: 'City of Light London',
-    price:999,
-    coverPic:London.src,
-    description:'Learn to experience London with confidence with an exclusive travel guide by London natives.',
-    duration:{hours:3,minutes:12},
-    viewers:34129,
-    agent:{firstName:'JennyParis',locationCity:"London",locationCountry:"UK",avatarUrl:Avatar.src,profilePic:AvatarFull.src},
-    favorite:false,
+    price: 999,
+    category: "adventure",
+    coverPic: London.src,
+    description: 'Learn to experience London with confidence with an exclusive travel guide by London natives.',
+    duration: { hours: 3, minutes: 12 },
+    viewers: 34129,
+    agent: { firstName: 'JennyParis', locationCity: "London", locationCountry: "UK", avatarUrl: Avatar.src, profilePic: AvatarFull.src },
+    favorite: false,
   },
+  
+  {
+    name: 'Capital of France, Paris',
+    price: 900,
+    category: "ecotoursim",
+    coverPic: Paris.src,
+    description: "Learn and Discover the beauty of the France Capital Paris. let's explore and experience of the France capital",
+    duration: { hours: 3, minutes: 12 },
+    viewers: 54129,
+    agent: { firstName: 'JennyParis', locationCity: "Paris", locationCountry: "France", avatarUrl: Avatar.src, profilePic: AvatarFull.src },
+    favorite: false,
+  },
+
   {
     name: 'Serenity in Seoul',
     price: 849,
+    category: "cultural",
     coverPic:Tokyo.src,
     description: 'Discover the beauty of Seoul with a comprehensive travel guide created by locals.',
     duration: { hours: 4, minutes: 30 },
@@ -35,7 +51,8 @@ export const tours:Tours[]=[
   },
   {
     name: 'Mystical Marrakech',
-    price: 799,
+    price: 99,
+    category: "educational",
     coverPic:Bahamas.src,
     description: 'Immerse yourself in the enchanting atmosphere of Marrakech with a detailed travel guide.',
     duration: { hours: 5, minutes: 0 },
@@ -45,7 +62,7 @@ export const tours:Tours[]=[
   },
   {
     name: 'Rome Reverie',
-    price: 899,
+    price: 399,
     coverPic: Swiss.src,
     description: 'Experience the timeless charm of Rome through an expertly crafted travel guide.',
     duration: { hours: 4, minutes: 45 },

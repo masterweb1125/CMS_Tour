@@ -40,7 +40,7 @@ const Client_ToursDirectory = ({
         </div>
       </div>
       <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
-        {tours?.map((tourItem, index) => (
+        {tours?.slice(0, 6).map((tourItem, index) => (
           <div key={index} className="md:col-span-1 lg:col-span-1">
             <Client_ToursDirectoryItem tour={tourItem} />
           </div>

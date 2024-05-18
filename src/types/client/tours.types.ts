@@ -1,6 +1,7 @@
 export type Tours = {
   name: string;
   price: number;
+  category?: string;
   coverPic: string;
   agent?: Agent;
   description: string;

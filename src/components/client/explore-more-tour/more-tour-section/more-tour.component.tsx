@@ -14,9 +14,27 @@ type ToursProps = {
   subPara: string;
 };
 
+export const tabStyles = (isActive: any) => ({
+  backgroundColor: "transparent",
+  opacity: isActive ? 1 : 0.5,
+  "&.Mui-selected": {
+    color: "inherit",
+    borderBottom: "3px solid #FFA500",
+    fontWeight: "bold",
+    opacity: 1,
+  },
+});
+
 const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
   const [value, setValue] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
+      min: 0,
+      max: 0,
+    });
+  
   const toursPerPage = 6;
 
   const handleChange = (event: any, newValue: any) => {
@@ -28,20 +46,44 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
     setCurrentPage(page);
   };
 
-  const tabStyles = (isActive: any) => ({
-    backgroundColor: "transparent",
-    opacity: isActive ? 1 : 0.5,
-    "&.Mui-selected": {
-      color: "inherit",
-      borderBottom: "3px solid #FFA500",
-      fontWeight: "bold",
-      opacity: 1,
-    },
-  });
+ const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+   setSelectedCategory(event.target.value);
+   setCurrentPage(1);
+ };
 
-  const indexOfLastTour = currentPage * toursPerPage;
-  const indexOfFirstTour = indexOfLastTour - toursPerPage;
-  const currentTours = tours?.slice(indexOfFirstTour, indexOfLastTour);
+  
+    const handlePriceRangeChange = (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const { name, checked } = event.target;
+      if (checked) {
+        // Parse the name attribute to get the min and max values
+        const [min, max] = name.split("-").map(Number);
+        setPriceRange({ min, max });
+      } else {
+        setPriceRange({ min: 0, max: 0 });
+      }
+      setCurrentPage(1);
+    };
+
+
+      const filteredTours = tours
+        ? tours.filter(
+            (tour) =>
+              tour?.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              (selectedCategory === "" || tour.category === selectedCategory) &&
+              (priceRange.min === 0 || priceRange.min <= tour.price) &&
+              (priceRange.max === 0 || priceRange.max >= tour.price)
+          )
+        : [];
+
+    const indexOfLastTour = currentPage * toursPerPage;
+    const indexOfFirstTour = indexOfLastTour - toursPerPage;
+    const currentTours = filteredTours.slice(indexOfFirstTour, indexOfLastTour);
+
+  // const indexOfLastTour = currentPage * toursPerPage;
+  // const indexOfFirstTour = indexOfLastTour - toursPerPage;
+  // const currentTours = tours?.slice(indexOfFirstTour, indexOfLastTour);
 
   return (
     <Client_Container>
@@ -61,6 +103,8 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
                 className="w-full"
                 placeholder="Search..."
                 size="small"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -81,12 +125,16 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
               <select
                 id="category"
                 name="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
                 className="border border-r-[12px] border-transparent w-full p-2 mt-2 block border-gray-300 text-black bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:white sm:text-sm"
               >
                 <option value="">Choose Category</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+                <option value="adventure">Adventure</option>
+                <option value="ecotourism">Ecotourism</option>
+                <option value="educational">Educational</option>
+                <option value="cultural">Cultural</option>
+                <option value="heritage">Heritage</option>
               </select>
             </div>
             <div className="flex flex-col mt-7">
@@ -96,25 +144,63 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
                 </h3>
                 <p className="text-gray-400 mb-4">Low to High</p>
               </div>
+
+              {/* below are the price checkbox given -------- */}
               <div className="flex flex-col">
                 <div className=" flex flex-row gap-3 justify-start items-center">
-                  <Checkbox name="checkBox" id="1" />
+                  <Checkbox
+                    name="0-100"
+                    checked={priceRange.min === 0 && priceRange.max === 100}
+                    onChange={handlePriceRangeChange}
+                    id="1"
+                  />
                   <h5 className="text-black-50 text-normal">Less than $100</h5>
                 </div>
                 <div className=" flex flex-row gap-3 justify-start items-center">
-                  <Checkbox name="checkBox" id="2" />
+                  <Checkbox
+                    name="100-500"
+                    checked={priceRange.min === 100 && priceRange.max === 500}
+                    onChange={handlePriceRangeChange}
+                    id="2"
+                  />
+                  <h5 className="text-black-50 text-normal">$100 to $500</h5>
+                </div>
+                <div className=" flex flex-row gap-3 justify-start items-center">
+                  <Checkbox
+                    name="500-999"
+                    checked={priceRange.min === 500 && priceRange.max === 999}
+                    onChange={handlePriceRangeChange}
+                    id="3"
+                  />
                   <h5 className="text-black-50 text-normal">$500 to $999</h5>
                 </div>
                 <div className=" flex flex-row gap-3 justify-start items-center">
-                  <Checkbox name="checkBox" id="3" />
+                  <Checkbox
+                    name="1000-2000"
+                    checked={priceRange.min === 1000 && priceRange.max === 2000}
+                    onChange={handlePriceRangeChange}
+                    id="4"
+                  />
                   <h5 className="text-black-50 text-normal">$1k to $2k</h5>
                 </div>
                 <div className=" flex flex-row gap-3 justify-start items-center">
-                  <Checkbox name="checkBox" id="4" />
-                  <h5 className="text-black-50 text-normal">$2k to $10k</h5>
+                  <Checkbox
+                    name="2000-5000"
+                    checked={priceRange.min === 2000 && priceRange.max === 5000}
+                    onChange={handlePriceRangeChange}
+                    id="5"
+                  />
+                  <h5 className="text-black-50 text-normal">$2k to $5k</h5>
                 </div>
                 <div className=" flex flex-row gap-3 justify-start items-center">
-                  <Checkbox name="checkBox" id="5" />
+                  <Checkbox
+                    name="5000-100000"
+                    checked={
+                      priceRange.min === 5000 && priceRange.max === 100000
+                    }
+                    onChange={handlePriceRangeChange}
+                    id="6"
+                  />
                   <h5 className="text-black-50 text-normal">$5k+</h5>
                 </div>
               </div>
