@@ -3,6 +3,7 @@ import "../globals.css";
 import "@/public/icons/lineicons.css";
 import { inter, montserrat } from "@/src/utils/fonts/fonts";
 import Sidebar from "./template/Sidebar";
+import ToastNotification from "@/src/utils/ToastNotification";
 
 export const metadata: Metadata = {
   title: "Extranet | Tours made adventures",
@@ -17,6 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
       <body className="font-mont">
+        <ToastNotification />
+
         <Sidebar>{children}</Sidebar>
       </body>
     </html>

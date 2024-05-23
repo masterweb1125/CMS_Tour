@@ -1,5 +1,6 @@
 "use client";
 import DashboardHeader from "@/src/components/supplierdashboard/dashboardComponents/DashboardHeader";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
 import {
   Divider,
   Grid,
@@ -8,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
@@ -21,10 +23,82 @@ const itemsList = [
   "Work",
 ];
 
+const initialState = {
+  name: "",
+  category: "",
+  location: "",
+  destination: "",
+  language: "",
+  tourPrice: "",
+  priceAdult: "",
+  priceChild: "",
+  priceInfant: "",
+  startDate: "",
+  endDate: "",
+  singleDayTour: "",
+  tourClosingDate: "",
+  description: "",
+  imageUrl: "",
+  videoUrl: "",
+  instruction: "",
+};
+
+
 function Booking() {
   const [whatIncludes, setWhatIncludes] = useState<any>([]);
   const [whatNotIncludes, setWhatNotIncludes] = useState<any>([]);
+   const [formData, setFormData] = useState(initialState);
 
+   const handleChange = (event:any) => {
+     const { name, value } = event.target;
+     setFormData((prevState) => ({ ...prevState, [name]: value }));
+   };
+
+  // submit form data
+  const CreateTour = async () => {
+    
+
+    const tourData = {
+      name: formData.name,
+      category: formData.category,
+      location: formData.location,
+      destination: formData.destination,
+      language: formData.language,
+      tourPrice: formData.tourPrice,
+      priceAdult: formData.priceAdult,
+      priceChild: formData.priceChild,
+      priceInfant: formData.priceInfant,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      singleDayTour: formData.singleDayTour,
+      tourClosingDate: formData.tourClosingDate,
+      description: formData.description,
+      imageUrl: formData.imageUrl,
+      videoUrl: formData.videoUrl,
+      instruction: formData.instruction,
+      whatIncludes: whatIncludes,
+      whatNotIncludes: whatNotIncludes,
+    };
+    console.log("tour data: ", tourData)
+
+   
+  try {
+    const res = await API_DOMAIN.post("/api/v1/tour/create", tourData);
+      console.log("res is: ", res.data)
+     toast.success("Tour created successfully", {
+       style: { width: "auto", height: "auto" },
+       duration: 3000,
+     });
+  } catch (error) {
+    console.log("error: ", error)
+     toast.error("creating tour failed!", {
+       style: { width: "auto", height: "auto" },
+       duration: 3000,
+     });
+  }
+
+  }
+  
   return (
     <div>
       <DashboardHeader name="Jhon Christopher" />
@@ -39,11 +113,143 @@ function Booking() {
         <Grid container className="mt-1" spacing={3}>
           <Grid item xs={12} md={4}>
             <label className="text-[#344054] text-sm font-medium">
+              Name <span className="text-red-500">*</span>
+            </label>
+            <TextField
+              className="w-full"
+              placeholder="Enter Destination"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </InputAdornment>
+                ),
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <label className="text-[#344054] text-sm font-medium">
+              Tour Category <span className="text-red-500">*</span>
+            </label>
+            <TextField
+              className="w-full"
+              placeholder="Enter Destination"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </InputAdornment>
+                ),
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <label className="text-[#344054] text-sm font-medium">
+              Location <span className="text-red-500">*</span>
+            </label>
+            <TextField
+              className="w-full"
+              placeholder="Enter Destination"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </InputAdornment>
+                ),
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <label className="text-[#344054] text-sm font-medium">
               Destination <span className="text-red-500">*</span>
             </label>
             <TextField
               className="w-full"
               placeholder="Enter Destination"
+              name="destination"
+              value={formData.destination}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 endAdornment: (
@@ -84,6 +290,9 @@ function Booking() {
             <TextField
               className="w-full font-mont"
               placeholder="Enter Language"
+              name="language"
+              value={formData.language}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -98,6 +307,9 @@ function Booking() {
             <TextField
               className="w-full font-mont"
               placeholder="Enter Language"
+              name="tourPrice"
+              value={formData.tourPrice}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -138,6 +350,9 @@ function Booking() {
             <TextField
               className="w-full"
               placeholder="Enter Per Child Price"
+              name="priceChild"
+              value={formData.priceChild}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -170,6 +385,9 @@ function Booking() {
             <TextField
               className="w-full font-mont"
               placeholder="Enter Per Infant Price"
+              name="priceInfant"
+              value={formData.priceInfant}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -202,6 +420,9 @@ function Booking() {
             <TextField
               className="w-full font-mont"
               placeholder="Enter Per Adult Price"
+              name="priceAdult"
+              value={formData.priceAdult}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -234,6 +455,9 @@ function Booking() {
             <TextField
               type="date"
               className="w-full font-mont"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -248,6 +472,9 @@ function Booking() {
             <TextField
               type="date"
               className="w-full font-mont"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -263,6 +490,9 @@ function Booking() {
               type="time"
               className="w-full"
               placeholder="Enter Destination"
+              name="singleDayTour"
+              value={formData.singleDayTour}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -293,6 +523,9 @@ function Booking() {
               type="date"
               className="w-full font-mont"
               placeholder="Enter Language"
+              name="tourClosingDate"
+              value={formData.tourClosingDate}
+              onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -343,6 +576,9 @@ function Booking() {
               className="w-full border-2 rounded-lg p-2 text-sm"
               style={{ height: "130px" }}
               placeholder="Tour Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
             />
           </Grid>
 
@@ -354,6 +590,9 @@ function Booking() {
             <TextField
               type="file"
               size="small"
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
               className="w-full"
               InputProps={{
                 className: InputClasses,
@@ -369,6 +608,9 @@ function Booking() {
             <TextField
               type="file"
               size="small"
+              name="videoUrl"
+              value={formData.videoUrl}
+              onChange={handleChange}
               className="w-full"
               InputProps={{
                 className: InputClasses,
@@ -537,6 +779,9 @@ function Booking() {
               className="w-full border-2 rounded-lg p-2 text-sm"
               style={{ height: "130px" }}
               placeholder="Enter Per Child Price"
+              name="instruction"
+              value={formData.instruction}
+              onChange={handleChange}
             />
           </Grid>
 
@@ -545,7 +790,10 @@ function Booking() {
               <button className="text-black font-mont text-sm font-medium px-4 py-2 rounded-md ">
                 Add to Draft
               </button>
-              <button className="bg-[#FFA500] text-white font-mont text-sm font-medium px-4 py-2 rounded-md flex gap-1 items-center">
+              <button
+                className="bg-[#FFA500] text-white font-mont text-sm font-medium px-4 py-2 rounded-md flex gap-1 items-center"
+                onClick={CreateTour}
+              >
                 <div>Upload Tour</div>
                 <div>
                   <svg

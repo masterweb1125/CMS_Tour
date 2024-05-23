@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { Tours } from "@/src/types/client/tours.types";
 import Client_ToursDirectoryItem from "./tours-directory-item.component";
 import Client_Container from "../container/container.component";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
 
 type ToursProps = {
   tours: Array<Tours> | undefined;
@@ -17,7 +19,7 @@ const Client_ToursDirectory = ({
   subPara,
 }: ToursProps) => {
   const filterData: any = useSelector((root: any) => root?.general?.filter);
-  console.log("filter data at client side page: ", filterData);
+  const [Tours, setTours] = useState([])
 
   // Extract filter criteria
   const { destination, category, price } = filterData;
@@ -45,6 +47,23 @@ const Client_ToursDirectory = ({
     );
   }
 
+  //  retrieving tours from db
+  const FetchingTours = async () => {
+    try {
+      const res = await API_DOMAIN.get("/api/v1/tour");
+      console.log("res: ", res.data)
+      setTours(res?.data?.data)
+    } catch (error) {
+      console.log("something went wrong: ", error);
+      toast.error("Retrieving tours data failed")
+    }
+  }
+
+  useEffect(() => {
+    FetchingTours();
+    console.log("tour data in useState: ", Tours)
+  }, [])
+  
   return (
     <Client_Container>
       <div className="directory-titles pt-20 pb-8">
