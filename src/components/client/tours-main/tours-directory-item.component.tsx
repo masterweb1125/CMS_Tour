@@ -8,10 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import FilterModal from "./tours-filtermodal";
+import { tours } from "@/src/utils/data/tours";
 
-const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
+const Client_ToursDirectoryItem = ({ tour, index }: any) => {
   const [open, setOpen] = useState(false);
 
+  console.log("static tours viewers: ", tours[index]?.viewers);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -24,7 +26,7 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
     <div className="card tour-card p-4 flex flex-col rounded-2xl gap-6  bg-white shadow-md">
       <div
         className="card-media relative cover bg-center h-56 w-full rounded-lg"
-        style={{ backgroundImage: `url(${tour.coverPic})` }}
+        style={{ backgroundImage: `url(${tour?.imageUrl})` }}
       >
         <div className="favorite-container bg-white absolute top-3 right-3 rounded-lg text-black">
           <IconButton>
@@ -36,41 +38,41 @@ const Client_ToursDirectoryItem = ({ tour }: { tour: Tours }) => {
       <div className="card-content">
         <div className="title-price flex flex-row justify-between mb-5">
           <h2 className="text-2xl font-semibold text-black-variant leading-7">
-            {tour.name}
+            {tour?.name}
           </h2>
           <h4 className="text-primary text-2xl font-semibold leading-7">
-            ${tour.price}
+            ${tour?.tourPrice}
           </h4>
         </div>
 
         <div className="agent-details mb-5 flex flex-row items-center gap-2">
           <Image
-            src={tour.agent?.avatarUrl || ""}
+            src={tours[1]?.agent?.avatarUrl || ""}
             width={20}
             height={20}
-            alt={tour?.agent?.firstName || "agent pic"}
+            alt={tours[index]?.agent?.firstName || "agent pic"}
           />
           <h5 className="text-xs font-medium leading-3 text-black-variant">
-            @{tour.agent?.firstName} <span className="opacity-70">from</span>{" "}
-            {tour.agent?.locationCity},{tour.agent?.locationCountry}
+            @{tours[1]?.agent?.firstName} <span className="opacity-70">from</span>{" "}
+            {tour?.location}
           </h5>
         </div>
 
         <div className="tour-details text-black-variant text-xs font-normal leading-4 flex flex-col gap-5">
-          <p className="description">{tour.description}</p>
+          <p className="description">{tour?.description}</p>
 
           <div className="tour-meta flex flex-col gap-2">
             <div className="tour-timings flex flex-row gap-2 items-center">
               <WatchLaterIcon fontSize="small" sx={{ color: "#1D1D1F" }} />
               <span className="text-black-variant text-xs font-normal leading-3">
-                {tour.duration.hours} hours, {tour.duration.minutes} minutes
+                {tours[1]?.duration?.hours} hours, {tours[index]?.duration?.minutes} minutes
               </span>
             </div>
 
             <div className="tour-viewers flex flex-row gap-2 items-center">
               <PersonIcon fontSize="small" sx={{ color: "#1D1D1F" }} />
               <span className="text-black-variant text-xs font-normal leading-3">
-                {tour.viewers} viewers
+                {tours[1]?.viewers} viewers
               </span>
             </div>
           </div>

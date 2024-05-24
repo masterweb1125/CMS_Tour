@@ -3,9 +3,11 @@ import type { Tours } from "@/src/types/client/tours.types";
 import Client_ToursDirectoryItem from "./tours-directory-item.component";
 import Client_Container from "../container/container.component";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
+import { addToursData } from "@/src/redux/features/general.slice";
+
 
 type ToursProps = {
   tours: Array<Tours> | undefined;
@@ -19,31 +21,31 @@ const Client_ToursDirectory = ({
   subPara,
 }: ToursProps) => {
   const filterData: any = useSelector((root: any) => root?.general?.filter);
-  const [Tours, setTours] = useState([])
-
+  const [Tours, setTours] = useState<any>([])
+  const dispatch = useDispatch();
   // Extract filter criteria
   const { destination, category, price } = filterData;
-
+  console.log("filtered data: ", filterData)
   // Apply filters
-  let filteredTours = tours;
+  let filteredTours = Tours;
 
   if (destination) {
     filteredTours = filteredTours?.filter(
-      (tour) =>
-        tour?.agent?.locationCity?.toLowerCase() === destination.toLowerCase()
+      (tour:any) =>
+        tour?.destination?.toLowerCase() === destination?.toLowerCase()
     );
   }
 
   if (category) {
     filteredTours = filteredTours?.filter(
-      (tour) => tour.category?.toLowerCase() === category.toLowerCase()
+      (tour:any) => tour.category?.toLowerCase() === category.toLowerCase()
     );
   }
 
   if (price) {
     const [minPrice, maxPrice] = price.split("-").map(Number);
     filteredTours = filteredTours?.filter(
-      (tour) => tour.price >= minPrice && tour.price <= maxPrice
+      (tour: any) => tour.tourPrice >= minPrice && tour.tourPrice <= maxPrice
     );
   }
 
@@ -53,6 +55,7 @@ const Client_ToursDirectory = ({
       const res = await API_DOMAIN.get("/api/v1/tour");
       console.log("res: ", res.data)
       setTours(res?.data?.data)
+      dispatch(addToursData(res?.data?.data))
     } catch (error) {
       console.log("something went wrong: ", error);
       toast.error("Retrieving tours data failed")
@@ -89,7 +92,7 @@ const Client_ToursDirectory = ({
         </div>
       </div>
       <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
-        {filteredTours?.slice(0, 6).map((tourItem, index) => (
+        {filteredTours?.slice(0, 6).map((tourItem:any, index:number) => (
           <div key={index} className="md:col-span-1 lg:col-span-1">
             <Client_ToursDirectoryItem tour={tourItem} />
           </div>
@@ -97,9 +100,9 @@ const Client_ToursDirectory = ({
       </div>
 
       <div className="md:hidden grid grid-cols-1 gap-6 justify-center mb-10 mb-16">
-        {filteredTours?.slice(0, 2).map((tourItem, index) => (
+        {filteredTours?.slice(0, 2).map((tourItem:any, index:number) => (
           <div key={index} className="md:col-span-1 lg:col-span-1">
-            <Client_ToursDirectoryItem tour={tourItem} />
+            <Client_ToursDirectoryItem tour={tourItem} index={index} />
           </div>
         ))}
       </div>

@@ -8,8 +8,10 @@ import {
   TextareaAutosize,
   TextField,
 } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
@@ -43,62 +45,103 @@ const initialState = {
   instruction: "",
 };
 
-
 function Booking() {
   const [whatIncludes, setWhatIncludes] = useState<any>([]);
   const [whatNotIncludes, setWhatNotIncludes] = useState<any>([]);
-   const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState(initialState);
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
+  const [loading, setloading] = useState(false);
 
-   const handleChange = (event:any) => {
-     const { name, value } = event.target;
-     setFormData((prevState) => ({ ...prevState, [name]: value }));
-   };
+  const handleChange = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleFileChange = (e: any) => {
+    const file = e.target.files[0];
+    console.log("file uploaded: ", file);
+    if (file) {
+      setUploadedFile(file);
+    }
+  };
+  // uploading file to the cloudinary
+  const uploadingFileCloudinary = async () => {
+    try {
+      if (uploadedFile != null) {
+        const data = new FormData();
+        data.append("file", uploadedFile);
+        data.append("upload_preset", "uploads");
+        data.append("cloud_name", "bangash-cloud");
+
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/bangash-cloud/raw/upload",
+          data
+        );
+        var { url } = uploadRes.data;
+        return url;
+      }
+    } catch (error) {
+      console.log(
+        "an error occured while uploading file to the cloudinary: ",
+        error
+      );
+      toast.error("An error occured while uploading file to the cloud");
+      return null;
+    }
+  };
 
   // submit form data
   const CreateTour = async () => {
-    
+    setloading(true);
+    try {
+      console.log("uplodaed file : ", uploadedFile?.name);
+      let cloudinaryURL = "";
+      if (uploadedFile?.name) {
+        cloudinaryURL = await uploadingFileCloudinary();
+      }
 
-    const tourData = {
-      name: formData.name,
-      category: formData.category,
-      location: formData.location,
-      destination: formData.destination,
-      language: formData.language,
-      tourPrice: formData.tourPrice,
-      priceAdult: formData.priceAdult,
-      priceChild: formData.priceChild,
-      priceInfant: formData.priceInfant,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      singleDayTour: formData.singleDayTour,
-      tourClosingDate: formData.tourClosingDate,
-      description: formData.description,
-      imageUrl: formData.imageUrl,
-      videoUrl: formData.videoUrl,
-      instruction: formData.instruction,
-      whatIncludes: whatIncludes,
-      whatNotIncludes: whatNotIncludes,
-    };
-    console.log("tour data: ", tourData)
+      console.log("cloudinary uploaded media URL: ", cloudinaryURL);
+      const tourData = {
+        name: formData.name,
+        category: formData.category,
+        location: formData.location,
+        destination: formData.destination,
+        language: formData.language,
+        tourPrice: formData.tourPrice,
+        priceAdult: formData.priceAdult,
+        priceChild: formData.priceChild,
+        priceInfant: formData.priceInfant,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        singleDayTour: formData.singleDayTour,
+        tourClosingDate: formData.tourClosingDate,
+        description: formData.description,
+        imageUrl: cloudinaryURL,
+        videoUrl: formData.videoUrl,
+        instruction: formData.instruction,
+        whatIncludes: whatIncludes,
+        whatNotIncludes: whatNotIncludes,
+      };
+      console.log("tour data: ", tourData);
 
-   
-  try {
-    const res = await API_DOMAIN.post("/api/v1/tour/create", tourData);
-      console.log("res is: ", res.data)
-     toast.success("Tour created successfully", {
-       style: { width: "auto", height: "auto" },
-       duration: 3000,
-     });
-  } catch (error) {
-    console.log("error: ", error)
-     toast.error("creating tour failed!", {
-       style: { width: "auto", height: "auto" },
-       duration: 3000,
-     });
-  }
+      const res = await API_DOMAIN.post("/api/v1/tour/create", tourData);
+      console.log("res is: ", res.data);
+      setloading(false);
 
-  }
-  
+      toast.success("Tour created successfully", {
+        style: { width: "auto", height: "auto" },
+        duration: 3000,
+      });
+    } catch (error) {
+      console.log("error: ", error);
+      setloading(false);
+      toast.error("creating tour failed!", {
+        style: { width: "auto", height: "auto" },
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div>
       <DashboardHeader name="Jhon Christopher" />
@@ -590,9 +633,7 @@ function Booking() {
             <TextField
               type="file"
               size="small"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
+              onChange={handleFileChange}
               className="w-full"
               InputProps={{
                 className: InputClasses,
@@ -794,7 +835,13 @@ function Booking() {
                 className="bg-[#FFA500] text-white font-mont text-sm font-medium px-4 py-2 rounded-md flex gap-1 items-center"
                 onClick={CreateTour}
               >
-                <div>Upload Tour</div>
+                {loading ?  (
+                  <div className="px-12  loading animate-spin text-[1.5rem] text-white">
+                    <AiOutlineLoading3Quarters />
+                  </div>
+                ) : (
+                    <>
+                    <div>Upload Tour</div>
                 <div>
                   <svg
                     width="14"
@@ -810,7 +857,10 @@ function Booking() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
+                      </div>
+                      </>
+                )}
+                
               </button>
             </div>
           </Grid>

@@ -1,15 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Client_Container from "../../container/container.component";
-import { Tours } from "@/src/types/client/tours.types";
 import { InputAdornment, TextField, Tab, Tabs, Checkbox } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import Client_ToursDirectoryItem from "../../tours-main/tours-directory-item.component";
 import Client_Paginator from "../../libs/paginator/paginator.component";
 import BasicDatePicker from "../../libs/AppDatePicker/datepicker.component";
+import { useDispatch, useSelector } from "react-redux";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
+import { addToursData } from "@/src/redux/features/general.slice";
+import toast from "react-hot-toast";
 
 type ToursProps = {
-  tours: Array<Tours> | undefined;
   directoryTitle: string;
   subPara: string;
 };
@@ -25,7 +27,7 @@ export const tabStyles = (isActive: any) => ({
   },
 });
 
-const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
+const Client_MoreTours = ({  directoryTitle, subPara }: any) => {
   const [value, setValue] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,7 +36,9 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
       min: 0,
       max: 0,
     });
-  
+   const toursData: any = useSelector((root: any) => root?.general?.toursData);
+  const checkingGeneralData: any = useSelector((root: any) => root?.general);
+  const dispatch = useDispatch();
   const toursPerPage = 6;
 
   const handleChange = (event: any, newValue: any) => {
@@ -67,13 +71,12 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
     };
 
 
-      const filteredTours = tours
-        ? tours.filter(
-            (tour) =>
-              tour?.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              (selectedCategory === "" || tour.category === selectedCategory) &&
-              (priceRange.min === 0 || priceRange.min <= tour.price) &&
-              (priceRange.max === 0 || priceRange.max >= tour.price)
+  const filteredTours = toursData ? toursData.filter(
+      (tour: any) =>
+              tour?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) &&
+              (selectedCategory === "" || tour?.category === selectedCategory) &&
+              (priceRange.min === 0 || priceRange.min <= tour?.tourPrice) &&
+              (priceRange.max === 0 || priceRange.max >= tour?.tourPrice)
           )
         : [];
 
@@ -81,9 +84,20 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
     const indexOfFirstTour = indexOfLastTour - toursPerPage;
     const currentTours = filteredTours.slice(indexOfFirstTour, indexOfLastTour);
 
-  // const indexOfLastTour = currentPage * toursPerPage;
-  // const indexOfFirstTour = indexOfLastTour - toursPerPage;
-  // const currentTours = tours?.slice(indexOfFirstTour, indexOfLastTour);
+const FetchingTours = async () => {
+  try {
+    const res = await API_DOMAIN.get("/api/v1/tour");
+    console.log("res: ", res.data);
+    dispatch(addToursData(res?.data?.data));
+  } catch (error) {
+    console.log("something went wrong: ", error);
+    toast.error("Retrieving tours data failed");
+  }
+};
+
+useEffect(() => {
+  FetchingTours();
+}, []);
 
   return (
     <Client_Container>
@@ -266,7 +280,7 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
             <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 justify-center mb-10 md:mb-16 lg:mb-20 min-h-[500px]">
               {value === 0 && (
                 <>
-                  {currentTours?.map((tourItem, index) => (
+                  {currentTours?.map((tourItem: any, index: number) => (
                     <div
                       key={index}
                       className="md:col-span-1 lg:col-span-1 min-h-[500px]"
@@ -281,20 +295,22 @@ const Client_MoreTours = ({ tours, directoryTitle, subPara }: ToursProps) => {
             <div className="md:hidden grid grid-cols-1 gap-6 justify-center mb-10 mb-16 min-h-[500px]">
               {value === 0 && (
                 <>
-                  {currentTours?.splice(0, 4).map((tourItem, index) => (
-                    <div
-                      key={index}
-                      className="md:col-span-1 lg:col-span-1 min-h-[500px]"
-                    >
-                      <Client_ToursDirectoryItem tour={tourItem} />
-                    </div>
-                  ))}
+                  {currentTours
+                    ?.splice(0, 4)
+                    .map((tourItem: any, index: number) => (
+                      <div
+                        key={index}
+                        className="md:col-span-1 lg:col-span-1 min-h-[500px]"
+                      >
+                        <Client_ToursDirectoryItem tour={tourItem} />
+                      </div>
+                    ))}
                 </>
               )}
             </div>
 
             <Client_Paginator
-              totalItems={tours?.length || 0}
+              totalItems={toursData?.length || 0}
               itemsPerPage={toursPerPage}
               currentPage={currentPage}
               onPageChange={handlePageChange}
