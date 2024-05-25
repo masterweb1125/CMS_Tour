@@ -13,7 +13,6 @@ import { tours } from "@/src/utils/data/tours";
 const Client_ToursDirectoryItem = ({ tour, index }: any) => {
   const [open, setOpen] = useState(false);
 
-  console.log("static tours viewers: ", tours[index]?.viewers);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -87,7 +86,7 @@ const Client_ToursDirectoryItem = ({ tour, index }: any) => {
           Book Now
         </button>
 
-        <Link className="w-full" href={`/tour-detail/${tour.id}`}>
+        <Link className="w-full" href={`/tour-detail/${tour._id}`}>
           <button
             type="submit"
             className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-gray-variant text-black-variant font-semibold text-xs leading-4"

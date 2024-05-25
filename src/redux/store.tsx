@@ -38,7 +38,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: ["general"], // reducers that we dont want to add in persist store
+  blacklist: ["general"], // reducers that we dont want to add in persist store 
 };
 
 const reducer = combineReducers({

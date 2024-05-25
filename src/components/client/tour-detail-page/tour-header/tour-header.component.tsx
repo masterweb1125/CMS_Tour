@@ -8,7 +8,7 @@ import {
 import { Grid } from "@mui/material";
 import Image from "next/image";
 
-const Client_TourDetailHeader = ({tour}:any) => {
+const Client_TourDetailHeader = ({ tour }: any) => {
   return (
     <div className="bg-[#FFF9EF] w-full py-8 px-4 md:px-20 lg:px-28 gap-5 md:gap-0">
       <Grid container spacing={3}>
@@ -21,7 +21,7 @@ const Client_TourDetailHeader = ({tour}:any) => {
               <div className="flex flex-row gap-2 items-center">
                 <Image src={LocationIcon} alt="" width={20}/>
                 <span className="description font-medium">
-                  Main Street Cafe
+                 {tour?.location}
                 </span>
               </div>
               <div className="flex flex-row gap-2 items-center">
@@ -38,7 +38,7 @@ const Client_TourDetailHeader = ({tour}:any) => {
               <div className="flex flex-col">
                 <span className="text-xs md:text-xs">From</span>
                 <h1 className=" font-bold text-black-variant leading-7">
-                  ${tour?.price}
+                  ${tour?.tourPrice}
                 </h1>
               </div>
             </div>
@@ -47,7 +47,7 @@ const Client_TourDetailHeader = ({tour}:any) => {
               <div className="flex flex-col">
                 <span className="text-xs md:text-xs">Duration</span>
                 <h1 className=" font-bold text-black-variant leading-7">
-                  05Days
+                  05 Days
                 </h1>
               </div>
             </div>

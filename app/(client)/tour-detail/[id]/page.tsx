@@ -5,13 +5,30 @@ import Client_TourDetailDescription from "@/src/components/client/tour-detail-pa
 import Client_TourDetailHeader from "@/src/components/client/tour-detail-page/tour-header/tour-header.component";
 import { ExploreWorldCover } from "@/src/utils/images/images";
 import { tours } from "@/src/utils/data/tours";
+import { useEffect, useState } from "react";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
 
 const Client_TourDetail = ({ params }: any) => {
-const tourId = parseInt(params.id);
+  const tourId = params.id;
+  const [Tour, setTour] = useState();
 
-// Find the tour object based on the provided tourId
-  const tour = tours.find((tour) => tour.id === tourId);
-  console.log("tour data: ", tour)
+  // below is the function used for to fetch tour data
+  const FetchingTourData = async () => {
+    try {
+      const res = await API_DOMAIN.get(`/api/v1/tour/${tourId}`);
+      setTour(res?.data?.data);
+    } catch (error) {
+      console.log("something went wrong: ", error);
+    }
+  
+  }
+
+
+useEffect(() => {
+  FetchingTourData();
+}, [params])
+
+
 
   return (
     <>
@@ -26,8 +43,8 @@ const tourId = parseInt(params.id);
         }
       />
 
-      <Client_TourDetailHeader tour={tour} />
-      <Client_TourDetailDescription tour={tour} />
+      <Client_TourDetailHeader tour={Tour ? Tour : null} />
+      <Client_TourDetailDescription tour={Tour ? Tour : null} />
       <Client_RecomendedTours />
     </>
   );

@@ -9,7 +9,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
 const locations = ["London", "Amsertadam", "Australia", "Asia", "New York"];
 const languages = ["English", "French"];
 

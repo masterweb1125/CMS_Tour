@@ -52,9 +52,7 @@ const Client_TourDetailDescription = ({tour}:any) => {
             Tour description
           </h2>
           <p className="pt-4 text-sm md:text-lg text-[#000] font-mont">
-            Embark on a journey to unforgettable destinations, where breath
-            taking landscapes meet Embark on a journey to unforgettable
-            destinations, Embark on a journey
+           {tour?.description}
           </p>
           <h3 className="pt-5 mt-4 mb-4 font-bold text-2xl text-black-variant leading-8">
             Tour Highlights
@@ -333,8 +331,7 @@ const Client_TourDetailDescription = ({tour}:any) => {
               </svg>
             </div>
             <span>
-              This tour is not suitable for pregnant mothers or individuals with
-              the sdf accessibility needs (wheelchairs).
+              {tour?.instruction}
             </span>
           </div>
           <div className="">
@@ -520,7 +517,7 @@ const Client_TourDetailDescription = ({tour}:any) => {
                 </p>
                 <p className="text-[#000] text-4xl font-semibold pt-4 flex items-center gap-1">
                   <sub>us</sub>
-                  <div>${tour?.price}</div>
+                  <div>${tour?.tourPrice}</div>
                 </p>
               </Grid>
             </Grid>
