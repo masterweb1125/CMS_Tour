@@ -1,13 +1,34 @@
+"use client";
 import BreadCrame from "@/src/components/client/blog-main/Blog_profile_breadcrame";
 import BlogPostCard from "@/src/components/dashboard/resourceandcenter/BlogPostCard";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
 import { blogs } from "@/src/utils/data/blogs";
 import { BlogDetailsImagePost } from "@/src/utils/images/images";
 import { Container, Grid } from "@mui/material";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 let list = ["Home", "Blogs", "Travel Instructions"];
 
-const Client_TourDetail = () => {
+const Client_TourDetail = ({ params }: any) => {
+  const blogId = params.blogdetails;
+  const [Blog, setBlog] = useState(blogId);
+ console.log("paramsId: ", blogId)
+
+  // below is the function used for to fetch tour data
+  const FetchingBlogData = async () => {
+    try {
+      const res = await API_DOMAIN.get(`/api/v1/blog/${blogId}`);
+      setBlog(res?.data?.data);
+    } catch (error) {
+      console.log("something went wrong: ", error);
+    }
+  };
+
+  useEffect(() => {
+    FetchingBlogData();
+  }, [params]);
+
   return (
     <div className="">
       <Container>
@@ -16,7 +37,7 @@ const Client_TourDetail = () => {
         </div>
         <div>
           <h1 className="text-2xl md:text-4xl font-semibold">
-            Models Sizzled The Ramp at a Fashion Show in LA Fashion Week
+            {Blog?.blogTitle}
           </h1>
         </div>
       </Container>
@@ -30,7 +51,8 @@ const Client_TourDetail = () => {
               </div>
             </Grid>
             <Grid item xs={12}>
-              <div>
+              <p className="tracking-[2px] leading-8">{Blog?.blogDesc}</p>
+              {/* <div>
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et
                   massa mi. Aliquam in hendrerit urna. Pellentesque sit amet
@@ -103,7 +125,7 @@ const Client_TourDetail = () => {
                   Maecenas vitae mattis tellus.
                 </p>
                 <br />
-              </div>
+              </div> */}
             </Grid>
 
             <Grid item xs={12}>
@@ -112,7 +134,7 @@ const Client_TourDetail = () => {
 
             {blogs.map((item, index) => (
               <Grid item xs={12} md={3} key={index}>
-                <BlogPostCard blog={item} key={index} />
+                <BlogPostCard blog={item} Index={index} key={index} />
               </Grid>
             ))}
           </Grid>

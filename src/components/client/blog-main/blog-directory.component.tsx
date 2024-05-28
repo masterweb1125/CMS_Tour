@@ -1,8 +1,10 @@
 import { Blogs } from "@/src/types/client/blogs.types";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlogPostCard from "../../supplierdashboard/resourceandcenter/BlogPostCard";
 import Client_Container from "../container/container.component";
+import toast from "react-hot-toast";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
 
 type BlogsProps = {
   blogs: Array<Blogs> | undefined;
@@ -15,6 +17,30 @@ const Client_BlogTourDirectory = ({
   directoryTitle,
   subPara,
 }: BlogsProps) => {
+
+  const [Blogs, setBlogs] = useState([])
+
+  const FetchingBlogs = async () => {
+   try {
+     const res = await API_DOMAIN.get("api/v1/blog");
+     console.log("res.blog: ", res.data)
+     setBlogs(res?.data?.data)
+   } catch (error) {
+     console.log("fetching blogs failed: ", error);
+     toast.error("Retrieving blogs failed", {
+       style: { width: "auto", height: "auto" },
+       duration: 3000,
+     });
+   }
+}
+
+
+
+useEffect(() => {
+  FetchingBlogs();
+}, [])
+
+
   return (
     <Client_Container>
       <div className="directory-titles pt-20 pb-8">
@@ -31,15 +57,15 @@ const Client_BlogTourDirectory = ({
           <Link
             type="submit"
             className="rounded py-3 px-4 btn btn-outline bg-primary text-white font-semibold text-base leading-4 w-[160px] md:w-[190px] text-center"
-            href="/explore-more"
+            href="/user/blogs"
           >
             Explore More
           </Link>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
-        {blogs?.map((blogItem, index) => {
-          return <BlogPostCard key={index} blog={blogItem} />;
+        {Blogs?.map((blogItem, index) => {
+          return <BlogPostCard key={index} Index={index} blog={blogItem} />;
         })}
       </div>
       {/* return <Client_BlogDirectoryItem key={index} blog={blogItem} />; */}
