@@ -1,7 +1,18 @@
+"use client";
+import { addToCart } from '@/src/redux/features/User.Slice';
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from "react-redux";
 
-const page = () => {
+const Page = () => {
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+     dispatch(addToCart({}))
+  }, [])
+  
+
   return (
 <div className="bg-gray-400 fixed top-0 w-screen flex justify-center items-center z-50 h-screen">
       <div className="bg-white p-6  w-[30%]">
@@ -25,4 +36,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

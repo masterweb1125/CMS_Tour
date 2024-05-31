@@ -1,10 +1,10 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
-
 export const UserInfo = createSlice({
   name: "user",
   initialState: {
     UserInfo: {},
+    cart: {},
     loading: false,
     error: false,
   },
@@ -18,9 +18,14 @@ export const UserInfo = createSlice({
       state.UserInfo = action.payload;
     },
 
+    addToCart: (state, action) => {
+      state.cart = action.payload;
+    },
+
     LogOutUser: (state) => {
       state.UserInfo = {};
     },
+
     ApiRequestFailed: (state) => {
       state.loading = false;
       state.error = true;
@@ -28,7 +33,12 @@ export const UserInfo = createSlice({
   },
 });
 
-export const { setUserData, ApiRequestFailed, MakingApiRequest, LogOutUser } =
-  UserInfo.actions;
+export const {
+  setUserData,
+  ApiRequestFailed,
+  MakingApiRequest,
+  LogOutUser,
+  addToCart,
+} = UserInfo.actions;
 
 export default UserInfo.reducer;

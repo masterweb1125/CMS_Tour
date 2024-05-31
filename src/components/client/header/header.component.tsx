@@ -8,19 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserInfo, setUserData } from "@/src/redux/features/User.Slice";
 import { useRouter } from "next/navigation";
 import Client_HeaderNavigation from "./header-navigation.component";
-
+import { CiShoppingCart } from "react-icons/ci";
 type Props = {
   text?: string;
 };
 
 const Client_Header = (props: Props) => {
   const user: any = useSelector((root: any) => root?.User?.UserInfo);
+  const cart: any = useSelector((root: any) => root?.User?.cart);
   const dispatch = useDispatch();
   const navigate = useRouter();
 
+
   const LogOut = () => {
-    dispatch(setUserData(""));
-    
+    dispatch(setUserData({}));
   };
 
   return (
@@ -40,13 +41,26 @@ const Client_Header = (props: Props) => {
         <div className="account-actions flex flex-row gap-2">
           {user?.name ? (
             <div
-              className={`btn ${
+              className={`flex gap-3 items-center ${
                 props.text ? "text-black" : "text-white"
               } font-semibold bg-transparent hover:cursor-pointer px-4 py-2 rounded-md min-w-20 text-center`}
             >
-              <Link href="/auth/login" onClick={LogOut}>
+              <button onClick={LogOut}>
                 Logout
-              </Link>
+              </button>
+              {/* add-to-cart */}
+             
+                <Link href="/book-now" className="addToCard relative">
+                  <p className="text-[1.5rem] font-bold">
+                    <CiShoppingCart />
+                  </p>
+                {/* badge */}
+                 {cart?.tourId && (
+                  <div className="badge flex justify-center items-center text-white absolute top-[-2px] right-[-4px] w-3 h-3 rounded-full bg-red-500 text-[0.7rem] animate-pulse">
+                    {/* {cart?.length} */}
+                  </div>
+              )}
+                </Link>
             </div>
           ) : (
             <>

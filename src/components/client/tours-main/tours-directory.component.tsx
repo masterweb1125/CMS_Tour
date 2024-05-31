@@ -25,7 +25,6 @@ const Client_ToursDirectory = ({
   const dispatch = useDispatch();
   // Extract filter criteria
   const { destination, category, price } = filterData;
-  console.log("filtered data: ", filterData)
   // Apply filters
   let filteredTours = Tours;
 
@@ -53,7 +52,6 @@ const Client_ToursDirectory = ({
   const FetchingTours = async () => {
     try {
       const res = await API_DOMAIN.get("/api/v1/tour");
-      console.log("res: ", res.data)
       setTours(res?.data?.data)
       dispatch(addToursData(res?.data?.data))
     } catch (error) {
@@ -64,7 +62,6 @@ const Client_ToursDirectory = ({
 
   useEffect(() => {
     FetchingTours();
-    console.log("tour data in useState: ", Tours)
   }, [])
   
   return (

@@ -5,6 +5,8 @@ import BlogPostCard from "../../supplierdashboard/resourceandcenter/BlogPostCard
 import Client_Container from "../container/container.component";
 import toast from "react-hot-toast";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
+import { UseDispatch, useDispatch } from "react-redux";
+import { addBlogs } from "@/src/redux/features/general.slice";
 
 type BlogsProps = {
   blogs: Array<Blogs> | undefined;
@@ -19,12 +21,14 @@ const Client_BlogTourDirectory = ({
 }: BlogsProps) => {
 
   const [Blogs, setBlogs] = useState([])
+  const dispatch = useDispatch();
 
   const FetchingBlogs = async () => {
    try {
      const res = await API_DOMAIN.get("api/v1/blog");
-     console.log("res.blog: ", res.data)
-     setBlogs(res?.data?.data)
+     setBlogs(res?.data?.data);
+     dispatch(addBlogs(res?.data?.data))
+     dispatch
    } catch (error) {
      console.log("fetching blogs failed: ", error);
      toast.error("Retrieving blogs failed", {

@@ -7,14 +7,16 @@ import { BlogDetailsImagePost } from "@/src/utils/images/images";
 import { Container, Grid } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 let list = ["Home", "Blogs", "Travel Instructions"];
 
 const Client_TourDetail = ({ params }: any) => {
+
   const blogId = params.blogdetails;
   const [Blog, setBlog] = useState(blogId);
- console.log("paramsId: ", blogId)
 
+  const Blogs: any = useSelector((root: any) => root?.general?.blogs);
   // below is the function used for to fetch tour data
   const FetchingBlogData = async () => {
     try {
@@ -132,7 +134,7 @@ const Client_TourDetail = ({ params }: any) => {
               <h1 className="text-3xl font-semibold">Explore More</h1>
             </Grid>
 
-            {blogs.map((item, index) => (
+            {Blogs.map((item:any, index:any) => (
               <Grid item xs={12} md={3} key={index}>
                 <BlogPostCard blog={item} Index={index} key={index} />
               </Grid>

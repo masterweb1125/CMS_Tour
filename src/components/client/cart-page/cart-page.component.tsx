@@ -16,13 +16,16 @@ import toast from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "@/src/redux/features/User.Slice";
 interface CartItem {
   sku: string;
   quantity: number;
 }
 
 const style: any = { layout: "vertical" };
+
+
 // ---------- old create order ---------
 function createOrder(): Promise<string> {
   return fetch(
@@ -164,43 +167,12 @@ const faqs = [
 ];
 
 
-
-
 const CartPage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState("option1");
-  const [itemsList, setItemsList] = useState([
-    {
-      image: CartTourImage,
-      title: " Maldive Tour",
-      date: "January 24,2024",
-      duration: "05 days",
-      person: "1x Adult (12+), 1x Child (3-11)",
-      child: "02",
-      departureTime: "10:00 PM",
-      price: "8734",
-    },
-    {
-      image: CartTourImage,
-      title: " Maldive Tour",
-      date: "January 24,2024",
-      duration: "05 days",
-      person: "1x Adult (12+), 1x Child (3-11)",
-      child: "02",
-      departureTime: "10:00 PM",
-      price: "734",
-    },
-    {
-      image: CartTourImage,
-      title: " Maldive Tour",
-      date: "January 24,2024",
-      duration: "05 days",
-      person: "1x Adult (12+), 1x Child (3-11)",
-      child: "02",
-      departureTime: "10:00 PM",
-      price: "8734",
-    },
-  ]);
+  
+  const dispatch = useDispatch();
+  const cart: any = useSelector((root: any) => root?.User?.cart);
 
   const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -210,7 +182,10 @@ const CartPage = () => {
     setSelectedOption(e.target.value);
   };
 
-
+  // ------- remove item from cart ---------
+  const removeItem = () => {
+       dispatch(addToCart({}))
+  };
 
   const handlePaymentMethod = async (e: any) => {
     //  toast.success("handle payment gateway");
@@ -220,10 +195,9 @@ const CartPage = () => {
         "pk_test_51O6V53SBrvDov9Oi9N6h5QClQYWyvDv4fuwJ9d8CEI1QjxbtYICkWmCx1UhhhoTkcCQ2LkGQlPSNgQ8lvKF69sKb00Q34sn3gN"
       );
 
-      const amount = 50;
 
       const res = await API_DOMAIN.post(`/api/v1/payment/checkout`, {
-        amount: amount,
+        amount: cart?.price,
       });
 
       console.log("payment done res: ", res.data);
@@ -246,108 +220,66 @@ const CartPage = () => {
 
       <Grid container spacing={6}>
         <Grid item md={7}>
-          {!!itemsList?.length &&
-            itemsList.map((item, index) => (
-              <React.Fragment key={index}>
-                <div className="hidden md:flex justify-between pb-8 pt-8 ">
-                  <div className="tour-info flex gap-4">
-                    <Image
-                      className="w-40 h-40 object-contain rounded-xl "
-                      width={200}
-                      height={200}
-                      src={item.image}
-                      alt="tour-pic"
-                    />
-                    <div className="tour-detail-info flex-col gap-2 flex">
-                      <h6 className=" text-[#000] text-1xl font-semibold font-mont ">
-                        {item.title}
-                      </h6>
-                      <p className="text-[#000] text-xs font-medium font-mont ">
-                        Date: {item.date}
-                      </p>
-                      <p className="text-[#000] text-xs font-medium font-mont ">
-                        Duration : {item.duration}
-                      </p>
-                      <p className="text-[#000] text-xs font-medium font-mont ">
-                        Person: {item.person}
-                      </p>
-                      <p className="text-[#000] text-xs font-medium font-mont ">
-                        Child: {item.child}
-                      </p>
-
-                      <p className="text-[#000] text-xs font-medium font-mont ">
-                        Departure Time : {item.departureTime}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-between items-end">
-                    <div className="actions flex gap-4">
-                      <div className="text-xs font-mont font-normal cursor-pointer ">
-                        <ModeEditOutlinedIcon fontSize="inherit" /> Edit
-                      </div>
-                      <div className="text-xs font-mont font-normal cursor-pointer ">
-                        <DeleteOutlineRoundedIcon fontSize="inherit" /> Remove
-                      </div>
-                    </div>
-                    <div className="price ">
-                      <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                        ${item.price}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex md:hidden justify-between pt-8 ">
-                  <div className="tour-info flex gap-4">
-                    <Image
-                      className="w-30 h-30 object-contain rounded-xl "
-                      width={80}
-                      height={80}
-                      src={item.image}
-                      alt="tour-pic"
-                    />
-                    <div className="tour-detail-info flex-col gap-2 flex">
-                      <h6 className=" text-[#000] text-1xl font-semibold font-mont ">
-                        {item.title}
-                      </h6>
-                      <div className="actions flex gap-4">
-                        <div className="text-xs font-mont font-normal cursor-pointer ">
-                          <ModeEditOutlinedIcon fontSize="inherit" /> Edit
-                        </div>
-                        <div className="text-xs font-mont font-normal cursor-pointer ">
-                          <DeleteOutlineRoundedIcon fontSize="inherit" /> Remove
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="tour-detail-info flex-col gap-2 flex md:hidden my-4">
-                  <p className="text-[#000] text-xs font-medium font-mont ">
-                    Date: {item.date}
-                  </p>
-                  <p className="text-[#000] text-xs font-medium font-mont ">
-                    Duration : {item.duration}
-                  </p>
-                  <p className="text-[#000] text-xs font-medium font-mont ">
-                    Person: {item.person}
-                  </p>
-                  <p className="text-[#000] text-xs font-medium font-mont ">
-                    Child: {item.child}
-                  </p>
-
-                  <div className="flex justify-between items-center gap-2">
+          {cart?.tourId ? (
+            <React.Fragment>
+              <div className="hidden md:flex justify-between pb-8 pt-8 ">
+                <div className="tour-info flex gap-4">
+                  <Image
+                    className="w-40 h-40 object-contain rounded-xl "
+                    width={200}
+                    height={200}
+                    src={cart?.imageUrl}
+                    alt="tour-pic"
+                  />
+                  <div className="tour-detail-info flex-col gap-2 flex">
+                    <h6 className=" text-[#000] text-1xl font-semibold font-mont ">
+                      {cart?.tourName}
+                    </h6>
                     <p className="text-[#000] text-xs font-medium font-mont ">
-                      Departure Time : {item.departureTime}
+                      Date: {cart?.date}
                     </p>
-                    <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                      ${item.price}
+                    <p className="text-[#000] text-xs font-medium font-mont ">
+                      Duration : {cart?.duration}
+                    </p>
+                    <p className="text-[#000] text-xs font-medium font-mont ">
+                      Person: {cart?.person}
+                    </p>
+                    <p className="text-[#000] text-xs font-medium font-mont ">
+                      Child: {cart?.child}
+                    </p>
+
+                    <p className="text-[#000] text-xs font-medium font-mont ">
+                      Departure Time : {cart?.departTime}
                     </p>
                   </div>
                 </div>
-                <Divider />
-              </React.Fragment>
-            ))}
+                <div className="flex flex-col justify-between items-end">
+                  <div className="actions flex gap-4">
+                    <div className="text-xs font-mont font-normal cursor-pointer ">
+                      <ModeEditOutlinedIcon fontSize="inherit" /> Edit
+                    </div>
+                    <div
+                      className="text-xs font-mont font-normal cursor-pointer "
+                      onClick={removeItem}
+                    >
+                      <DeleteOutlineRoundedIcon fontSize="inherit" /> Remove
+                    </div>
+                  </div>
+                  <div className="price ">
+                    <p className="text-[#FFA500] font-mont font-semibold text-2xl">
+                      ${cart?.price}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Divider />
+            </React.Fragment>
+          ) : (
+              <div className="addItem text-[1.3rem] text-gray-400 font-bold mt-6 mb-4">
+                <h4 className="tracking-[2px]">Your Cart is an Empty!</h4>
+              </div>
+          )}
 
           <div className="font-mont mt-4 pt-10 bg-[#FBFBFB] rounded-lg p-6">
             <Grid container>
@@ -556,7 +488,7 @@ const CartPage = () => {
                 Total
               </p>
               <p className="text-[#FFA500] font-semibold text-2xl font-mont">
-                $97874
+                ${cart?.price}
               </p>
             </div>
             <p className=" text-[#323232] text-base font-medium font-mont pt-3 ">
@@ -634,13 +566,20 @@ const CartPage = () => {
               <div className="py-4">
                 <div className="total-pricing w-full justify-between flex gap-2 py-2">
                   <p className="text-2xl font-medium text-[#000]">Total</p>
-                  <p className="text-2xl font-medium text-[#000]">$97874</p>
+                  <p className="text-2xl font-medium text-[#000]">
+                    {" "}
+                    ${cart?.price}
+                  </p>
                 </div>
                 <p className="text-[#323232] font-medium text-sm">
                   By proceeding to payment, you agree to our Terms &
                   conditions - Privacy policy
                 </p>
-                <button onClick={handlePaymentMethod} className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4">
+                <button
+                  onClick={handlePaymentMethod}
+                  className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4"
+                  disabled={cart?.price ? false : true}
+                >
                   Pay Now
                 </button>
               </div>

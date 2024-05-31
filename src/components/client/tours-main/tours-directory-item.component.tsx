@@ -96,7 +96,7 @@ const Client_ToursDirectoryItem = ({ tour, index }: any) => {
         </Link>
       </div>
 
-      <FilterModal open={open} handleClose={handleClose} />
+      <FilterModal open={open} tourDetail={tour} handleClose={handleClose} />
     </div>
   );
 };

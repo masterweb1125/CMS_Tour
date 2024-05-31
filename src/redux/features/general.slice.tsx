@@ -6,6 +6,7 @@ export const GeneralData = createSlice({
   initialState: {
     filter: {},
     toursData: [],
+    blogs: [],
     loading: false,
     error: false,
   },
@@ -19,13 +20,16 @@ export const GeneralData = createSlice({
 
     addToursData: (state, action) => {
       state.toursData = action.payload;
-      console.log("tour data payload: ", action.payload)
-    }
+    },
+
+    addBlogs: (state, action) => {
+      state.blogs = action.payload;
+    },
 
     
   },
 });
 
-export const { Filters, addToursData } = GeneralData.actions;
+export const { Filters, addToursData, addBlogs } = GeneralData.actions;
 
 export default GeneralData.reducer;

@@ -71,14 +71,16 @@ const Client_MoreTours = ({  directoryTitle, subPara }: any) => {
     };
 
 
-  const filteredTours = toursData ? toursData.filter(
-      (tour: any) =>
-              tour?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) &&
-              (selectedCategory === "" || tour?.category === selectedCategory) &&
-              (priceRange.min === 0 || priceRange.min <= tour?.tourPrice) &&
-              (priceRange.max === 0 || priceRange.max >= tour?.tourPrice)
-          )
-        : [];
+  const filteredTours = toursData
+    ? toursData.filter(
+        (tour: any) =>
+          tour?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase()) &&
+          (selectedCategory === "" ||
+            tour.category?.toLowerCase() === selectedCategory?.toLowerCase()) &&
+          (priceRange.min === 0 || priceRange.min <= tour?.tourPrice) &&
+          (priceRange.max === 0 || priceRange.max >= tour?.tourPrice)
+      )
+    : [];
 
     const indexOfLastTour = currentPage * toursPerPage;
     const indexOfFirstTour = indexOfLastTour - toursPerPage;
