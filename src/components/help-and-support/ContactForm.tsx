@@ -7,6 +7,10 @@ import {
   TropicaIcon,
   LocationIcon,
 } from "@/src/utils/images/images";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { API_DOMAIN } from "@/src/redux/service/APIs";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const icons = [
   {
@@ -77,6 +81,68 @@ const aboutOptions = [
 ];
 
 export default function ContactForm() {
+  const [loading, setloading] = useState(false);
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: ""
+  });
+
+  const handleChange = (e:any) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value
+    });
+  };
+
+  const handleSendMsgQuery = async (e: any) => {
+    e.preventDefault();
+    if (!data?.firstName || !data?.lastName || !data?.email || !data?.message) {
+       toast.error("Form fields shouldn't empty", {
+         style: { width: "auto", height: "auto" },
+         duration: 3000,
+       });
+      
+      return;
+    }
+    console.log("contact us form is: ", data);
+    
+    try {
+    setloading(true);
+
+      const res = await API_DOMAIN.post("api/v1/tour/contactUs", {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        senderEmail: data.email,
+        message: data.message
+      });
+
+      setData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });
+   toast.success("User Query sent successfully", {
+     style: { width: "auto", height: "auto" },
+     duration: 3000,
+   });
+    setloading(false);
+      
+} catch (error) {
+      console.log("sending query failed: ", error);
+       toast.error("Sending an user query failed", {
+         style: { width: "auto", height: "auto" },
+         duration: 3000,
+       });
+    setloading(false);
+      
+}
+
+  };
+
   return (
     <div className="my-16 max-w-[1220px] mx-auto px-2">
       <div className="flex items-start flex-col md:flex-row">
@@ -117,7 +183,7 @@ export default function ContactForm() {
 
         <form
           className="md:w-1/2 space-y-8 max-w-5xl px-4 py-2 sm:px-6 lg:px-8 w-full"
-          // onSubmit={() => {}}
+          onSubmit={handleSendMsgQuery}
         >
           <div className="space-y-8 divide-y divide-gray-200 w-full">
             <div className="">
@@ -142,7 +208,9 @@ export default function ContactForm() {
                       type="text"
                       id="first-name"
                       placeholder="First name"
-                      name="first-name"
+                      name="firstName"
+                      value={data.firstName}
+                      onChange={handleChange}
                       className="shadow-sm focus:ring-sky-500 focus:border-sky-500 block w-first sm:text-sm border-gray-200 border-2 rounded-md p-3 w-full"
                     />
                   </div>
@@ -160,7 +228,9 @@ export default function ContactForm() {
                       type="text"
                       id="last-name"
                       placeholder="Last name"
-                      name="last-name"
+                      name="lastName"
+                      value={data.lastName}
+                      onChange={handleChange}
                       className="shadow-sm focus:ring-sky-500 focus:border-sky-500 block w-last sm:text-sm border-gray-200 border-2 rounded-md p-3 w-full"
                     />
                   </div>
@@ -180,6 +250,8 @@ export default function ContactForm() {
                       type="email"
                       placeholder="Email address"
                       autoComplete="email"
+                      value={data.email}
+                      onChange={handleChange}
                       className="shadow-sm focus:ring-sky-500 focus:border-sky-500 block w-full sm:text-sm border-gray-200 border-2 rounded-md p-3"
                     />
                   </div>
@@ -198,6 +270,8 @@ export default function ContactForm() {
                       name="message"
                       placeholder="Leave us a message"
                       rows={3}
+                      value={data.message}
+                      onChange={handleChange}
                       className="shadow-sm focus:ring-sky-500 focus:border-sky-500 block w-full sm:text-sm border-gray-200 border-2 rounded-md p-3"
                     />
                   </div>
@@ -232,11 +306,16 @@ export default function ContactForm() {
                 type="submit"
                 className={`w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-semibold rounded-md ${" text-white bg-[#FFA500] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"}`}
               >
-                Send message
+                {loading ? (
+                  <div className="px-12  loading animate-spin text-[1.5rem">
+                    <AiOutlineLoading3Quarters />
+                  </div>
+                ) : "Send message"}
               </button>
             </div>
           </div>
         </form>
+
       </div>
     </div>
   );

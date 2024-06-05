@@ -119,6 +119,7 @@ const UserProfile = () => {
                     <TextField
                       className="w-full"
                       placeholder="Enter Firstname"
+                      defaultValue={user?.name ? user.name : ""}
                       size="small"
                       InputProps={{
                         className: InputClasses,
@@ -133,6 +134,7 @@ const UserProfile = () => {
                       className="w-full"
                       placeholder="Enter Lastname"
                       size="small"
+                      defaultValue={user?.last_name ? user.last_name : ""}
                       InputProps={{
                         className: InputClasses,
                       }}
@@ -144,6 +146,7 @@ const UserProfile = () => {
                     </label>
                     <TextField
                       className="w-full"
+                      defaultValue={user?.email ? user.email : "example@example.com"}
                       placeholder="you@company.com"
                       size="small"
                       InputProps={{
