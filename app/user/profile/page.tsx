@@ -26,7 +26,7 @@ const UserProfile = () => {
               <h1 className="font-semibold text-3xl">
                 Hello Noraiz Shahid Raja
               </h1>
-              <p className="font-medium">miyoshiyarou@gmail.com</p>
+              <p className="font-medium">noriazraja2121@gmail.com</p>
               <Link href="" className="text-[#FFA500] font-normal">
                 Edit Profile
               </Link>

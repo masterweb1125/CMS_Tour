@@ -66,7 +66,7 @@ function DataGridTabs({ title }: { title: string }) {
                 </tr>
                 <tr className="text-sm">
                   <td className="font-semibold">Email Address:  </td>
-                  <td>miyoshiyarou@gmail.com</td>
+                  <td>noraizraja2121@gmail.com</td>
                 </tr>
                 <tr className="text-sm">
                   <td className="font-semibold">last Name: </td>
