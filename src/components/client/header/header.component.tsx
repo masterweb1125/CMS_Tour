@@ -76,7 +76,7 @@ const Client_Header = (props: Props) => {
                   props.text ? "text-black" : "text-black"
                 } text-base font-semibold leading-6 bg-white hover:cursor-pointer px-4 py-2 rounded-md min-w-22 text-center`}
               >
-                <Link href={"/auth/register"}>Register</Link>
+                <Link href={"/auth/user/register"}>Register</Link>
               </div>
             </>
           )}
