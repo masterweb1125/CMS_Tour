@@ -17,9 +17,7 @@ import { tours } from "@/src/utils/data/tours";
 import Client_MakeUsUnique from "@/src/components/client/make-us-unique/make-us-unique";
 import Client_BlogTourDirectory from "@/src/components/client/blog-main/blog-directory.component";
 import { blogs } from "@/src/utils/data/blogs";
-import TourCardView from "@/src/components/dashboard/bookingcomponents/TourCardView";
 import Client_CustomerSupport from "@/src/components/client/customer-support/customer-support.component";
-import { Grid } from "@mui/material";
 
 const ClientPage = () => {
   return (
@@ -40,14 +38,6 @@ const ClientPage = () => {
         subPara="Embark on a journey to unforgettable destinations, where breathtaking landscapes meet vibrant cultures. Your adventure of a lifetime starts right here!"
         tours={tours}
       />
-
-      <Grid container mt={3} spacing={3}  >
-          {tours.map((tour, index) => (
-            <Grid container item xs={12} md={4} key={index} direction="column" alignItems="center">
-              <TourCardView tour={tour} />
-            </Grid>
-          ))}
-        </Grid>
 
       <Client_AgentExploreAction
         actionImage={FemaleAgent.src}

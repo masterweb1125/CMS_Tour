@@ -25,7 +25,7 @@ const Client_ToursDirectoryItem = ({ tour, index }: any) => {
     <div className="card tour-card p-4 flex flex-col rounded-2xl gap-6  bg-white shadow-md">
       <div
         className="card-media relative cover bg-center h-56 w-full rounded-lg"
-        style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/${tour?.imageUrl[0]})` }}
+        style={{ backgroundImage: `url(${tour?.imageUrl})` }}
       >
         <div className="favorite-container bg-white absolute top-3 right-3 rounded-lg text-black">
           <IconButton>

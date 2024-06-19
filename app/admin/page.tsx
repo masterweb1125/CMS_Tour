@@ -1,8 +1,10 @@
+import TourBookindCalender from "@/src/components/admin/tour_booking_calender/TourBookingCalender";
 import CardComponent from "@/src/components/dashboard/dashboardComponents/Card";
 import DashboardHeader from "@/src/components/dashboard/dashboardComponents/DashboardHeader";
 import { Grid } from "@mui/material";
 
 function Dashboard() {
+  const currentDate = '2018-07-17';
   return (
     <div>
       <DashboardHeader name="Jhon Christopher" />
@@ -34,6 +36,8 @@ function Dashboard() {
       </Grid>
 
       <Grid container spacing={3} mt={2}></Grid>
+      <TourBookindCalender/>
+     
     </div>
   );
 }

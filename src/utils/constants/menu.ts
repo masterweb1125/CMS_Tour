@@ -4,12 +4,12 @@ export const mainMenu = [
     link: "/",
   },
   {
-    text: "Blog",
-    link: "/user/blogs",
+    text: "Destinations",
+    link: "/explore-more",
   },
   {
-    text: "Tours",
-    link: "/explore-more",
+    text: "Blog",
+    link: "/user/blogs",
   },
   // {
   //   text: "Tour types",

@@ -25,26 +25,7 @@ const itemsList = [
   "Work",
 ];
 
-interface FormData {
-  name: string;
-  category: string;
-  location: string;
-  destination: string;
-  language: string;
-  tourPrice: string;
-  priceAdult: string;
-  priceChild: string;
-  priceInfant: string;
-  startDate: string;
-  endDate: string;
-  singleDayTour: string;
-  tourClosingDate: string;
-  description: string;
-  instruction: string;
-  videoUrl: string;
-}
-
-const initialState: FormData = {
+const initialState = {
   name: "",
   category: "",
   location: "",
@@ -59,54 +40,93 @@ const initialState: FormData = {
   singleDayTour: "",
   tourClosingDate: "",
   description: "",
-  instruction: "",
+  imageUrl: "",
   videoUrl: "",
+  instruction: "",
 };
 
 function Booking() {
-  const [whatIncludes, setWhatIncludes] = useState<string[]>([]);
-  const [whatNotIncludes, setWhatNotIncludes] = useState<string[]>([]);
-  const [formData, setFormData] = useState<FormData>(initialState);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [whatIncludes, setWhatIncludes] = useState<any>([]);
+  const [whatNotIncludes, setWhatNotIncludes] = useState<any>([]);
+  const [formData, setFormData] = useState(initialState);
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
+  const [loading, setloading] = useState(false);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (event: any) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const handleFileChange = (e: any) => {
+    const file = e.target.files[0];
+    console.log("file uploaded: ", file);
+    if (file) {
+      setUploadedFile(file);
+    }
+  };
+  // uploading file to the cloudinary
+  const uploadingFileCloudinary = async () => {
+    try {
+      if (uploadedFile != null) {
+        const data = new FormData();
+        data.append("file", uploadedFile);
+        data.append("upload_preset", "uploads");
+        data.append("cloud_name", "bangash-cloud");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    console.log("files uploaded: ", files);
-    setUploadedFiles(files);
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/bangash-cloud/raw/upload",
+          data
+        );
+        var { url } = uploadRes.data;
+        return url;
+      }
+    } catch (error) {
+      console.log(
+        "an error occured while uploading file to the cloudinary: ",
+        error
+      );
+      toast.error("An error occured while uploading file to the cloud");
+      return null;
+    }
   };
 
+  // submit form data
   const CreateTour = async () => {
-    setLoading(true);
+    setloading(true);
     try {
-      const data = new FormData();
-      uploadedFiles.forEach(file => {
-        data.append('images', file);
-      });
+      console.log("uplodaed file : ", uploadedFile?.name);
+      let cloudinaryURL = "";
+      if (uploadedFile?.name) {
+        cloudinaryURL = await uploadingFileCloudinary();
+      }
 
-      (Object.keys(formData) as (keyof FormData)[]).forEach(key => {
-        data.append(key, formData[key]);
-      });
+      console.log("cloudinary uploaded media URL: ", cloudinaryURL);
+      const tourData = {
+        name: formData.name,
+        category: formData.category,
+        location: formData.location,
+        destination: formData.destination,
+        language: formData.language,
+        tourPrice: formData.tourPrice,
+        priceAdult: formData.priceAdult,
+        priceChild: formData.priceChild,
+        priceInfant: formData.priceInfant,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        singleDayTour: formData.singleDayTour,
+        tourClosingDate: formData.tourClosingDate,
+        description: formData.description,
+        imageUrl: cloudinaryURL,
+        videoUrl: formData.videoUrl,
+        instruction: formData.instruction,
+        whatIncludes: whatIncludes,
+        whatNotIncludes: whatNotIncludes,
+      };
+      console.log("tour data: ", tourData);
 
-      data.append("whatIncludes", JSON.stringify(whatIncludes));
-      data.append("whatNotIncludes", JSON.stringify(whatNotIncludes));
-
-      const res = await API_DOMAIN.post("/api/v1/tour/create", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
+      const res = await API_DOMAIN.post("/api/v1/tour/create", tourData);
       console.log("res is: ", res.data);
-      setLoading(false);
+      setloading(false);
 
       toast.success("Tour created successfully", {
         style: { width: "auto", height: "auto" },
@@ -114,8 +134,8 @@ function Booking() {
       });
     } catch (error) {
       console.log("error: ", error);
-      setLoading(false);
-      toast.error("Creating tour failed!", {
+      setloading(false);
+      toast.error("creating tour failed!", {
         style: { width: "auto", height: "auto" },
         duration: 3000,
       });
@@ -183,7 +203,7 @@ function Booking() {
             </label>
             <TextField
               className="w-full"
-              placeholder="Enter Category"
+              placeholder="Enter Destination"
               name="category"
               value={formData.category}
               onChange={handleChange}
@@ -191,28 +211,28 @@ function Booking() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
                   </InputAdornment>
                 ),
                 className: InputClasses,
@@ -226,7 +246,7 @@ function Booking() {
             </label>
             <TextField
               className="w-full"
-              placeholder="Enter Location"
+              placeholder="Enter Destination"
               name="location"
               value={formData.location}
               onChange={handleChange}
@@ -234,29 +254,29 @@ function Booking() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
-                    </InputAdornment>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </InputAdornment>
                 ),
                 className: InputClasses,
               }}
@@ -277,28 +297,28 @@ function Booking() {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_953_5705)">
+                        <path
+                          d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                          stroke="#98A2B3"
+                          strokeWidth="1.33333"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_953_5705">
+                          <rect width="16" height="16" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
                   </InputAdornment>
                 ),
                 className: InputClasses,
@@ -329,7 +349,7 @@ function Booking() {
             </label>
             <TextField
               className="w-full font-mont"
-              placeholder="Enter Tour Price"
+              placeholder="Enter Language"
               name="tourPrice"
               value={formData.tourPrice}
               onChange={handleChange}
@@ -338,29 +358,29 @@ function Booking() {
                 className: InputClasses,
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
-                    </InputAdornment>
+                    <svg
+                      width="12"
+                      height="16"
+                      viewBox="0 0 12 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.99935 8.66634C7.10392 8.66634 7.99935 7.77091 7.99935 6.66634C7.99935 5.56177 7.10392 4.66634 5.99935 4.66634C4.89478 4.66634 3.99935 5.56177 3.99935 6.66634C3.99935 7.77091 4.89478 8.66634 5.99935 8.66634Z"
+                        stroke="#98A2B3"
+                        strokeWidth="1.33333"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M5.99935 14.6663C8.66602 11.9997 11.3327 9.61186 11.3327 6.66634C11.3327 3.72082 8.94487 1.33301 5.99935 1.33301C3.05383 1.33301 0.666016 3.72082 0.666016 6.66634C0.666016 9.61186 3.33268 11.9997 5.99935 14.6663Z"
+                        stroke="#98A2B3"
+                        strokeWidth="1.33333"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -381,29 +401,21 @@ function Booking() {
                 className: InputClasses,
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
-                    </InputAdornment>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.66732 9.77745C5.66732 10.6366 6.36376 11.333 7.22287 11.333H8.66732C9.58779 11.333 10.334 10.5868 10.334 9.66634C10.334 8.74587 9.58779 7.99967 8.66732 7.99967H7.33398C6.41351 7.99967 5.66732 7.25348 5.66732 6.33301C5.66732 5.41253 6.41351 4.66634 7.33398 4.66634H8.77843C9.63754 4.66634 10.334 5.36279 10.334 6.2219M8.00065 3.66634V4.66634M8.00065 11.333V12.333M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                        stroke="#98A2B3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -424,29 +436,21 @@ function Booking() {
                 className: InputClasses,
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
-                    </InputAdornment>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.66732 9.77745C5.66732 10.6366 6.36376 11.333 7.22287 11.333H8.66732C9.58779 11.333 10.334 10.5868 10.334 9.66634C10.334 8.74587 9.58779 7.99967 8.66732 7.99967H7.33398C6.41351 7.99967 5.66732 7.25348 5.66732 6.33301C5.66732 5.41253 6.41351 4.66634 7.33398 4.66634H8.77843C9.63754 4.66634 10.334 5.36279 10.334 6.2219M8.00065 3.66634V4.66634M8.00065 11.333V12.333M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                        stroke="#98A2B3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -467,29 +471,21 @@ function Booking() {
                 className: InputClasses,
                 endAdornment: (
                   <InputAdornment position="start">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_953_5705)">
-                          <path
-                            d="M6.06065 5.99967C6.21739 5.55412 6.52675 5.17841 6.93395 4.9391C7.34116 4.69978 7.81991 4.6123 8.28544 4.69215C8.75096 4.772 9.1732 5.01402 9.47737 5.37536C9.78154 5.7367 9.94802 6.19402 9.94732 6.66634C9.94732 7.99967 7.94732 8.66634 7.94732 8.66634M8.00065 11.333H8.00732M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
-                            stroke="#98A2B3"
-                            strokeWidth="1.33333"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_953_5705">
-                            <rect width="16" height="16" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>                  
-                    </InputAdornment>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.66732 9.77745C5.66732 10.6366 6.36376 11.333 7.22287 11.333H8.66732C9.58779 11.333 10.334 10.5868 10.334 9.66634C10.334 8.74587 9.58779 7.99967 8.66732 7.99967H7.33398C6.41351 7.99967 5.66732 7.25348 5.66732 6.33301C5.66732 5.41253 6.41351 4.66634 7.33398 4.66634H8.77843C9.63754 4.66634 10.334 5.36279 10.334 6.2219M8.00065 3.66634V4.66634M8.00065 11.333V12.333M14.6673 7.99967C14.6673 11.6816 11.6826 14.6663 8.00065 14.6663C4.31875 14.6663 1.33398 11.6816 1.33398 7.99967C1.33398 4.31778 4.31875 1.33301 8.00065 1.33301C11.6826 1.33301 14.6673 4.31778 14.6673 7.99967Z"
+                        stroke="#98A2B3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </InputAdornment>
                 ),
               }}
             />
@@ -536,10 +532,25 @@ function Booking() {
             <TextField
               type="time"
               className="w-full"
-              placeholder="Enter Single Day Tour Time"
+              placeholder="Enter Destination"
               name="singleDayTour"
               value={formData.singleDayTour}
               onChange={handleChange}
+              size="small"
+              InputProps={{
+                className: InputClasses,
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <label className="text-[#344054] text-sm font-medium">
+              Single Day Tour
+            </label>
+            <TextField
+              type="time"
+              className="w-full"
+              placeholder="Enter Destination"
               size="small"
               InputProps={{
                 className: InputClasses,
@@ -554,13 +565,39 @@ function Booking() {
             <TextField
               type="date"
               className="w-full font-mont"
-              placeholder="Enter Tour Closing Date"
+              placeholder="Enter Language"
               name="tourClosingDate"
               value={formData.tourClosingDate}
               onChange={handleChange}
               size="small"
               InputProps={{
                 className: InputClasses,
+                // endAdornment: (
+                //   <InputAdornment position="start">
+                //     <svg
+                //       width="12"
+                //       height="16"
+                //       viewBox="0 0 12 16"
+                //       fill="none"
+                //       xmlns="http://www.w3.org/2000/svg"
+                //     >
+                //       <path
+                //         d="M5.99935 8.66634C7.10392 8.66634 7.99935 7.77091 7.99935 6.66634C7.99935 5.56177 7.10392 4.66634 5.99935 4.66634C4.89478 4.66634 3.99935 5.56177 3.99935 6.66634C3.99935 7.77091 4.89478 8.66634 5.99935 8.66634Z"
+                //         stroke="#98A2B3"
+                //         strokeWidth="1.33333"
+                //         strokeLinecap="round"
+                //         strokeLinejoin="round"
+                //       />
+                //       <path
+                //         d="M5.99935 14.6663C8.66602 11.9997 11.3327 9.61186 11.3327 6.66634C11.3327 3.72082 8.94487 1.33301 5.99935 1.33301C3.05383 1.33301 0.666016 3.72082 0.666016 6.66634C0.666016 9.61186 3.33268 11.9997 5.99935 14.6663Z"
+                //         stroke="#98A2B3"
+                //         strokeWidth="1.33333"
+                //         strokeLinecap="round"
+                //         strokeLinejoin="round"
+                //       />
+                //     </svg>
+                //   </InputAdornment>
+                // ),
               }}
             />
           </Grid>
@@ -590,7 +627,7 @@ function Booking() {
 
           <Grid item xs={12} md={6}>
             <label className="text-[#344054] text-sm font-medium">
-              Upload Images <span className="text-red-500">*</span>
+              Upload Image <span className="text-red-500">*</span>
             </label>
             <br />
             <TextField
@@ -600,7 +637,6 @@ function Booking() {
               className="w-full"
               InputProps={{
                 className: InputClasses,
-                inputProps: { multiple: true }
               }}
             />
           </Grid>
@@ -634,7 +670,7 @@ function Booking() {
 
           <Grid item xs={12} md={12}>
             <label className="text-[#344054] text-sm font-medium">
-              Things Included <span className="text-red-500">*</span>
+              Thinks Included <span className="text-red-500">*</span>
             </label>
 
             <div className="w-full border-2 rounded-lg p-2 text-sm h-24 overflow-y-scroll flex gap-2 flex-wrap">
@@ -706,7 +742,7 @@ function Booking() {
 
           <Grid item xs={12} md={12}>
             <label className="text-[#344054] text-sm font-medium">
-              Things Not Included <span className="text-red-500">*</span>
+              Thinks Not Included <span className="text-red-500">*</span>
             </label>
 
             <div className="w-full border-2 rounded-lg p-2 text-sm h-24 overflow-y-scroll flex gap-2 flex-wrap">
@@ -783,7 +819,7 @@ function Booking() {
             <TextareaAutosize
               className="w-full border-2 rounded-lg p-2 text-sm"
               style={{ height: "130px" }}
-              placeholder="Enter Instructions"
+              placeholder="Enter Per Child Price"
               name="instruction"
               value={formData.instruction}
               onChange={handleChange}
@@ -799,31 +835,32 @@ function Booking() {
                 className="bg-[#FFA500] text-white font-mont text-sm font-medium px-4 py-2 rounded-md flex gap-1 items-center"
                 onClick={CreateTour}
               >
-                {loading ? (
-                  <div className="px-12 loading animate-spin text-[1.5rem] text-white">
+                {loading ?  (
+                  <div className="px-12  loading animate-spin text-[1.5rem] text-white">
                     <AiOutlineLoading3Quarters />
                   </div>
                 ) : (
-                  <>
+                    <>
                     <div>Upload Tour</div>
-                    <div>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 10 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M1.66732 6.76759C1.16482 6.43123 0.833984 5.85842 0.833984 5.20833C0.833984 4.23185 1.58045 3.42971 2.53388 3.3414C2.72891 2.15505 3.75909 1.25 5.00065 1.25C6.24222 1.25 7.27239 2.15505 7.46743 3.3414C8.42086 3.42971 9.16732 4.23185 9.16732 5.20833C9.16732 5.85842 8.83648 6.43123 8.33398 6.76759M3.33398 6.66667L5.00065 5M5.00065 5L6.66732 6.66667M5.00065 5V8.75"
-                          stroke="white"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                  </>
+                <div>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.66732 6.76759C1.16482 6.43123 0.833984 5.85842 0.833984 5.20833C0.833984 4.23185 1.58045 3.42971 2.53388 3.3414C2.72891 2.15505 3.75909 1.25 5.00065 1.25C6.24222 1.25 7.27239 2.15505 7.46743 3.3414C8.42086 3.42971 9.16732 4.23185 9.16732 5.20833C9.16732 5.85842 8.83648 6.43123 8.33398 6.76759M3.33398 6.66667L5.00065 5M5.00065 5L6.66732 6.66667M5.00065 5V8.75"
+                      stroke="white"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                      </div>
+                      </>
                 )}
+                
               </button>
             </div>
           </Grid>

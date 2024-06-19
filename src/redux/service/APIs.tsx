@@ -2,7 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setUserData } from "../features/User.Slice";
 
-export const BASE_API: any = "http://localhost:8080";
+export const BASE_API: any = "http://localhost:5000";
 export const API_DOMAIN = axios.create({ baseURL: BASE_API });
 
 export const EmailVerification = async (

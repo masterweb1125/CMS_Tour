@@ -192,7 +192,7 @@ const CartPage = () => {
 
     try {
       const stripe = await loadStripe(
-        "pk_test_51O6V53SBrvDov9Oi9N6h5QClQYWyvDv4fuwJ9d8CEI1QjxbtYICkWmCx1UhhhoTkcCQ2LkGQlPSNgQ8lvKF69sKb00Q34sn3gN"
+        "pk_test_51Nl9FzEIX222al03QlMhPLYtVp3dZMKb03KmngWUNT4ABfoDlCgP1rDQF8qgKD2MnxYgK2uq0kNMiVw6LxuznnSy00yaKxaK9w"
       );
 
 

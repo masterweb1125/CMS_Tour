@@ -68,7 +68,7 @@ useEffect(() => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center mb-10 md:mb-16 lg:mb-20">
-        {blogs?.map((blogItem, index) => {
+        {Blogs?.map((blogItem, index) => {
           return <BlogPostCard key={index} Index={index} blog={blogItem} />;
         })}
       </div>
