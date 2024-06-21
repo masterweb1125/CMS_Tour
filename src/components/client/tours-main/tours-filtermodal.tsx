@@ -123,6 +123,12 @@ export default function FilterModal({
 
     handleClose();
   };
+  console.log('tour',tourDetail)
+  const tourStartDate = dayjs(tourDetail.startDate).toDate();
+const tourEndDate = dayjs(tourDetail.endDate).toDate();
+  const disableDate = (date) => {
+    return !(date >= tourStartDate  && date <= tourEndDate);
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -204,6 +210,7 @@ export default function FilterModal({
                   slotProps={{
                     textField: { size: "small" },
                   }}
+                  shouldDisableDate={disableDate}
                 />
               </LocalizationProvider>
             </div>

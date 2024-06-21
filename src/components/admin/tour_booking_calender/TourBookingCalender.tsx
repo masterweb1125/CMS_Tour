@@ -70,7 +70,7 @@ const Demo = () => {
 
   return (
     <Paper style={{margin:'0 0 30px 0'}}>
-      <Scheduler data={data} height={800}>
+      <Scheduler  data={data} height={800}>
         <ViewState currentDate={currentDate} />
         <EditingState onCommitChanges={commitChanges} />
         <WeekView startDayHour={9} endDayHour={19} />

@@ -5,7 +5,7 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import { Divider, Grid } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PayPalScriptProvider,
   PayPalButtons,
@@ -24,7 +24,6 @@ interface CartItem {
 }
 
 const style: any = { layout: "vertical" };
-
 
 // ---------- old create order ---------
 function createOrder(): Promise<string> {
@@ -51,58 +50,6 @@ function createOrder(): Promise<string> {
     });
 }
 
-
-// ----------------- new one -----------------
-
-// function createOrder(): Promise<string> {
-//   // Send the amount along with the order creation request
-//   return fetch("https://api.paypal.com/v2/checkout/orders", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer YOUR_PAYPAL_ACCESS_TOKEN`,
-//     },
-//     body: JSON.stringify({
-//       intent: "CAPTURE",
-//       purchase_units: [
-//         {
-//           amount: {
-//             currency_code: "USD",
-//             value: "20.00", // Explicitly set the amount to $20.00
-//           },
-//         },
-//       ],
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((order: { id: string }) => {
-//       return order.id;
-//     });
-// }
-
-
-
-
-// ---------- old one onApprove function ------
-// function onApprove(data: { orderID: string }): Promise<void> {
-//   return fetch(
-//     "https://react-paypal-js-storybook.fly.dev/api/paypal/capture-order",
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         orderID: data.orderID,
-//       }),
-//     }
-//   )
-//     .then((response) => response.json())
-//     .then((orderData: any) => {
-//       // Your code here after capture the order
-//     });
-// }
-
 // ----------- new one onApprove func-----------
 function onApprove(data: { orderID: string }): Promise<void> {
   console.log("data in the onApprove function: ", data);
@@ -110,9 +57,6 @@ function onApprove(data: { orderID: string }): Promise<void> {
   // Log the successful transaction response
   return Promise.resolve(console.log("Transaction completed successfully"));
 }
-
-
-
 
 const ButtonWrapper: React.FC<{ showSpinner: boolean }> = ({ showSpinner }) => {
   const [{ isPending }] = usePayPalScriptReducer();
@@ -166,13 +110,15 @@ const faqs = [
   },
 ];
 
-
 const CartPage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState("option1");
-  
+  const [createbookingstatus, setcreatebookingstatus] = useState(false);
   const dispatch = useDispatch();
   const cart: any = useSelector((root: any) => root?.User?.cart);
+  const User: any = useSelector((root: any) => root.User.UserInfo);
+  // console.log("User :", User);
+  console.log("Cart :", cart);
 
   const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -184,34 +130,96 @@ const CartPage = () => {
 
   // ------- remove item from cart ---------
   const removeItem = () => {
-       dispatch(addToCart({}))
+    dispatch(addToCart({}));
   };
 
   const handlePaymentMethod = async (e: any) => {
-    //  toast.success("handle payment gateway");
+    toast.success("handle payment gateway");
 
     try {
       const stripe = await loadStripe(
         "pk_test_51Nl9FzEIX222al03QlMhPLYtVp3dZMKb03KmngWUNT4ABfoDlCgP1rDQF8qgKD2MnxYgK2uq0kNMiVw6LxuznnSy00yaKxaK9w"
       );
 
-
       const res = await API_DOMAIN.post(`/api/v1/payment/checkout`, {
         amount: cart?.price,
+        data: {
+          confirm: false,
+          user: User._id,
+          tour: cart.tourId,
+          totalAdult: cart.person,
+          paymentType: "credit_card",
+          totalChild: cart.child,
+          totalInfant: 0,
+          paymentStatus: "pending",
+          bookingDate: cart.date,
+          departTime: cart.departTime,
+          duration: cart.duration,
+          totalPrice: cart.price,
+          // tourRequiredPrice: '',
+        },
       });
 
-      console.log("payment done res: ", res.data);
+      // console.log(payment done res: , res.data);
 
       const session_id = res?.data.id;
+      // console.log(res)
       const result = stripe?.redirectToCheckout({
         sessionId: session_id,
       });
+      // console.log(result);
     } catch (error) {
       console.log("stripe res: ", error);
       toast.error("Stripe response error");
     }
   };
+  const hendleCreateBooking = async (data: any) => {
+    try {
+      const res = await API_DOMAIN.post("/api/v1/booking", { ...data });
+      return res;
+    } catch (error) {
+      console.log("Create booking functiuon error", error);
+    }
+  };
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const dataParam = urlParams.get("data");
+    console.log("createbookingstatus", createbookingstatus);
+    if (dataParam && !createbookingstatus) {
+      const data = JSON.parse(decodeURIComponent(dataParam));
+      const {
+        user,
+        tour,
+        paymentType,
+        totalAdult,
+        totalChild,
+        totalInfant,
+        paymentStatus,
+        totalPrice,
+        bookingDate,
+        departTime,
+        duration,
+      } = data;
+      console.log("Parems Data", data);
 
+      const res = hendleCreateBooking({
+        user,
+        tour,
+        paymentType,
+        totalAdult,
+        totalChild,
+        totalInfant,
+        paymentStatus,
+        totalPrice,
+        bookingDate,
+        departTime,
+        duration,
+      });
+      console.log("create booking api call");
+      setcreatebookingstatus(true);
+    }
+  }, [createbookingstatus]);
   return (
     <div className="px-4 md:px-20 lg:px-30">
       <h1 className="pt-14 text-3xl font-bold md:text-2xl md:font-semibold font-mont text-[#000]">
@@ -276,9 +284,9 @@ const CartPage = () => {
               <Divider />
             </React.Fragment>
           ) : (
-              <div className="addItem text-[1.3rem] text-gray-400 font-bold mt-6 mb-4">
-                <h4 className="tracking-[2px]">Your Cart is an Empty!</h4>
-              </div>
+            <div className="addItem text-[1.3rem] text-gray-400 font-bold mt-6 mb-4">
+              <h4 className="tracking-[2px]">Your Cart is an Empty!</h4>
+            </div>
           )}
 
           <div className="font-mont mt-4 pt-10 bg-[#FBFBFB] rounded-lg p-6">
@@ -301,6 +309,7 @@ const CartPage = () => {
                     className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
                     type="text"
                     placeholder="Mr,"
+                    required={true}
                   />
                 </div>
               </Grid>

@@ -9,6 +9,10 @@ import { UserInfo, setUserData } from "@/src/redux/features/User.Slice";
 import { useRouter } from "next/navigation";
 import Client_HeaderNavigation from "./header-navigation.component";
 import { CiShoppingCart } from "react-icons/ci";
+import { cookies } from "next/headers";
+import { DeleteAdminCookie } from "@/src/utils/data/cookie.js";
+import Cookies from 'js-cookie'
+import axios from "axios";
 type Props = {
   text?: string;
 };
@@ -18,10 +22,13 @@ const Client_Header = (props: Props) => {
   const cart: any = useSelector((root: any) => root?.User?.cart);
   const dispatch = useDispatch();
   const navigate = useRouter();
+  
 
 
   const LogOut = () => {
+  DeleteAdminCookie()
     dispatch(setUserData({}));
+    navigate.push('/')
   };
 
   return (
