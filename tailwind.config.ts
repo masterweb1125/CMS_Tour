@@ -17,6 +17,7 @@ const config: Config = {
         'gray-text':"#626262",
         'gray-variant-dark':"#484848",
         'bg-gray': "#F7F7FB",
+        'opacity-black-color':"rgba(0, 0, 0, 0.51)"
       },
       fontFamily: {
         mont: ['var(--font-montserrat)'],

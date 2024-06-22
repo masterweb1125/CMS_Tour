@@ -117,8 +117,9 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const cart: any = useSelector((root: any) => root?.User?.cart);
   const User: any = useSelector((root: any) => root.User.UserInfo);
+  const roo: any = useSelector((root: any) => root);
   // console.log("User :", User);
-  console.log("Cart :", cart);
+  console.log("Cart :",roo );
 
   const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -151,6 +152,7 @@ const CartPage = () => {
           paymentType: "credit_card",
           totalChild: cart.child,
           totalInfant: 0,
+          pickupLocation:cart.pickupdate,
           paymentStatus: "pending",
           bookingDate: cart.date,
           departTime: cart.departTime,
@@ -176,7 +178,7 @@ const CartPage = () => {
   const hendleCreateBooking = async (data: any) => {
     try {
       const res = await API_DOMAIN.post("/api/v1/booking", { ...data });
-      return res;
+      return await res;
     } catch (error) {
       console.log("Create booking functiuon error", error);
     }
@@ -185,7 +187,7 @@ const CartPage = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const dataParam = urlParams.get("data");
-    console.log("createbookingstatus", createbookingstatus);
+    // console.log("createbookingstatus", createbookingstatus);
     if (dataParam && !createbookingstatus) {
       const data = JSON.parse(decodeURIComponent(dataParam));
       const {
@@ -195,6 +197,7 @@ const CartPage = () => {
         totalAdult,
         totalChild,
         totalInfant,
+        pickupLocation,
         paymentStatus,
         totalPrice,
         bookingDate,
@@ -211,17 +214,19 @@ const CartPage = () => {
         totalChild,
         totalInfant,
         paymentStatus,
+        pickupLocation,
         totalPrice,
         bookingDate,
         departTime,
         duration,
       });
-      console.log("create booking api call");
+      console.log("create booking api call",res);
       setcreatebookingstatus(true);
     }
   }, [createbookingstatus]);
   return (
-    <div className="px-4 md:px-20 lg:px-30">
+
+    <div className="px-4 md:px-20 lg:px-30 relative">
       <h1 className="pt-14 text-3xl font-bold md:text-2xl md:font-semibold font-mont text-[#000]">
         Complete Your Booking
       </h1>
