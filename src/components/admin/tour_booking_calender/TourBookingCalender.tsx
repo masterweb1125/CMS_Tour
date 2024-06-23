@@ -1,104 +1,103 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
+import React, { useState, useEffect } from "react";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import Paper from "@mui/material/Paper";
 import {
   Scheduler,
   MonthView,
   WeekView,
   Appointments,
   AppointmentTooltip,
-  AppointmentForm,
-  DragDropProvider,
   Toolbar,
   ViewSwitcher,
   AllDayPanel,
-  EditRecurrenceMenu,
-} from '@devexpress/dx-react-scheduler-material-ui';
-import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
-import {
-  LocalizationProvider,
-  DateTimePicker,
-} from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { ViewState } from "@devexpress/dx-react-scheduler";
 
-import { appointments } from '../../../utils/data/demo.js';
+// Adjust import path for the API service based on your project structure
+import { hendleGetTotalBookingShadular } from "@/src/redux/service/AdminApi.js"; // Update the import as needed
 
-const Demo = () => {
-  const [data, setData] = useState(appointments);
-  const [currentDate, setCurrentDate] = useState('2018-06-27');
-  const [editingFormVisible, setEditingFormVisible] = useState(false);
-  const [addedAppointment, setAddedAppointment] = useState({});
-  const [appointmentChanges, setAppointmentChanges] = useState({});
-  const [editingAppointment, setEditingAppointment] = useState(undefined);
-  const [confirmationVisible, setConfirmationVisible] = useState(false);
-  const [deletedAppointmentId, setDeletedAppointmentId] = useState(undefined);
+const SchedulerComponent = () => {
+  const [data, setData] = useState([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [loading, setLoading] = useState(true);
 
-  const toggleEditingFormVisibility = () => {
-    setEditingFormVisible(!editingFormVisible);
+  // Fetch booking scheduler data from API
+  const fetchBookingShadular = async () => {
+    try {
+      const res = await hendleGetTotalBookingShadular();
+      const formattedData = res.map((item) => ({
+        ...item,
+        startDate: new Date(item.startDate),
+        endDate: new Date(item.endDate),
+      }));
+      setData(formattedData);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching scheduler data:", error);
+      setLoading(false);
+    }
   };
 
-  const commitChanges = ({ added, changed, deleted }) => {
-    let newData = data;
-    if (added) {
-      const startingAddedId = newData.length > 0 ? newData[newData.length - 1].id + 1 : 0;
-      newData = [...newData, { id: startingAddedId, ...added }];
-    }
-    if (changed) {
-      newData = newData.map(appointment => (
-        changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
-      ));
-    }
-    if (deleted !== undefined) {
-      setDeletedAppointmentId(deleted);
-      setConfirmationVisible(true);
-    }
-    setData(newData);
-  };
+  useEffect(() => {
+    fetchBookingShadular();
+  }, []);
 
-  const commitDeletedAppointment = () => {
-    setData(data.filter(appointment => appointment.id !== deletedAppointmentId));
-    setConfirmationVisible(false);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Paper style={{margin:'0 0 30px 0'}}>
-      <Scheduler  data={data} height={800}>
-        <ViewState currentDate={currentDate} />
-        <EditingState onCommitChanges={commitChanges} />
-        <WeekView startDayHour={9} endDayHour={19} />
-        <MonthView />
-        <AllDayPanel />
-        <EditRecurrenceMenu />
-        <Appointments />
-        <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
-        <Toolbar />
-        <ViewSwitcher />
-        <AppointmentForm overlayComponent={() => null} visible={editingFormVisible} onVisibilityChange={toggleEditingFormVisibility} />
-        <DragDropProvider />
-      </Scheduler>
-      <Dialog open={confirmationVisible} onClose={() => setConfirmationVisible(false)}>
-        <DialogTitle>Delete Appointment</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Are you sure you want to delete this appointment?</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmationVisible(false)} color="primary" variant="outlined">Cancel</Button>
-          <Button onClick={commitDeletedAppointment} color="secondary" variant="outlined">Delete</Button>
-        </DialogActions>
-      </Dialog>
-      {/* <Fab color="secondary" onClick={() => setEditingFormVisible(true)} style={{ position: 'absolute', bottom: 16, right: 16 }}>
-        <AddIcon />
-      </Fab> */}
-    </Paper>
+    <div className="p-4 ">
+      <div className="w-full h-[60px] border-[#EBEFF3] border-2 rounded-[5px] mb-2  flex  items-center justify-between px-5">
+        <h2 className="text-xl font-semibold ">
+          Tour Booking <div className="bg-primary h-[0.1rem] mt-[3px] w-full rounded-[10px] " />
+        </h2>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between h-[35px] rounded-[3px] border-[#EBEFF3] border-2  w-[250px] ">
+            <button
+              className="px-2  h-full"
+              onClick={() =>
+                setCurrentDate(
+                  new Date(currentDate.setMonth(currentDate.getMonth() - 1))
+                )
+              }
+            >
+              <IoIosArrowBack />
+            </button>
+            <span className="mx-4">
+              {currentDate.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+            <button
+              className="px-2  h-full"
+              onClick={() =>
+                setCurrentDate(
+                  new Date(currentDate.setMonth(currentDate.getMonth() + 1))
+                )
+              }
+            >
+              <IoIosArrowForward />
+            </button>
+          </div>
+          <button className="p-2 border rounded">📅</button>
+        </div>
+      </div>
+      <Paper>
+        <Scheduler data={data} height={700}>
+          <ViewState currentDate={currentDate} />
+          <MonthView />
+          <WeekView startDayHour={9} endDayHour={19} />
+          <AllDayPanel />
+          <Appointments />
+          <AppointmentTooltip showOpenButton showCloseButton />
+          <Toolbar />
+          <ViewSwitcher />
+        </Scheduler>
+      </Paper>
+    </div>
   );
 };
 
-export default Demo;
+export default SchedulerComponent;

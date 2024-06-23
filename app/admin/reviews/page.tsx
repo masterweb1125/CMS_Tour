@@ -1,6 +1,7 @@
 "use client";
 import CardComponent from "@/src/components/dashboard/dashboardComponents/Card";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import { hendleGetTotalRevenue } from "@/src/redux/service/AdminApi";
 import {
   AgentAvatarOne,
   CartTourImage,
@@ -8,8 +9,24 @@ import {
 } from "@/src/utils/images/images";
 import { Divider, Grid } from "@mui/material";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 function Chats() {
+  const [revenueData, setRevenueData] = useState({});
+  
+
+  const fetchRevenue = async () => {
+    try {
+      const res = await hendleGetTotalRevenue();
+      setRevenueData(res);
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRevenue();
+  }, []);
   return (
     <div>
       <Grid container mb={3} spacing={3}>
@@ -26,10 +43,10 @@ function Chats() {
 
       <Grid container className="gap-3 md:gap-0 ">
         <Grid item xs={12} md={4}>
-          <CardComponent
+        <CardComponent
             title="Total Revenue"
-            count={"2,420"}
-            percentage={"40%"}
+            count={revenueData?.totalRevenue}
+            percentage={`${revenueData?.percentageChange?.toFixed(2)}%`}
           />
         </Grid>
         <Grid item xs={12} md={4}>

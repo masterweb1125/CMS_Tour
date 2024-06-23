@@ -1,10 +1,41 @@
-import TourBookindCalender from "@/src/components/admin/tour_booking_calender/TourBookingCalender";
+"use client";
+import TourBookingCalender from "@/src/components/admin/tour_booking_calender/TourBookingCalender";
 import CardComponent from "@/src/components/dashboard/dashboardComponents/Card";
 import DashboardHeader from "@/src/components/dashboard/dashboardComponents/DashboardHeader";
+
 import { Grid } from "@mui/material";
+import {
+  hendleGetTotalBooking,
+  hendleGetTotalRevenue,
+} from "../../src/redux/service/AdminApi.js";
+import { useEffect, useState } from "react";
+import Link from "next/link.js";
+import { useRouter } from "next/navigation.js";
 
 function Dashboard() {
-  const currentDate = '2018-07-17';
+  const router = useRouter();
+  const [revenueData, setRevenueData] = useState({});
+  const [bookingData, setbookingData] = useState({});
+
+  const fetchRevenue = async () => {
+    try {
+      const res = await hendleGetTotalRevenue();
+      const res1 = await hendleGetTotalBooking();
+      setbookingData(res1);
+      setRevenueData(res);
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRevenue();
+  }, []);
+ const hendleRedireaction = (url:String)=>{
+   router.push(url)
+ }
+  // console.log("Revenue", revenueData);
+
   return (
     <div>
       <DashboardHeader name="Jhon Christopher" />
@@ -13,21 +44,25 @@ function Dashboard() {
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Total Revenue"
-            count={"2,420"}
-            percentage={"40%"}
+            count={revenueData?.totalRevenue}
+            percentage={`${revenueData?.percentageChange?.toFixed(2)}%`}
           />
         </Grid>
         <Grid item xs={12} md={4}>
-          <CardComponent title="Booking" count={"1,210"} percentage={"10%"} />
+          <CardComponent
+            title="Booking"
+            count={bookingData?.totalBookings}
+            percentage={`${bookingData?.percentageChange}%`}
+          />
         </Grid>
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Active Tour"
-            descritpion={
+            description={
               "Click To view the Tour list in progress Click To view the Tour list in progress"
             }
             Component={() => (
-              <button className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
+              <button onClick={()=>hendleRedireaction('/admin/track-tour')} className="bg-[#FFA500]  text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
                 View Active Tours
               </button>
             )}
@@ -36,8 +71,7 @@ function Dashboard() {
       </Grid>
 
       <Grid container spacing={3} mt={2}></Grid>
-      <TourBookindCalender/>
-     
+      <TourBookingCalender />
     </div>
   );
 }

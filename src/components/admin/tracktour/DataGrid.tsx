@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
 import { KababMenu } from "../../dashboard/dashboardComponents/CardItems";
+import { hendleGetAllBookings, hendleGetAllTours, hendleGetTourLocation } from "@/src/redux/service/AdminApi";
+import { useEffect, useState } from "react";
 
 const columns = [
   "Id",
@@ -11,42 +13,31 @@ const columns = [
 ];
 
 function DataGrid({ title }: { title: string }) {
+const [AllBooking,setAllBooking] = useState([])
+const [AllTours,setAllTours] = useState([]);
+const [isLoading,setLoading] = useState(true);
+  const fetchAllBooking = async()=>{
+    const res =await hendleGetAllBookings();
+    const res1 =await hendleGetAllTours();
+    setAllBooking(res)
+    setAllTours(res1)
+  }
+ useEffect(()=>{
+fetchAllBooking()
+if(AllBooking){
+  setLoading(false)
+}
+
+},[])
+if(isLoading){
+  return 'Loading...'
+}
+
+
   return (
     <div className="">
       <Grid container mb={3} spacing={3}>
-        {/* <Grid item xs={12} md={9}>
-          <h1 className="text-2xl font-semibold">{title}</h1>
-        </Grid> */}
-
-        {/* <Grid item xs={12} md={3}>
-          <div className="flex justify-between gap-3">
-            <SearchInput />
-            <svg
-              width="40"
-              height="34"
-              viewBox="0 0 40 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="39"
-                height="43"
-                rx="7.5"
-                stroke="#D0D5DD"
-              />
-              <path
-                d="M15 22H25M12.5 17H27.5M17.5 27H22.5"
-                stroke="#667085"
-                strokeWidth="1.66667"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </Grid> */}
-
+      
         <Grid item xs={12}>
           <div className="relative overflow-x-auto border rounded-md">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -60,78 +51,23 @@ function DataGrid({ title }: { title: string }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
+                {
+                 AllBooking.length != 0 && AllBooking?.map((item,i)=>(
+                    <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td className="px-6 py-4 font-medium">{i+1}</td>
+                  <td className="px-6 py-4 font-medium">{item.pickupLocation} To {hendleGetTourLocation(item.tour,AllTours)}</td>
+                  <td className="px-6 py-4 font-medium">{item.totalAdult + item.totalAdult + item.totalInfant}</td>
+                  <td className="px-6 py-4 font-medium">{item.bookingDate}</td>
+                  <td className="px-6 py-4  font-medium">Progress</td>
                   <td className="px-6 py-4">
                     <div className=" text-[#353535] font-semibold cursor-pointer select-none">
                       Live Track
                     </div>
                   </td>
                 </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
-                  <td className="px-6 py-4">
-                    <div className=" text-[#353535] font-semibold cursor-pointer select-none">
-                      Live Track
-                    </div>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
-                  <td className="px-6 py-4">
-                    <div className=" text-[#353535] font-semibold cursor-pointer select-none">
-                      Live Track
-                    </div>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
-                  <td className="px-6 py-4">
-                    <div className=" text-[#353535] font-semibold cursor-pointer select-none">
-                      Live Track
-                    </div>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
-                  <td className="px-6 py-4">
-                    <div className=" text-[#353535] font-semibold cursor-pointer select-none">
-                      Live Track
-                    </div>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> 12412</td>
-                  <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                  <td className="px-6 py-4 font-medium">26</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">Progress</td>
-                  <td className="px-6 py-4">
-                    <div className=" text-[#353535] font-semibold cursor-pointer select-none">
-                      Live Track
-                    </div>
-                  </td>
-                </tr>
+                  ))
+                }
+                
               </tbody>
             </table>
           </div>
