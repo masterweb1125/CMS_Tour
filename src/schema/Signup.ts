@@ -28,6 +28,7 @@ export const SignUp_validate = Yup.object().shape({
     office_no: Yup.string().optional(),
     cell_phone: Yup.string().optional(),
     occupation: Yup.string().optional(),
+    role:Yup.string().required()
 
     // confirmPassword: Yup.string()
     //     .required("Confirm Password is required")

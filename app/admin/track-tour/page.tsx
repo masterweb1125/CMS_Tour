@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 function CommissionAndIncentive() {
   const [revenueData, setRevenueData] = useState({});
   const [bookingData, setbookingData] = useState({});
-
+  
   const fetchRevenue = async () => {
     try {
       const res = await hendleGetTotalRevenue();
@@ -37,7 +37,7 @@ function CommissionAndIncentive() {
           <CardComponent
             title="Total Revenue"
             count={revenueData?.totalRevenue}
-            percentage={`${revenueData?.percentageChange?.toFixed(2)}%`}
+            percentage={`${revenueData?.percentageChange?revenueData?.percentageChange:'0' }%`}
           />
         </Grid>
         <Grid item xs={12} md={4}>

@@ -76,7 +76,7 @@ const Login = () => {
                   alt="Registration Image"
                 />
                 <h1 className="text-2xl font-semibold pl-8 pt-2">
-                  Supplier Login
+                  Agency Login
                 </h1>
               </div>
             </Grid>

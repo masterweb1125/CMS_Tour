@@ -45,7 +45,7 @@ function Dashboard() {
           <CardComponent
             title="Total Revenue"
             count={revenueData?.totalRevenue}
-            percentage={`${revenueData?.percentageChange?.toFixed(2)}%`}
+            percentage={`${revenueData?.percentageChange}%`}
           />
         </Grid>
         <Grid item xs={12} md={4}>

@@ -27,11 +27,11 @@ export const CreatingUser = async (dispatch: Dispatch, userData: any): Promise<a
     try {
         const res = await API_DOMAIN.post(`/api/v1/auth/signup`, userData);
             dispatch(setUserData(res.data?.data));
+            console.log(res)
         return res.status;
     } catch (err: any) {
         console.log("create a user error: ", err?.response);
         return err?.response?.status;
-
     }
 };
 
