@@ -1,5 +1,6 @@
 "use client";
 import BreadCrame from "@/src/components/client/blog-main/Blog_profile_breadcrame";
+import UploadPage from "@/src/utils/images/ImageUploader";
 import { AgentAvatarOne } from "@/src/utils/images/images";
 import {
   Container,
@@ -31,7 +32,6 @@ const UserProfile = () => {
   const [whatIncludes, setWhatIncludes] = useState<any>([]);
   const user: any = useSelector((root: any) => root?.User?.UserInfo);
 
-
   return (
     <div>
       <div>
@@ -39,14 +39,13 @@ const UserProfile = () => {
           <BreadCrame list={list} />
         </Container>
       </div>
-
       <div className="my-7">
         <Container>
           <Grid container spacing={3}>
             <Grid item xs={12} md={3}>
               <div className="border rounded-md p-4">
                 <div className="flex flex-col items-center ">
-                  <Image src={AgentAvatarOne} alt="" className="w-20" />
+                  <UploadPage />
                   <div className="mt-2 font-medium">Upload Image</div>
                 </div>
 
@@ -146,7 +145,9 @@ const UserProfile = () => {
                     </label>
                     <TextField
                       className="w-full"
-                      defaultValue={user?.email ? user.email : "example@example.com"}
+                      defaultValue={
+                        user?.email ? user.email : "example@example.com"
+                      }
                       placeholder="you@company.com"
                       size="small"
                       InputProps={{

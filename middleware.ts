@@ -10,10 +10,10 @@ const rolePaths = {
 
 // Define role mapping based on roleId
 const roleMapping: Record<string, string> = {
-  '6679dd9247b0153a2eb2cb87': 'admin',
-  '6679dd9747b0153a2eb2cb88': 'agency',
-  '6679dd9a47b0153a2eb2cb89': 'supplier',
-  '6679dd4147b0153a2eb2cb84': 'user', // Replace 'normalRoleId' with the actual role ID for normal users
+  '667bda9080e2951e9ad32b24': 'admin',
+  '667bdab780e2951e9ad32b25': 'agency',
+  '667bdad080e2951e9ad32b26': 'supplier',
+  '667bdade80e2951e9ad32b27': 'user', // Replace 'normalRoleId' with the actual role ID for normal users
 };
 
 // Helper function to extract roleId
@@ -27,30 +27,30 @@ const extractRoleId = (value: any) => {
 // Custom middleware function
 export async function middleware(req: NextRequest) {
 
-  const { pathname } = req.nextUrl;
-  const roleCookie = req.cookies.get("role");
+  // const { pathname } = req.nextUrl;
+  // const roleCookie = req.cookies.get("role");
   
-  // Extract roleId from the cookie value
-  const roleId = roleCookie
-  const role =  extractRoleId(roleCookie?.value)
+  // // Extract roleId from the cookie value
+  // const roleId = roleCookie
+  // const role =  extractRoleId(roleCookie?.value) || roleCookie.value
 
-  console.log("Extracted roleId:", roleId);
-  console.log("Mapped role:", role);
+  // console.log("Extracted roleId:", roleId);
+  // console.log("Mapped role:", role);
 
-  // If roleId or role is not valid, redirect to login page or handle accordingly
-  if (!roleId || !role) {
-    return NextResponse.redirect("http://localhost:3000/auth/login");
-  }
+  // // If roleId or role is not valid, redirect to login page or handle accordingly
+  // if (!roleId || !role) {
+  //   return NextResponse.redirect("http://localhost:3000/auth/login");
+  // }
 
-  // Check if the user tries to access a restricted path
-  const restrictedPaths = rolePaths[role];
-  if (restrictedPaths && restrictedPaths.includes(pathname)) {
-    // Redirect users to the home page if they try to access restricted paths
-    return NextResponse.redirect("http://localhost:3000/");
-  }
+  // // Check if the user tries to access a restricted path
+  // const restrictedPaths = rolePaths[role];
+  // if (restrictedPaths && restrictedPaths.includes(pathname)) {
+  //   // Redirect users to the home page if they try to access restricted paths
+  //   return NextResponse.redirect("http://localhost:3000/");
+  // }
 
-  // Allow the request to proceed
-  return NextResponse.next();
+  // // Allow the request to proceed
+  // return NextResponse.next();
 }
 
 // Export the matcher configuration for paths

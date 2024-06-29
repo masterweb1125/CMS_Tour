@@ -7,7 +7,7 @@ import {
   facebookProvider,
   googleProvider,
 } from "../../../firebase";
-import { signInWithPopup, signInWithRedirect } from "firebase/auth";
+import { FacebookAuthProvider, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import Image from "next/image";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import OTPModal from "@/src/components/client/otp/OTPModel";
@@ -86,16 +86,38 @@ const handleGoogleSignIn = () => {
       });
 };
 
-const handleFacebookSignIn = () => {
-  signInWithPopup(auth, facebookProvider)
-    .then((result) => {
-    
-        console.log(result)
+const handleFacebookSignIn =async () => {;
 
-      
-}).catch(error=>{
-  console.log(error)
-})}
+  signInWithPopup(auth, facebookProvider)
+  .then((result) => {
+    // The signed-in user info.
+    const user = result.user;
+
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    const credential = FacebookAuthProvider.credentialFromResult(result);
+    const accessToken = credential.accessToken;
+    console.log(credential)
+    console.log(accessToken)
+    console.log(user)
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+  console.error(errorCode)
+  console.error(errorMessage)
+  console.log(email)
+  console.log(credential)
+    // ...
+  });
+
+  }
 
   const handleAppleSignIn = () => {
     signInWithPopup(auth, appleProvider)
