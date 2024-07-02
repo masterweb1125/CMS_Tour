@@ -3,20 +3,37 @@ import AgencyGrid from "@/src/components/admin/agency/AgencyGrid";
 import CardComponent from "@/src/components/dashboard/dashboardComponents/Card";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
 import { Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Supplier from "../supplier/page";
+import { GetAllAgency, hendleGetTotalRevenue } from "@/src/redux/service/AdminApi";
 
 
 function Agency() {
   const [agencyData, setAgencyData] = useState<any>({})
   const [sceenView, setScreenView] = useState<any>(1)
+   const [revenueData, setRevenueData] = useState({});
+   const [allAgencyData, setallAgencyData] = useState([])
+  
+  const fetchRevenue = async () => {
+    try {
+      const res = await hendleGetTotalRevenue();
+      const res1 = await GetAllAgency();
+      setRevenueData(res);
+      setallAgencyData(res1);
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchRevenue();
+  }, []);
   const ComponentView: any = {
     1:
-      <AgencyListView setAgencyData={setAgencyData} setScreenView={setScreenView} />,
-    2: <AgencyDetailsView setAgencyData={setAgencyData} setScreenView={setScreenView} />,
+    <AgencyListView allAgency={allAgencyData} setAgencyData={setAgencyData} setScreenView={setScreenView} revenueData={revenueData} />,
+    2: <AgencyDetailsView setAgencyData={setAgencyData} setScreenView={setScreenView} revenueData={revenueData} />,
   }
-
+ 
   return (
     <div>
       {ComponentView[sceenView]}
@@ -26,7 +43,10 @@ function Agency() {
 
 export default Agency;
 
-const AgencyListView = ({ setAgencyData, setScreenView }: { setAgencyData: any; setScreenView: any }) => (
+const AgencyListView = ({ setAgencyData, setScreenView,revenueData,allAgency}: { setAgencyData: any; setScreenView: any,revenueData:any}) => { 
+  
+ console.log(allAgency)
+  return (
   <div>
     <Grid container mb={3} spacing={3}>
       <Grid item xs={12} md={4}>
@@ -45,28 +65,28 @@ const AgencyListView = ({ setAgencyData, setScreenView }: { setAgencyData: any; 
 
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
-        <CardComponent
-          title="Total Agencies"
-          count={"2,420"}
-          percentage={"40%"}
-        />
+     <CardComponent
+          title="Total Agencyies"
+          count={allAgency.totalAgency}
+          percentage={`${allAgency.percentageChange}%`} />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CardComponent
-          title="Total Revenue"
-          count={"1,210"}
-          percentage={"10%"} />
+      <CardComponent
+            title="Total Revenue"
+            count={revenueData?.totalRevenue}
+            percentage={`${revenueData?.percentageChange}%`}
+          />
       </Grid>
 
     </Grid>
 
     <Grid container spacing={3} my={2}>
-      <Grid item xs={12}><AgencyGrid title={"Agency listed"} onSetData={setAgencyData} setScreenView={setScreenView} /></Grid>
+      <Grid item xs={12}><AgencyGrid title={"Agency listed"} allAgency={allAgency} onSetData={setAgencyData} setScreenView={setScreenView} /></Grid>
     </Grid>
-  </div>
-)
+  </div>)
+}
 
-const AgencyDetailsView = ({ setAgencyData, setScreenView }: { setAgencyData?: any; setScreenView?: any }) => (
+const AgencyDetailsView = ({ setAgencyData, setScreenView,revenueData }: { setAgencyData?: any; setScreenView?: any;revenueData:any }) => (
   <div>
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>

@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/data/demo.js", "src/utils/data/cookie.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/data/demo.js", "src/utils/data/cookie.js", "src/redux/service/Adminhelper.js"],
   "exclude": ["node_modules"]
 }
