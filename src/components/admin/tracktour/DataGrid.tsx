@@ -58,7 +58,7 @@ if(isLoading){
                   <td className="px-6 py-4 font-medium">{item.pickupLocation} To {hendleGetTourLocation(item.tour,AllTours)}</td>
                   <td className="px-6 py-4 font-medium">{item.totalAdult + item.totalAdult + item.totalInfant}</td>
                   <td className="px-6 py-4 font-medium">{item.bookingDate}</td>
-                  <td className="px-6 py-4  font-medium">Progress</td>
+                  <td className="px-6 py-4  font-medium">{item.status}</td>
                   <td className="px-6 py-4">
                     <div className=" text-[#353535] font-semibold cursor-pointer select-none">
                       Live Track

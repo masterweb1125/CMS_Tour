@@ -78,10 +78,10 @@ function AgencyGrid({
               <tbody>
                 {allAgency.length === 0
                   ? "No agency Found"
-                  : allAgency.data.map((item) =>(
+                  : allAgency.data.map((item,i) =>(
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4 font-medium">232323</td>
-                        <td className="px-6 py-4 font-medium">TravelCo</td>
+                        <td className="px-6 py-4 font-medium">{i+1}</td>
+                        <td className="px-6 py-4 font-medium">{item.company_name != null?item.company_name:item.name}</td>
                         <td className="px-6 py-4 font-medium">$9093</td>
                         <td className="px-6 py-4 font-medium">23</td>
                         <td className="px-6 py-4 font-medium">2133213</td>

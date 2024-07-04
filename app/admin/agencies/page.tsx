@@ -31,7 +31,7 @@ function Agency() {
   const ComponentView: any = {
     1:
     <AgencyListView allAgency={allAgencyData} setAgencyData={setAgencyData} setScreenView={setScreenView} revenueData={revenueData} />,
-    2: <AgencyDetailsView setAgencyData={setAgencyData} setScreenView={setScreenView} revenueData={revenueData} />,
+    2: <AgencyDetailsView allAgency={allAgencyData} setAgencyData={setAgencyData} setScreenView={setScreenView} revenueData={revenueData} />,
   }
  
   return (
@@ -63,6 +63,8 @@ const AgencyListView = ({ setAgencyData, setScreenView,revenueData,allAgency}: {
       </Grid>
     </Grid>
 
+    
+
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
      <CardComponent
@@ -86,14 +88,14 @@ const AgencyListView = ({ setAgencyData, setScreenView,revenueData,allAgency}: {
   </div>)
 }
 
-const AgencyDetailsView = ({ setAgencyData, setScreenView,revenueData }: { setAgencyData?: any; setScreenView?: any;revenueData:any }) => (
+const AgencyDetailsView = ({ setAgencyData, setScreenView,revenueData,allAgency }: { setAgencyData?: any; setScreenView?: any;revenueData:any }) => (
   <div>
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
         <CardComponent
           title="Recent Bookings"
-          count={"2,420"}
-          percentage={"40%"}
+          count={allAgency.recentBookingCount}
+          percentage={`${allAgency.recentBookingPercentage}%`}
         />
       </Grid>
       <Grid item xs={12} md={4}>
