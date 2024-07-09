@@ -71,9 +71,12 @@ export default function FilterModal({
        duration: 5,
        pickupdate:age,
        person: adult,
+       guide:language,
        child: child,
        departTime: "10:00 PM",
        imageUrl: tourDetail?.imageUrl,
+       agencyId:tourDetail?.agencyId,
+       language:language
      };
      dispatch(addToCart(cart_Tour_detail));
 
@@ -104,9 +107,12 @@ export default function FilterModal({
       duration: 5,
       pickupdate:age,
       person: adult,
+      guide:language,
       child: child,
       departTime: "10:00 PM",
       imageUrl: tourDetail?.imageUrl,
+      agencyId:tourDetail?.agencyId,
+      language:language
     };
     dispatch(addToCart(cart_Tour_detail));
 

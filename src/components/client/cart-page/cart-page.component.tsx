@@ -119,7 +119,7 @@ const CartPage = () => {
   const User: any = useSelector((root: any) => root.User.UserInfo);
   const roo: any = useSelector((root: any) => root);
   // console.log("User :", User);
-  console.log("Cart :",roo );
+  console.log("Cart :",roo);
 
   const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -158,6 +158,8 @@ const CartPage = () => {
           departTime: cart.departTime,
           duration: cart.duration,
           totalPrice: cart.price,
+          agency :cart.agencyId,
+          languge:cart.languge
           // tourRequiredPrice: '',
         },
       });
@@ -203,6 +205,7 @@ const CartPage = () => {
         bookingDate,
         departTime,
         duration,
+        languge,
       } = data;
       console.log("Parems Data", data);
 
@@ -219,6 +222,7 @@ const CartPage = () => {
         bookingDate,
         departTime,
         duration,
+        languge,
       });
       console.log("create booking api call",res);
       setcreatebookingstatus(true);

@@ -1,21 +1,40 @@
 "use client";
+import { setUserData } from "@/src/redux/features/User.Slice";
+import { DeleteAdminCookie } from "@/src/utils/data/cookie";
 import { sidebarBottomItems, sidebarItems } from "@/src/utils/data/sidebar";
 import { AgentAvatarOne, LogoTransparent } from "@/src/utils/images/images";
 import { Divider, useMediaQuery, useTheme } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function Sidebar({ children }: any) {
+  const user: any = useSelector((state: any) => state.User.UserInfo);
   const [mobileView, setMobileView] = useState(false);
   const theme = useTheme();
   const smallScreen: any = useMediaQuery(theme.breakpoints.up("sm"));
   const pathname = usePathname();
+  const dispatch = useDispatch();
+  const navigate = useRouter();
 
   useEffect(() => {
     if (smallScreen && mobileView) setMobileView(false);
   }, [smallScreen, mobileView]);
+  function displayLimitedString(str, limit) {
+    // const limit = 23;
+    if (str.length > limit) {
+      return str.substring(0, limit - 3) + "...";
+    }
+    return str;
+  }
+  const LogOut = () => {
+    DeleteAdminCookie();
+    dispatch(setUserData({}));
+    navigate.push("/");
+  };
 
   return (
     <React.Fragment>
@@ -112,14 +131,26 @@ function Sidebar({ children }: any) {
             <br />
             <Divider />
 
-            <div className="px-2 py-4 w-full flex justify-between items-center">
-              <Image src={AgentAvatarOne} className="w-14 pr-2" alt="" />
+            <div className="px-3 py-3 w-full flex justify-between items-center">
+              <Image
+                width={30}
+                height={30}
+                src={user.profile_image}
+                className="w-10"
+                alt=""
+              />
               <div className="flex flex-col">
-                <span className="font-semibold">John wick</span>
-                <span className="text-[0.86rem]">John@untitledui.com</span>
+                <span className="font-semibold text-sm">
+                  {displayLimitedString(user.name + " " + user.last_name, 25)}
+                </span>
+                <span className="text-xs ">
+                  {displayLimitedString(user.email, 23)}
+                </span>
               </div>
               <div className="pb-4">
                 <svg
+                onClick={LogOut}
+                  className="cursor-pointer "
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
@@ -129,6 +160,7 @@ function Sidebar({ children }: any) {
                   <path
                     d="M13.3333 14.1667L17.5 10M17.5 10L13.3333 5.83333M17.5 10H7.5M7.5 2.5H6.5C5.09987 2.5 4.3998 2.5 3.86502 2.77248C3.39462 3.01217 3.01217 3.39462 2.77248 3.86502C2.5 4.3998 2.5 5.09987 2.5 6.5V13.5C2.5 14.9001 2.5 15.6002 2.77248 16.135C3.01217 16.6054 3.39462 16.9878 3.86502 17.2275C4.3998 17.5 5.09987 17.5 6.5 17.5H7.5"
                     stroke="#98A2B3"
+                    className="hover:stroke-gray-600"
                     strokeWidth="1.66667"
                     strokeLinecap="round"
                     strokeLinejoin="round"

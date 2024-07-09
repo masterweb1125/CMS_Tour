@@ -3,17 +3,28 @@ import Client_Paginator from "@/src/components/client/libs/paginator/paginator.c
 import FiltersInput from "@/src/components/dashboard/bookingcomponents/FiltersInputs";
 import TourCardView from "@/src/components/dashboard/bookingcomponents/TourCardView";
 import DashboardHeader from "@/src/components/dashboard/dashboardComponents/DashboardHeader";
-import { tours } from "@/src/utils/data/tours";
+import { GetTourByAgencyId } from "@/src/redux/service/AdminApi";
+// import { tours } from "@/src/utils/data/tours";
 import { Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function Booking() {
   const [currentPage, setCurrentPage] = useState(1);
   const toursPerPage = 6;
-
+  const [tours,settours] = useState([]);
+  const user: any = useSelector((root: any) => root?.User?.UserInfo);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  const fetch = async () => {
+   const res = await GetTourByAgencyId(user._id);
+   settours(res.data);
+  };
+  useEffect(()=>{
+    fetch();
+  },[])
 
   return (
     <div>
@@ -38,9 +49,9 @@ function Booking() {
         </div>
 
         <Grid container mt={3} spacing={3}>
-          {tours.map((tour, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <TourCardView tour={tour} />
+          {tours.length !== 0 && tours.map((tour) => (
+            <Grid item xs={12} md={4} key={tour._id}>
+              <TourCardView tour={tour} user={user} />
             </Grid>
           ))}
         </Grid>

@@ -36,7 +36,7 @@ const faqs = [
   },
 ];
 
-export default function TourDetailDescription() {
+export default function TourDetailDescription({tour}) {
   const [activeIndex, setActiveIndex] = useState(null);
   const [age, setAge] = useState("Pickup Location");
   const [language, setLanguage] = useState("English");
@@ -62,9 +62,7 @@ export default function TourDetailDescription() {
             Tour description
           </h2>
           <p className="pt-4 text-sm md:text-lg text-[#757575] font-mont">
-            Embark on a journey to unforgettable destinations, where breath
-            taking landscapes meet Embark on a journey to unforgettable
-            destinations, Embark on a journey
+          {tour.description}
           </p>
           <h3 className="pt-5 mt-4 mb-4 font-bold text-2xl text-black-variant leading-8">
             Tour Highlights
@@ -83,8 +81,9 @@ export default function TourDetailDescription() {
               Includes
             </h3>
             <p className="text-sm md:text-lg text-[#757575] font-mont">
-              Embark on a journey to unforgettable destinations, where breath
-              taking landscapes
+            Experience an unforgettable journey to some of the most breathtaking destinations around the world. Our tour package includes convenient pick-up and drop-off services to ensure your travel is hassle-free. Enjoy a delicious meal each day as part of our package, with car parking facilities available for your convenience. Attend exclusive music events and stay at the best hotels, known for their comfort and hospitality. Your safety is our priority, with top-notch security measures in place.
+
+
             </p>
             <div className="flex justify-between gap-3 mt-5 pt-3 items-center">
               <svg
@@ -273,8 +272,7 @@ export default function TourDetailDescription() {
               Not Included
             </h3>
             <p className="text-sm md:text-lg text-[#757575] font-mont">
-              Embark on a journey to unforgettable destinations, where
-              breathtaking landscapes
+            While we strive to provide a comprehensive and enjoyable travel experience, there are certain services not included in our package. Please note that additional pick-up and drop-off services beyond the specified ones are not covered. Extra meals outside of the daily included meal will need to be arranged separately. Car parking beyond the allotted time or spaces will incur additional charges. Entry fees to certain music events may not be included, and accommodation at hotels outside our partner network is not covered. Any additional security measures or personal safety equipment will need to be arranged by the traveler.
             </p>
             <div className="flex justify-between gap-3 mt-5 pt-3 items-center">
               <svg

@@ -1,7 +1,8 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
-import { KababMenu } from "./CardItems";
+import { GetTourById } from "@/src/redux/service/AdminApi";
+import RecentBookingCard from "./RecentBookingCard";
 
 const columns = [
   "Tour Name",
@@ -13,7 +14,73 @@ const columns = [
   "Action",
 ];
 
-function DataGrid({ title }: { title: string }) {
+interface Booking {
+  user: object;
+  tour: string; // Assuming tour is a string representing the tour ID
+  booking: {
+    _id: string;
+    agencyId: string;
+    paymentType: string;
+    totalAdult: number;
+    totalChild: number;
+    totalInfant: number;
+    pickupLocation: string;
+    paymentStatus: string;
+    bookingDate: string;
+    departTime: string;
+    duration: string;
+    status: string;
+    reviewStatus: string;
+    totalPrice: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+interface Analytics {
+  recentBookings: Booking[];
+  statistics: {
+    currentMonthCount: number;
+    lastMonthCount: number;
+    percentageDifference: number;
+    totalCommission: number;
+    currentMonthProfit: number;
+    lastMonthProfit: number;
+    profitPercentageDifference: number;
+    totalCurrentIncentives: number;
+    currentMonthIncentives: number;
+    lastMonthIncentives: number;
+    incentivesPercentageDifference: number;
+  };
+}
+
+function DataGrid({ title, analytics }: { title: string; analytics: Analytics | null }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filterBookings = async () => {
+    if (analytics) {
+      const bookings = analytics.recentBookings;
+      const filtered = await Promise.all(
+        bookings.map(async (booking) => {
+          const tour = await GetTourById(booking.tour);
+          return tour.name.toLowerCase().includes(searchQuery.toLowerCase())
+            ? booking
+            : null;
+        })
+      );
+      setFilteredBookings(filtered.filter((item) => item !== null) as Booking[]);
+    }
+  };
+
+  useEffect(() => {
+    filterBookings();
+  }, [searchQuery, analytics]);
+
   return (
     <div className="shadow-4xl rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
@@ -23,7 +90,7 @@ function DataGrid({ title }: { title: string }) {
 
         <Grid item xs={12} md={3}>
           <div className="flex justify-between gap-3">
-            <SearchInput />
+            <SearchInput value={searchQuery} onChange={handleSearchChange} />
             <svg
               width="40"
               height="34"
@@ -63,61 +130,17 @@ function DataGrid({ title }: { title: string }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> Paris To England</td>
-                  <td className="px-6 py-4 font-medium">04</td>
-                  <td className="px-6 py-4 font-medium">English</td>
-                  <td className="px-6 py-4 font-medium">10:00 AM</td>
-                  <td className="px-6 py-4 font-medium">$8984</td>
-                  <td className="px-6 py-4 font-medium">Approved</td>
-                  <td className="px-6 py-4">
-                    <KababMenu />
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> Paris To England</td>
-                  <td className="px-6 py-4 font-medium">04</td>
-                  <td className="px-6 py-4 font-medium">English</td>
-                  <td className="px-6 py-4 font-medium">10:00 AM</td>
-                  <td className="px-6 py-4 font-medium">$8984</td>
-                  <td className="px-6 py-4 font-medium">Approved</td>
-                  <td className="px-6 py-4">
-                    <KababMenu />
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> Paris To England</td>
-                  <td className="px-6 py-4 font-medium">04</td>
-                  <td className="px-6 py-4 font-medium">English</td>
-                  <td className="px-6 py-4 font-medium">10:00 AM</td>
-                  <td className="px-6 py-4 font-medium">$8984</td>
-                  <td className="px-6 py-4 font-medium">Approved</td>
-                  <td className="px-6 py-4">
-                    <KababMenu />
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> Paris To England</td>
-                  <td className="px-6 py-4 font-medium">04</td>
-                  <td className="px-6 py-4 font-medium">English</td>
-                  <td className="px-6 py-4 font-medium">10:00 AM</td>
-                  <td className="px-6 py-4 font-medium">$8984</td>
-                  <td className="px-6 py-4 font-medium">Approved</td>
-                  <td className="px-6 py-4">
-                    <KababMenu />
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium"> Paris To England</td>
-                  <td className="px-6 py-4 font-medium">04</td>
-                  <td className="px-6 py-4 font-medium">English</td>
-                  <td className="px-6 py-4 font-medium">10:00 AM</td>
-                  <td className="px-6 py-4 font-medium">$8984</td>
-                  <td className="px-6 py-4 font-medium">Approved</td>
-                  <td className="px-6 py-4">
-                    <KababMenu />
-                  </td>
-                </tr>
+                {filteredBookings.length !== 0 ? (
+                  filteredBookings.map((item,i) => (
+                    <RecentBookingCard key={i} {...item} />
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={columns.length} className="py-3 px-4 text-[16px]">
+                      Recent Booking Not Found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
