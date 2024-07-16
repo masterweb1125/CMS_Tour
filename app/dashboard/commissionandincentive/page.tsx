@@ -1,33 +1,47 @@
+"use client"
 import DataGridTabs from "@/src/components/dashboard/commissionandincentive/DataGridTabs";
 import CardComponent from "@/src/components/dashboard/dashboardComponents/Card";
 import DashboardHeader from "@/src/components/dashboard/dashboardComponents/DashboardHeader";
+import { GetAgencyAnalytics } from "@/src/redux/service/AdminApi";
 import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function CommissionAndIncentive() {
+  const user: any = useSelector((root: any) => root?.User?.UserInfo);
+  const [analytics,setanalytics] = useState(null);
+
+  const fetch =async ()=>{
+   const analytics = await GetAgencyAnalytics(user._id);
+   setanalytics(analytics);
+  }
+  useEffect(()=>{
+   fetch()
+  },[])
   return (
     <div>
       <DashboardHeader name="Tosrium Agency" />
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={4}>
           <CardComponent
-            title="Recent Revenue"
-            count={"2,420"}
-            percentage={"40%"}
+            title="Recent Bookings"
+            count={analytics?analytics.recentBookings.length:0}
+            percentage={analytics?analytics.statistics.percentageDifference + "%":0 + "%" }
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <CardComponent
-            title="Current Commission"
-            count={"1,210"}
-            percentage={"10%"}
+            title="Commission Earned"
+            count={analytics?analytics.statistics.totalCommission:0}
+            percentage={analytics?analytics.statistics.profitPercentageDifference:0}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Current Incentives"
-            count={"316"}
-            percentage={"20%"}
+            count={analytics?analytics.statistics.totalCurrentIncentives:0}
+            percentage={analytics?analytics.statistics.incentivesPercentageDifference:0}
           />
         </Grid>
       </Grid>

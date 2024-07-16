@@ -16,7 +16,8 @@ export default function TourDetailHeader({ tour }) {
   const [tourAverageRating, settourAverageRating] = useState(0.0);
   const fetch = async () => {
    const res = await GetTourAverageRating(tour._id);
-    settourAverageRating(res.averageRating);
+   const response = await res
+    settourAverageRating(response.averageRating);
   };
   useEffect(() => {
     fetch();

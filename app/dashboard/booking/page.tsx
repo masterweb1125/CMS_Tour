@@ -19,7 +19,7 @@ function Booking() {
   };
 
   const fetch = async () => {
-   const res = await GetTourByAgencyId(user._id);
+   const res = await GetTourByAgencyId(user?._id);
    settours(res.data);
   };
   useEffect(()=>{

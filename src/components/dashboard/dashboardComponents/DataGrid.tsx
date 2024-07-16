@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SearchInput from "./SearchInput";
+import { KababMenu } from "./CardItems";
 import { GetTourById } from "@/src/redux/service/AdminApi";
 import RecentBookingCard from "./RecentBookingCard";
 
@@ -14,72 +15,7 @@ const columns = [
   "Action",
 ];
 
-interface Booking {
-  user: object;
-  tour: string; // Assuming tour is a string representing the tour ID
-  booking: {
-    _id: string;
-    agencyId: string;
-    paymentType: string;
-    totalAdult: number;
-    totalChild: number;
-    totalInfant: number;
-    pickupLocation: string;
-    paymentStatus: string;
-    bookingDate: string;
-    departTime: string;
-    duration: string;
-    status: string;
-    reviewStatus: string;
-    totalPrice: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
-interface Analytics {
-  recentBookings: Booking[];
-  statistics: {
-    currentMonthCount: number;
-    lastMonthCount: number;
-    percentageDifference: number;
-    totalCommission: number;
-    currentMonthProfit: number;
-    lastMonthProfit: number;
-    profitPercentageDifference: number;
-    totalCurrentIncentives: number;
-    currentMonthIncentives: number;
-    lastMonthIncentives: number;
-    incentivesPercentageDifference: number;
-  };
-}
-
-function DataGrid({ title, analytics }: { title: string; analytics: Analytics | null }) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const filterBookings = async () => {
-    if (analytics) {
-      const bookings = analytics.recentBookings;
-      const filtered = await Promise.all(
-        bookings.map(async (booking) => {
-          const tour = await GetTourById(booking.tour);
-          return tour.name.toLowerCase().includes(searchQuery.toLowerCase())
-            ? booking
-            : null;
-        })
-      );
-      setFilteredBookings(filtered.filter((item) => item !== null) as Booking[]);
-    }
-  };
-
-  useEffect(() => {
-    filterBookings();
-  }, [searchQuery, analytics]);
+function DataGrid({ title,analytics }: { title: string }) {
 
   return (
     <div className="shadow-4xl rounded-lg">
@@ -90,7 +26,7 @@ function DataGrid({ title, analytics }: { title: string; analytics: Analytics | 
 
         <Grid item xs={12} md={3}>
           <div className="flex justify-between gap-3">
-            <SearchInput value={searchQuery} onChange={handleSearchChange} />
+            <SearchInput />
             <svg
               width="40"
               height="34"
@@ -130,17 +66,10 @@ function DataGrid({ title, analytics }: { title: string; analytics: Analytics | 
                 </tr>
               </thead>
               <tbody>
-                {filteredBookings.length !== 0 ? (
-                  filteredBookings.map((item,i) => (
-                    <RecentBookingCard key={i} {...item} />
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={columns.length} className="py-3 px-4 text-[16px]">
-                      Recent Booking Not Found
-                    </td>
-                  </tr>
-                )}
+              { analytics && analytics?.recnetBookings?.length != 0 ? analytics.recentBookings?.filter(item => item._id).map((item) =>(
+                <RecentBookingCard {...item}/>
+                )):<p className="py-3 px-4 text-[16px]">Recent Booking Not Found</p>
+              }
               </tbody>
             </table>
           </div>

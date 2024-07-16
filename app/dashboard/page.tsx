@@ -29,22 +29,22 @@ function Dashboard() {
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Recent Bookings"
-            count={analytics?analytics?.recentBookings.length:0}
-            percentage={analytics?analytics?.statistics.percentageDifference + "%":0 + "%" }
+            count={analytics?analytics.recentBookings.length:0}
+            percentage={analytics?analytics.statistics.percentageDifference + "%":0 + "%" }
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Commission Earned"
-            count={analytics?analytics?.statistics.totalCommission:0}
-            percentage={analytics?analytics?.statistics.profitPercentageDifference:0}
+            count={analytics?analytics.statistics.totalCommission:0}
+            percentage={analytics?analytics.statistics.profitPercentageDifference:0}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <CardComponent
             title="Current Incentives"
-            count={analytics?analytics?.statistics.totalCurrentIncentives:0}
-            percentage={analytics?analytics?.statistics.incentivesPercentageDifference:0}
+            count={analytics?analytics.statistics.totalCurrentIncentives:0}
+            percentage={analytics?analytics.statistics.incentivesPercentageDifference:0}
           />
         </Grid>
       </Grid>
