@@ -1,12 +1,44 @@
 "use client";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import { GetReferralUser, GetUserById, UpdateReferralUser } from "@/src/redux/service/AdminApi";
 import { Grid, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
 export default function Raferrals() {
+  const [user, setuser] = useState(null);
+  const [users, setusers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const fetch = async () => {
+    const res = await GetReferralUser();
+    setusers(res.data);
+  };
+  const fetchUser = async () => {
+    const user = await GetUserById(selectedUser);
+    setuser(user)
+  };
+  const hendleUpdateReferralUser  = async ()=>{
+    if (selectedUser == "") {
+return toast.error('Please fill all fields');
+    }
+    const res = await UpdateReferralUser(user._id,user);
+    if (res.status){
+      setuser(res.data)
+
+    }
+    toast.success("Referral success fully updated ")
+  }
+  useEffect(() => {
+    fetch();
+  }, []);
+  useEffect(() => {
+    fetchUser();
+  }, [selectedUser]);
   return (
     <div>
+      <Toaster/>
       <Grid container mb={3} spacing={3}>
         <Grid item xs={12} md={4}>
           <div>
@@ -45,8 +77,20 @@ export default function Raferrals() {
                   <span className="text-red-500">*</span>
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
-                  <option selected disabled>Referral Incentive Beneficiary</option>
+                <select
+                  className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                  onChange={(e) => setSelectedUser(e.target.value)}
+                  value={selectedUser}
+                >
+                  <option selected disabled>
+                    Referral Incentive Beneficiary
+                  </option>
+                  {users.length != 0 &&
+                    users.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name} - {item.email}
+                      </option>
+                    ))}
                 </select>
               </Grid>
 
@@ -59,6 +103,9 @@ export default function Raferrals() {
                   className="w-full font-mont"
                   placeholder="Percentage"
                   size="small"
+                  type="Number"
+                  onChange={e=>setuser({...user,raferral_amount:e.target.value})}
+                  value={user?user.raferral_amount?user.raferral_amount:0:0}
                   InputProps={{
                     className: InputClasses,
                   }}
@@ -70,14 +117,14 @@ export default function Raferrals() {
                   Status
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
+                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none" value={user?user.raferral_status?1:0:0} onChange={e=>setuser({...user,raferral_status:e.target.value == 1?true:false})}>
                   <option value={1}>Active</option>
-                  <option value={0}>In Active</option>
+                  <option value={0}>No Active</option>
                 </select>
               </Grid>
 
               <Grid item xs={12}>
-                <button className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
+                <button onClick={hendleUpdateReferralUser} className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
                   Add to system
                 </button>
               </Grid>

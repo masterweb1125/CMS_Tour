@@ -220,12 +220,41 @@ export const GetTourReviewsByTourId = async (tourId) => {
 export const DateformateMonthNameDateYear = (dateString) => {
   const date = new Date(dateString);
 
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const month = months[date.getMonth()];
-  const day = String(date.getDate()).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, "0");
   const year = date.getFullYear();
 
   return `${month}-${day}-${year}`;
 };
+export const GetReferralUser = async () => {
+  try {
+    const res = await API_DOMAIN.get("/api/v1/referral/user");
+    return res.data;
+  } catch (error) {
+    console.log("Error in get referral users ");
+  }
+};
 
+export const UpdateReferralUser = async (userid,user)=>{
+  try {
+    const res = await API_DOMAIN.post(`/api/v1/referral/user/${userid}`,{...user})
+    return res.data;
+  } catch (error) {
+    console.log("Error update referral user")
+  }
+}
