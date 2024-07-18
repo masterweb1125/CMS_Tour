@@ -258,3 +258,46 @@ export const UpdateReferralUser = async (userid,user)=>{
     console.log("Error update referral user")
   }
 }
+
+export const Search = async(query)=>{
+try {
+  const res =await API_DOMAIN.get(`/api/v1/search?${query}`)
+  return res.data;
+} catch (error) {
+  console.log("Error in Searching")
+}
+}
+
+export const GetAllDiscounts = async ()=>{
+try {
+  const res =await API_DOMAIN.get('/api/v1/discount')
+  return res.data;
+} catch (error) {
+  console.log("Error in get All discounts",error)
+}
+}
+
+export const CreateDiscount = async (data)=>{
+  try {
+    const res = await API_DOMAIN.post('/api/v1/discount/create',{data});
+    return res.data;
+  } catch (error) {
+    console.log("Error in discount creation",error)
+  }
+}
+export const UpdateDiscount = async (id,data)=>{
+  try {
+    const res = await API_DOMAIN.put(`/api/v1/discount/update/${id}`,{data});
+    return res.data;
+  } catch (error) {
+    console.log("Error in discount creation",error)
+  }
+}
+export const DeleteDiscount = async (id)=>{
+  try {
+    const res = await API_DOMAIN.delete(`/api/v1/discount/delete/${id}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error in discount creation",error)
+  }
+}

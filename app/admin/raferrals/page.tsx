@@ -88,7 +88,7 @@ return toast.error('Please fill all fields');
                   {users.length != 0 &&
                     users.map((item) => (
                       <option key={item._id} value={item._id}>
-                        {item.name} - {item.email}
+                        {item.name} - {item.email} - {item.rolename}
                       </option>
                     ))}
                 </select>

@@ -1,10 +1,83 @@
-import { KababMenu } from "@/src/components/dashboard/dashboardComponents/CardItems";
-import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
-import { Button, ButtonGroup, Grid } from "@mui/material";
+import { CSVLink } from 'react-csv';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { Button, ButtonGroup, Grid } from '@mui/material';
+import { useEffect, useState } from 'react';
+import SearchInput from '@/src/components/dashboard/dashboardComponents/SearchInput';
+import { GetAllDiscounts } from '@/src/redux/service/AdminApi';
 
-const columns = ["#", "Type", "Discount", "Date"];
+const columns = [
+  '#',
+  'Name',
+  'Discount',
+  'Max limit',
+  'Used limit',
+  'Status',
+  'Expiration',
+  'Action',
+];
 
 function DiscountGrid() {
+  const [discount, setDiscount] = useState([]);
+
+  // Fetch discounts from API
+  const fetchDiscounts = async () => {
+    try {
+      const res = await GetAllDiscounts();
+      setDiscount(res);
+    } catch (error) {
+      console.error('Error fetching discounts:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDiscounts();
+  }, []);
+
+  // Format expiration date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'UTC',
+    };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  // Check if date has passed
+  const checkDateStatus = (targetDate) => {
+    const currentDate = new Date();
+    const dateToCheck = new Date(targetDate);
+    return dateToCheck >= currentDate;
+  };
+
+  // CSV export function
+  const handleExportCSV = () => {
+    const csvData = discount.map((item, index) => ({
+      '#': index + 1,
+      'Name': item.name,
+      'Discount': `${item.value}%`,
+      'Max limit': item.usageLimit,
+      'Used limit': item.timesUsed,
+      'Status': item.isActive ? 'Active' : 'Inactive',
+      'Expiration': formatDate(item.expirationDate),
+    }));
+
+    // Generate CSV file
+    const headers = columns.map((column) => ({ label: column, key: column }));
+    const csvReport = {
+      data: csvData,
+      headers: headers,
+      filename: 'discounts.csv',
+    };
+
+    return <CSVLink {...csvReport}><button className=''>CSV Export</button></CSVLink>;
+  };
+
   return (
     <div className="border pt-8 rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
@@ -50,20 +123,15 @@ function DiscountGrid() {
         <Grid item xs={12} className="flex items-end justify-end">
           <ButtonGroup
             variant="contained"
-            className="bg-[#FFA500]"
+            className="bg-[#FFA500] px-3 py-2 text-white"
             color="inherit"
           >
-            <Button className="hover:bg-[#FFA500] font-mont normal-case text-white ">
-              CSV
-            </Button>
-            <Button className="hover:bg-[#FFA500] font-mont normal-case text-white">
-              Export CSV
-            </Button>
+            {handleExportCSV()}
           </ButtonGroup>
         </Grid>
 
         <Grid item xs={12}>
-          <div className="relative overflow-x-auto border rounded-md pb-3 pr-3" >
+          <div className="relative overflow-x-auto border rounded-md pb-3 pr-3">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -75,42 +143,37 @@ function DiscountGrid() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">23</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                </tr>
+                {discount.length > 0 &&
+                  discount.map((item, i) => (
+                    <tr
+                      key={item._id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <td className="px-6 py-4 font-medium">{i + 1}</td>
+                      <td className="px-6 py-4 font-medium">{item.name}</td>
+                      <td className="px-6 py-4 font-medium">
+                        {item.value + '%'}
+                      </td>
+                      <td className="px-6 py-4 font-medium">{item.usageLimit}</td>
+                      <td className="px-6 py-4 font-medium">{item.timesUsed}</td>
+                      <td className="px-6 py-4 font-medium">
+                        {item.isActive ? 'Active' : 'Inactive'}
+                      </td>
+                      <td
+                        className="px-6 py-4 font-medium"
+                        style={{
+                          color: checkDateStatus(item.expirationDate)
+                            ? '#687586'
+                            : 'red',
+                        }}
+                      >
+                        {formatDate(item.expirationDate)}
+                      </td>
+                      <td className="px-6 py-4 font-medium">
+                        <BsThreeDotsVertical />
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
 
@@ -125,3 +188,4 @@ function DiscountGrid() {
 }
 
 export default DiscountGrid;
+

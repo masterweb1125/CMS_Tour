@@ -25,9 +25,9 @@ function Sidebar({ children }: any) {
   }, [smallScreen, mobileView]);
   function displayLimitedString(str, limit) {
     // const limit = 23;
-    if (str.length > limit) {
-      return str.substring(0, limit - 3) + "...";
-    }
+    // if (str.length > limit) {
+    //   return str.substring(0, limit - 3) + "...";
+    // }
     return str;
   }
   const LogOut = () => {

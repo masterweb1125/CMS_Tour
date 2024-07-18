@@ -1,9 +1,22 @@
-import { io } from "socket.io-client";
+// socketService.js
 
-const SOCKET_URL = "http://localhost:5000"; // Replace with your server URL if different
+import { io } from 'socket.io-client';
 
-const socket = io(SOCKET_URL, {
-  withCredentials: true,
-});
+const socket = io('http://localhost:5000'); // Replace with your server URL
 
-export default socket;
+const connectSocket = () => {
+  socket.connect();
+
+  // Handle connection events if needed
+  socket.on('connect', () => {
+    console.log('Connected to Socket.IO');
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Disconnected from Socket.IO');
+  });
+
+  return socket;
+};
+
+export { connectSocket, socket };
