@@ -1,7 +1,8 @@
 "use client";
 import DiscountGrid from "@/src/components/admin/discounts/DiscountGrid";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
-import { CreateDiscount } from "@/src/redux/service/AdminApi";
+import { CreateDiscount, UpdateDiscount } from "@/src/redux/service/AdminApi";
+import { tours } from "@/src/utils/data/tours";
 import { Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -9,29 +10,36 @@ import toast, { Toaster } from "react-hot-toast";
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
 export default function Discounts() {
+  const [btntext, setbtntext] = useState(true);
   const [discountData, setDiscountData] = useState({
-    name: '',
+    name: "",
     value: 0,
-    expirationDate: '',
+    userMaxLimit: 1,
+    expirationDate: "",
     usageLimit: 0,
     timesUsed: 0,
-    isActive: false
+    isActive: false,
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setDiscountData(prevState => ({
+    setDiscountData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   // Get today's date in YYYY-MM-DD format for the min attribute
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const createDiscount = async () => {
     // Validate all fields are filled
-    if (!discountData.name && !discountData.value && !discountData.expirationDate && !discountData.usageLimit) {
+    if (
+      !discountData.name ||
+      !discountData.value ||
+      !discountData.expirationDate ||
+      !discountData.usageLimit
+    ) {
       toast.error("Please fill all the fields");
       return;
     }
@@ -45,7 +53,8 @@ export default function Discounts() {
       expirationDate,
       value: Number(discountData.value),
       usageLimit: Number(discountData.usageLimit),
-      isActive: discountData.isActive === "true" || discountData.isActive === true // Ensure isActive is a boolean
+      isActive:
+        discountData.isActive === "true" || discountData.isActive === true, // Ensure isActive is a boolean
     };
 
     try {
@@ -57,18 +66,36 @@ export default function Discounts() {
       console.error(error);
     }
   };
-
   const resetForm = () => {
+    setbtntext("Apply Discount");
     setDiscountData({
-      name: '',
+      name: "",
       value: 0,
-      expirationDate: '',
+      expirationDate: "",
+      userMaxLimit: 1,
       usageLimit: 0,
       timesUsed: 0,
-      isActive: false
+      isActive: false,
     });
   };
 
+  const hendleUpdateDiscount = async () => {
+    const res = await UpdateDiscount(discountData._id, {
+      name: discountData.name,
+      value: discountData.value,
+      expirationDate: discountData.expirationDate,
+      usageLimit: discountData.usageLimit,
+      userMaxLimit: discountData.userMaxLimit,
+      isActive: discountData.isActive,
+    });
+    if (res.status) {
+      console.log(res);
+      toast.success("discount Updated");
+    } else {
+      toast.error("Some thing went W rong");
+    }
+    resetForm();
+  };
   return (
     <div>
       <Toaster />
@@ -98,6 +125,7 @@ export default function Discounts() {
                 <br />
                 <TextField
                   name="name"
+                  value={discountData.name}
                   className="w-full font-mont"
                   placeholder="Enter name"
                   size="small"
@@ -133,8 +161,8 @@ export default function Discounts() {
                 <br />
                 <TextField
                   name="expirationDate"
-                  value={discountData.expirationDate}
                   type="date"
+                  value={discountData.expirationDate}
                   className="w-full font-mont"
                   placeholder="Select Date"
                   size="small"
@@ -163,6 +191,24 @@ export default function Discounts() {
                   onChange={handleInputChange}
                 />
               </Grid>
+              <Grid item xs={12} md={6} className="pr-4 mt-4">
+                <label className="text-[#344054] text-sm font-medium">
+                  User Max Limit <span className="text-red-500">*</span>
+                </label>
+                <br />
+                <TextField
+                  name="userMaxLimit"
+                  value={discountData.userMaxLimit}
+                  type="number"
+                  className="w-full font-mont"
+                  placeholder="Max using limit"
+                  size="small"
+                  InputProps={{
+                    className: InputClasses,
+                  }}
+                  onChange={handleInputChange}
+                />
+              </Grid>
               <Grid item xs={12} md={6} className="pr-4">
                 <label className="text-[#344054] text-sm font-medium">
                   Status <span className="text-red-500">*</span>
@@ -171,7 +217,6 @@ export default function Discounts() {
                 <select
                   name="isActive"
                   className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
-                  value={}
                   onChange={handleInputChange}
                 >
                   <option value={true}>Active</option>
@@ -182,9 +227,9 @@ export default function Discounts() {
               <Grid item xs={12}>
                 <button
                   className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5"
-                  onClick={createDiscount}
+                  onClick={btntext ? createDiscount : hendleUpdateDiscount}
                 >
-                  Apply Discount
+                  {btntext ? "Apply Discount" : "Update Discount"}
                 </button>
               </Grid>
             </Grid>
@@ -195,7 +240,10 @@ export default function Discounts() {
       {/* Display existing discounts */}
       <Grid container className="mt-14">
         <Grid item xs={12}>
-          <DiscountGrid />
+          <DiscountGrid
+            setbtntext={setbtntext}
+            setDiscountData={setDiscountData}
+          />
         </Grid>
       </Grid>
     </div>

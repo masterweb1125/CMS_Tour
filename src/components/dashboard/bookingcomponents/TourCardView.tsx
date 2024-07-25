@@ -8,7 +8,7 @@ import { IconButton } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
-const TourCardView = ({ tour, user }) => {
+const TourCardView = ({ tour, user,userUrl }) => {
  
   return (
     <div className="card tour-card p-4 flex flex-col rounded-2xl gap-6  bg-white shadow-md">
@@ -70,7 +70,7 @@ const TourCardView = ({ tour, user }) => {
       <div className="card-actions flex flex-row gap-2">
       
 
-        <Link className="w-full" href={`/dashboard/booking/${tour._id}`}>
+        <Link className="w-full" href={`${userUrl}${tour._id}`}>
           <button
             type="submit"
             className="rounded-lg py-2 px-4 btn btn-outline w-full max-w bg-gray-variant text-black-variant font-semibold text-xs leading-4"

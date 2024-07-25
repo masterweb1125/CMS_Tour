@@ -51,7 +51,7 @@ function Booking() {
         <Grid container mt={3} spacing={3}>
           {tours.length !== 0 && tours.map((tour) => (
             <Grid item xs={12} md={4} key={tour._id}>
-              <TourCardView tour={tour} user={user} />
+              <TourCardView userType={'dashboard'} tour={tour} user={user} />
             </Grid>
           ))}
         </Grid>

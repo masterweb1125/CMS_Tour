@@ -3,7 +3,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchInput from '@/src/components/dashboard/dashboardComponents/SearchInput';
-import { GetAllDiscounts } from '@/src/redux/service/AdminApi';
+import { GetAllDiscounts, UpdateDiscount } from '@/src/redux/service/AdminApi';
 
 const columns = [
   '#',
@@ -16,8 +16,9 @@ const columns = [
   'Action',
 ];
 
-function DiscountGrid() {
+function DiscountGrid({setDiscountData,setbtntext}) {
   const [discount, setDiscount] = useState([]);
+  const [activePopup,setActivePopup] = useState(null);
 
   // Fetch discounts from API
   const fetchDiscounts = async () => {
@@ -31,7 +32,8 @@ function DiscountGrid() {
 
   useEffect(() => {
     fetchDiscounts();
-  }, []);
+  }
+);
 
   // Format expiration date
   const formatDate = (dateString) => {
@@ -77,7 +79,30 @@ function DiscountGrid() {
 
     return <CSVLink {...csvReport}><button className=''>CSV Export</button></CSVLink>;
   };
+const handlePopup = async(id)=>{
+ setActivePopup(activePopup == id?null:id)
+}
+const handleSetData = (data)=>{
+  setbtntext(false)
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  })
+ setDiscountData(data)
+}
 
+const handleActiveStatusChange = async(data)=>{
+
+    const res = await UpdateDiscount(data._id, {
+      name: data.name,
+      value: data.value,
+      expirationDate: data.expirationDate,
+      usageLimit: data.usageLimit,
+      userMaxLimit: data.userMaxLimit,
+      isActive: data.isActive?false:true,
+    });
+
+}
   return (
     <div className="border pt-8 rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
@@ -146,6 +171,7 @@ function DiscountGrid() {
                 {discount.length > 0 &&
                   discount.map((item, i) => (
                     <tr
+               
                       key={item._id}
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
@@ -170,7 +196,16 @@ function DiscountGrid() {
                         {formatDate(item.expirationDate)}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        <BsThreeDotsVertical />
+                       <button onClick={()=>handlePopup(item._id)} className=' p-2 rounded-fill relative rounded-full hover:bg-gray-300 text-xl'><BsThreeDotsVertical />
+                       {
+                        activePopup == item._id &&  <div id={item._id} className='absolute z-[1000] text-sm bottom-[-100px] right-1 flex flex-col  w-[180px] rounded-[5px] bg-white' style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+                        <button onClick={()=>handleSetData(item)} className='py-3  hover:bg-gray-400 px-2 border-b border-gray-400 text-[#344054] text-left'>Update</button>
+                        <button onClick={()=>handleActiveStatusChange(item)} className='py-3 hover:bg-gray-400 px-2 text-[#344054] text-left'>{item.isActive?'Inactive': 'Active'}</button>
+                       
+
+                      </div>
+                       }
+                       </button> 
                       </td>
                     </tr>
                   ))}

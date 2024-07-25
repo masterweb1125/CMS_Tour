@@ -1,12 +1,24 @@
 "use client";
 import WalletGrid from "@/src/components/admin/wallet/WalletGrid";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import { GetAgencyAngeSupplier } from "@/src/redux/service/AdminApi";
 import { Grid, TextField } from "@mui/material";
+import { userAgent } from "next/server";
+import { useEffect, useState } from "react";
 
 const columns = ["#", "User", "Date", "Action"];
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
 export default function Wallet() {
+  const [user, setuser] = useState([]);
+
+  const fetch = async () => {
+    const res = await GetAgencyAngeSupplier();
+    setuser(res.data);
+  };
+  useEffect(() => {
+    fetch();
+  }, []);
   return (
     <div>
       <Grid container mb={3} spacing={3}>
@@ -47,35 +59,12 @@ export default function Wallet() {
                 </label>
                 <br />
                 <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
-                  <option>Select User</option>
+                  <option selected disabled>
+                    Select User
+                  </option>
+                  {user.length != 0 && user.map((item) => <option>{item.name} - {item.email} - {item.rolename}</option>)}
                 </select>
               </Grid>
-
-              <Grid item xs={12} md={6} className="pr-4">
-                <label className="text-[#344054] text-sm font-medium">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <TextField
-                  className="w-full font-mont"
-                  placeholder="Enter name"
-                  size="small"
-                  InputProps={{
-                    className: InputClasses,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6} className="pr-4 mt-4">
-                <label className="text-[#344054] text-sm font-medium">
-                  Currency <span className="text-red-500">*</span>
-                </label>
-                <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
-                  <option>Select Currency</option>
-                </select>
-              </Grid>
-
               <Grid item xs={12} md={6} className="pr-4 mt-4">
                 <label className="text-[#344054] text-sm font-medium">
                   Amount <span className="text-red-500">*</span>
@@ -118,7 +107,7 @@ export default function Wallet() {
 
       <Grid container className="mt-14">
         <Grid item xs={12}>
-          <WalletGrid  />
+          <WalletGrid />
         </Grid>
       </Grid>
     </div>

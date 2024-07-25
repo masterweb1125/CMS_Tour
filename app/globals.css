@@ -19,6 +19,15 @@
 body {
 
 }
+@keyframes blink {
+  0%, 100% { background-color: initial; }
+  25%, 75% { background-color: yellow; }
+}
+
+.blink {
+  animation: blink 1s linear 2; /* Blink for 1 second, repeat 2 times */
+}
+
 
 @layer utilities {
   .text-balance {

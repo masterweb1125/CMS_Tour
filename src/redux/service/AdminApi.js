@@ -279,7 +279,7 @@ try {
 
 export const CreateDiscount = async (data)=>{
   try {
-    const res = await API_DOMAIN.post('/api/v1/discount/create',{data});
+    const res = await API_DOMAIN.post('/api/v1/discount/create',{...data});
     return res.data;
   } catch (error) {
     console.log("Error in discount creation",error)
@@ -287,7 +287,7 @@ export const CreateDiscount = async (data)=>{
 }
 export const UpdateDiscount = async (id,data)=>{
   try {
-    const res = await API_DOMAIN.put(`/api/v1/discount/update/${id}`,{data});
+    const res = await API_DOMAIN.put(`/api/v1/discount/update/${id}`,{...data});
     return res.data;
   } catch (error) {
     console.log("Error in discount creation",error)
@@ -300,4 +300,16 @@ export const DeleteDiscount = async (id)=>{
   } catch (error) {
     console.log("Error in discount creation",error)
   }
+}
+export const GetAgencyAngeSupplier = async ()=>{
+  try {
+    const res = await API_DOMAIN.post('/api/v1/auth/agency-supplier');
+    return res.data;
+  } catch (error) {
+    console.log("Error get agency and suppliers")
+  }
+}
+
+export const CreateTransaction =async ()=>{
+  
 }
