@@ -1,10 +1,13 @@
 import { KababMenu } from "@/src/components/dashboard/dashboardComponents/CardItems";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import { DateformateMonthNameDateYear } from "@/src/redux/service/AdminApi";
 import { Grid } from "@mui/material";
+import { TemplateContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const columns = ["#", "Type", "Funded", "Date", "Comments"];
 
-function WalletGrid() {
+function WalletGrid({ transactions }) {
+  console.log(transactions)
   return (
     <div className="border pt-8 rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
@@ -60,42 +63,16 @@ function WalletGrid() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">1</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">24</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">
-                    this is well planned trip drove by this company
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">2</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">24</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">
-                    this is well planned trip drove by this company
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">3</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">24</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">
-                    this is well planned trip drove by this company
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4 font-medium">4</td>
-                  <td className="px-6 py-4 font-medium">agency</td>
-                  <td className="px-6 py-4 font-medium">24</td>
-                  <td className="px-6 py-4 font-medium">10-2-2024</td>
-                  <td className="px-6 py-4 font-medium">
-                    this is well planned trip drove by this company
-                  </td>
-                </tr>
+                {
+                 transactions.length != 0 && transactions.map((item,i) => (
+                    <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <td className="px-6 py-4 font-medium">{i+1}</td>
+                      <td className="px-6 py-4 font-medium">{item.rolename}</td>
+                      <td className="px-6 py-4 font-medium">{item.amount}</td>
+                      <td className="px-6 py-4 font-medium">{DateformateMonthNameDateYear(item.createdAt)}</td>
+                      <td className="px-6 py-4 font-medium">{item.comment}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

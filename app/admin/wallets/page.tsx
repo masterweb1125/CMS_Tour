@@ -1,32 +1,74 @@
 "use client";
 import WalletGrid from "@/src/components/admin/wallet/WalletGrid";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
-import { GetAgencyAngeSupplier } from "@/src/redux/service/AdminApi";
+import { CreateTransaction, GetAgencyAngeSupplier, GetAllTransactions } from "@/src/redux/service/AdminApi";
 import { Grid, TextField } from "@mui/material";
-import { userAgent } from "next/server";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const columns = ["#", "User", "Date", "Action"];
 const InputClasses = "font-mont text-xs rounded-lg hover:outline-none";
 
 export default function Wallet() {
-  const [user, setuser] = useState([]);
+  const [user, setUser] = useState([]);
+  const [transactions,settransactions] = useState([]);
+  const [newTransaction, setNewTransaction] = useState({
+    userId: "",
+    type: "credit",
+    amount: 0,
+    actualAmount:0,
+    currency: "USD",
+    comment: "",
+  });
 
   const fetch = async () => {
     const res = await GetAgencyAngeSupplier();
-    setuser(res.data);
+    const transactionsData = await GetAllTransactions();
+    settransactions(transactionsData.data)
+    setUser(res.data);
   };
+
   useEffect(() => {
     fetch();
   }, []);
+
+  const handleChange = (e) => {
+    setNewTransaction({...newTransaction, actualAmount:newTransaction.amount})
+    const { name, value } = e.target;
+    setNewTransaction((prev) => ({
+      
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const reset = ()=>{
+    setNewTransaction({userId: "",
+      type: "credit",
+      amount: 0,
+      actualAmount:0,
+      currency: "USD",
+      comment: "",})
+  }
+const AddFund = async()=>{
+ 
+const res = await CreateTransaction(newTransaction);
+if(res.status){
+  toast.success("Success fully Add funds")
+  reset()
+}else {
+  toast.error("Some thing Want wrong")
+}
+
+}
   return (
     <div>
+      <Toaster/>
       <Grid container mb={3} spacing={3}>
         <Grid item xs={12} md={4}>
           <div>
             <h1 className="text-2xl font-semibold">Wallet</h1>
             <h6 className="text-xs text-[#475467] pt-1 md:pt-0">
-              Fund any wallet quickly. you can enter a negatice amount to deduct
+              Fund any wallet quickly. you can enter a negative amount to deduct
               from wallet.
             </h6>
           </div>
@@ -58,11 +100,21 @@ export default function Wallet() {
                   Select User <span className="text-red-500">*</span>
                 </label>
                 <br />
-                <select className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none">
+                <select
+                  name="userId"
+                  value={newTransaction.userId}
+                  onChange={handleChange}
+                  className="w-full border-solid border py-2 border-opacity-20 pl-2 rounded-lg border-black-variant bg-[#FBFBFB] outline-none"
+                >
                   <option selected disabled>
                     Select User
                   </option>
-                  {user.length != 0 && user.map((item) => <option>{item.name} - {item.email} - {item.rolename}</option>)}
+                  {user.length !== 0 &&
+                    user.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name} - {item.email} - {item.rolename}
+                      </option>
+                    ))}
                 </select>
               </Grid>
               <Grid item xs={12} md={6} className="pr-4 mt-4">
@@ -71,6 +123,9 @@ export default function Wallet() {
                 </label>
                 <br />
                 <TextField
+                  name="amount"
+                  value={newTransaction.amount}
+                  onChange={handleChange}
                   className="w-full font-mont"
                   placeholder="Enter amount"
                   size="small"
@@ -86,6 +141,9 @@ export default function Wallet() {
                 </label>
                 <br />
                 <TextField
+                  name="comment"
+                  value={newTransaction.comment}
+                  onChange={handleChange}
                   className="w-full font-mont"
                   placeholder="Enter Comment"
                   size="small"
@@ -96,7 +154,7 @@ export default function Wallet() {
               </Grid>
 
               <Grid item xs={12}>
-                <button className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
+                <button onClick={AddFund} className="bg-[#FFA500] text-white font-medium text-xs px-6 py-2 rounded-lg mt-5">
                   Fund Wallet
                 </button>
               </Grid>
@@ -107,7 +165,7 @@ export default function Wallet() {
 
       <Grid container className="mt-14">
         <Grid item xs={12}>
-          <WalletGrid />
+          <WalletGrid transactions={transactions} />
         </Grid>
       </Grid>
     </div>

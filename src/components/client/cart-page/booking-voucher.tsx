@@ -1,10 +1,14 @@
 "use client";
+import { CreateTransaction } from "@/src/redux/service/AdminApi";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
 import Image from "next/image";
+import { MdOutlineCancel } from "react-icons/md";
 import React, { useEffect, useRef, useState } from "react";
+import ClearIcon from '@mui/icons-material/Clear';
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaFacebook, FaPinterest } from "react-icons/fa";
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 const PaymentStatus = ({ status = "unknown" }) => {
   // Ensure status is a string and set to lowercase
   const normalizedStatus =
@@ -22,30 +26,45 @@ const PaymentStatus = ({ status = "unknown" }) => {
 
   return (
     <p
-      className={`px-[12px] py-[7px] rounded-[8px] font-normal text-[1rem] text-white ${statusClass}`}
+      className={`px-[12px] flex items-center justify-center py-[7px] rounded-[8px] font-normal text-[1rem] text-white ${statusClass}`}
     >
       {status}
     </p>
   );
 };
 
-const BookingVoucher = (data: any) => {
+const BookingVoucher = (data) => {
   const [BookingVoucher, setBookingVoucher] = useState(null);
 
   const voucherRef = useRef(null);
+console.log(data)
 
   const hendleFetchBoking = async () => {
     try {
-      const { user, tour, bookingDate } = data.data;
-      console.log("data", data.data);
+      const { user, tour, bookingDate, transaction } = data.data;
       const url = `/api/v1/booking/Voucher`;
       const res = await API_DOMAIN.post(url, data.data);
       setBookingVoucher(res.data);
-      console.log("responce", res);
+      console.log("data", res.data);
+  
+      // Create the transaction
+      const transactionData = {
+        ...transaction,
+        bookingId: res.data.booking._id,
+        userId: user,
+      };
+      const transationResponse = await CreateTransaction(transactionData);
+  
+      if (transationResponse.status) {
+        console.log("Transaction successful", transationResponse);
+      } else {
+        console.error("Transaction failed", transationResponse);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+ 
 
   useEffect(() => {
     hendleFetchBoking();
@@ -72,6 +91,7 @@ const BookingVoucher = (data: any) => {
         currentVoucherRef.removeEventListener("scroll", handleScroll);
       }
     };
+    // document.body.style.overflowY /
   }, []);
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -115,11 +135,15 @@ const BookingVoucher = (data: any) => {
   }
 
   return (
-    <div className="w-[100vw] h-[100vh] fixed z-50 top-0 left-0 bg-opacity-black-color flex items-center justify-center overflow-y-auto">
-      {/* Main card div started */}
+    <div className="w-[100vw] h-screen fixed z-50 top-0 left-0 bg-opacity-black-color flex items-center justify-center overflow-y-auto">
+    
+        <button  className="absolute top-[20px] right-[100px] px-[10px] py-[5px] bg-white text-3xl z-[1000000000]">
+          <ClearIcon/>
+        </button>
+    
       <div
         ref={voucherRef}
-        className="w-[85%]  mt-5 bg-white px-9 py-16 overflow-y-auto h-[90vh]"
+        className="w-[85%] relative  h-[90%] mt-5 bg-white px-9 py-16 overflow-y-auto scrol"
       >
         <div className="w-full h-full">
           <div className="w-full flex items-center h-[150px] justify-center relative">
@@ -196,7 +220,7 @@ const BookingVoucher = (data: any) => {
           <div>
             <div className="flex items-center justify-between mt-10">
               <h2 className="text-[1.4rem] font-semibold">Tour Itinerary :</h2>
-              <button className="border-b-2 border-[#0400b2] text-[#0400b2]">
+              <button  className="border-b-2 border-[#0400b2] text-[#0400b2]">
                 Itinerary pdf Download
               </button>
             </div>

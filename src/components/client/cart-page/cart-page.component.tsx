@@ -12,12 +12,13 @@ import {
   usePayPalScriptReducer,
   FUNDING,
 } from "@paypal/react-paypal-js";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/src/redux/features/User.Slice";
+import { ApplyDiscountCode, checkBooking, CreateBooking } from "@/src/redux/service/AdminApi";
 interface CartItem {
   sku: string;
   quantity: number;
@@ -110,7 +111,7 @@ const faqs = [
   },
 ];
 
-const CartPage = () => {
+const CartPage = ({setBookingVoucherStatus,setBookingData}) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState("option1");
   const [createbookingstatus, setcreatebookingstatus] = useState(false);
@@ -118,8 +119,23 @@ const CartPage = () => {
   const cart: any = useSelector((root: any) => root?.User?.cart);
   const User: any = useSelector((root: any) => root.User.UserInfo);
   const roo: any = useSelector((root: any) => root);
+  const [discount,setdiscount] = useState({userId:User?._id,code:"",orderTotal:cart?.price})
+  const [discountErrorMessage,setdiscountErrorMessage] = useState('');
+  const [disable,setdisable] = useState(0);
+  const [bookingApiResponce,setbookingApiResponce] = useState(null)
+  const [totalprice,settotalprice] =  useState(cart?.price?cart.price:0);
+  const [transation,settransation] = useState({ 
+    discountId:null,
+    raferralId:null,
+    discountAmount:0,
+    raferralAmount:0,
+    actualAmount:0,
+    amount:0,
+    comment:"",
+    type:'stripe'
+  })
   // console.log("User :", User);
-  console.log("Cart :",roo);
+  // console.log("Cart :",roo);
 
   const toggleAccordion = (index: any) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -133,9 +149,53 @@ const CartPage = () => {
   const removeItem = () => {
     dispatch(addToCart({}));
   };
+const hendleDiscountCodeChange = (e)=>{
+  setdiscount({...discount,code:e.target.value})
+  if(discount.code != ''){
+    setdiscountErrorMessage('')
+  }
+}
+useEffect(()=>{
+  settransation({...transation,actualAmount:cart?.price})
+  if(totalprice === 0) {
+    setdisable(3)
+  }
+},[])
+const handleApplyDiscount = async ()=>{
+try {
+  if (!discount.code != "") {
+    return setdiscountErrorMessage('Please fill promo code')
+  }
+  const res = await ApplyDiscountCode(discount);
+  console.log(res)
+  if (res){
+   if(!res.status){
+    setdiscountErrorMessage(res.msg);
+   }else{
+    setdiscountErrorMessage('')
+    settotalprice(res.newTotal)
+    setdisable(2)
+    settransation({...transation,discountId:res.data._doc._id,discountAmount:res.newTotal,amount:res.newTotal})
+   }
+  }
+} catch (error) {
+ console.log(error)
+}
 
+}
+const checking = async ()=>{
+  const res = await checkBooking({user:User._id,tour:cart.tourId,bookingDate:cart.date})
+  return res;
+}
   const handlePaymentMethod = async (e: any) => {
-    toast.success("handle payment gateway");
+       const bookingcheck = await checking();
+       console.log(bookingcheck);
+       if(!bookingcheck.status){
+        toast.error('Your booking Already exist')
+        return
+       }
+    
+   
 
     try {
       const stripe = await loadStripe(
@@ -143,7 +203,7 @@ const CartPage = () => {
       );
 
       const res = await API_DOMAIN.post(`/api/v1/payment/checkout`, {
-        amount: cart?.price,
+        amount: totalprice,
         data: {
           confirm: false,
           user: User._id,
@@ -159,7 +219,8 @@ const CartPage = () => {
           duration: cart.duration,
           totalPrice: cart.price,
           agency :cart.agencyId,
-          languge:cart.languge
+          languge:cart.languge,
+          transaction:transation
           // tourRequiredPrice: '',
         },
       });
@@ -179,13 +240,18 @@ const CartPage = () => {
   };
   const hendleCreateBooking = async (data: any) => {
     try {
-      const res = await API_DOMAIN.post("/api/v1/booking", { ...data });
-      return await res;
+      const res = await CreateBooking(data);
+      return  res;
     } catch (error) {
       console.log("Create booking functiuon error", error);
     }
   };
-  useEffect(() => {
+  const fetch  = async(data)=>{
+    const res = await hendleCreateBooking(data)
+    return res  
+  }
+useEffect(() => {
+   const funtion  = ()=>{
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const dataParam = urlParams.get("data");
@@ -206,10 +272,11 @@ const CartPage = () => {
         departTime,
         duration,
         languge,
+        transaction
       } = data;
       console.log("Parems Data", data);
 
-      const res = hendleCreateBooking({
+      const res =  fetch({
         user,
         tour,
         paymentType,
@@ -224,13 +291,15 @@ const CartPage = () => {
         duration,
         languge,
       });
-      console.log("create booking api call",res);
-      setcreatebookingstatus(true);
+     
     }
+   }
+   funtion()
   }, [createbookingstatus]);
   return (
 
     <div className="px-4 md:px-20 lg:px-30 relative">
+      <Toaster/>
       <h1 className="pt-14 text-3xl font-bold md:text-2xl md:font-semibold font-mont text-[#000]">
         Complete Your Booking
       </h1>
@@ -284,7 +353,7 @@ const CartPage = () => {
                   </div>
                   <div className="price ">
                     <p className="text-[#FFA500] font-mont font-semibold text-2xl">
-                      ${cart?.price}
+                      ${totalprice}
                     </p>
                   </div>
                 </div>
@@ -506,7 +575,7 @@ const CartPage = () => {
                 Total
               </p>
               <p className="text-[#FFA500] font-semibold text-2xl font-mont">
-                ${cart?.price}
+                ${totalprice}
               </p>
             </div>
             <p className=" text-[#323232] text-base font-medium font-mont pt-3 ">
@@ -553,13 +622,17 @@ const CartPage = () => {
                 <p className="text-md font-medium text-[#323232]">
                   Apply Promo Code
                 </p>
-                <div className="apply_form w-full flex gap-2 py-2">
+                <p className="text-sm mt-2 font-normal text-red-600">{discountErrorMessage}</p>
+                <div className="apply_form w-full flex  gap-2 py-2">
                   <input
-                    className="bg-[#FBFBFB] text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
+                   disabled={disable === 1?true:false || disable === 3?true:false}
+                    className="bg-[#FBFBFB]  text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
                     type="text"
+                    value={discount.code}
+                    onChange={hendleDiscountCodeChange}
                     placeholder="Enter Code"
                   />
-                  <button className="text-sm border-opacity-20  border-solid py-2 px-6 border rounded-lg border-black-variant">
+                  <button   disabled={disable === 1?true:false || disable === 3?true:false} onClick={handleApplyDiscount} className="text-sm border-opacity-20  border-solid py-2 px-6 border rounded-lg border-black-variant">
                     Apply
                   </button>
                 </div>
@@ -571,11 +644,12 @@ const CartPage = () => {
                 </p>
                 <div className="apply_form w-full flex gap-2 py-2">
                   <input
+                   disabled={disable === 2?true:false || disable === 3?true:false}
                     className="bg-[#FBFBFB] text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
                     type="text"
                     placeholder="Enter Code"
                   />
-                  <button className="text-sm border-opacity-20 border-solid py-2 px-6 border rounded-lg border-black-variant">
+                  <button   disabled={disable === 2?true:false || disable === 3?true:false} className="text-sm border-opacity-20 border-solid py-2 px-6 border rounded-lg border-black-variant">
                     Apply
                   </button>
                 </div>
@@ -586,7 +660,7 @@ const CartPage = () => {
                   <p className="text-2xl font-medium text-[#000]">Total</p>
                   <p className="text-2xl font-medium text-[#000]">
                     {" "}
-                    ${cart?.price}
+                    ${totalprice}
                   </p>
                 </div>
                 <p className="text-[#323232] font-medium text-sm">
@@ -596,7 +670,7 @@ const CartPage = () => {
                 <button
                   onClick={handlePaymentMethod}
                   className="bg-[#FFA500] text-white font-semibold font-mont  text-xl px-4 py-2 rounded-md w-full mt-4"
-                  disabled={cart?.price ? false : true}
+                  disabled={totalprice != 0 ? false : true}
                 >
                   Pay Now
                 </button>

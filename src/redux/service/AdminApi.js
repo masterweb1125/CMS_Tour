@@ -310,6 +310,46 @@ export const GetAgencyAngeSupplier = async ()=>{
   }
 }
 
-export const CreateTransaction =async ()=>{
+export const CreateTransaction =async (data)=>{
+  try {
+    const res =await API_DOMAIN.post('/api/v1/transaction',{...data});
+    return res.data
+  } catch (error) {
+    console.log("Error in Create Transaction")
+  }
   
+}
+export const GetAllTransactions = async ()=>{
+  try {
+    const res = await API_DOMAIN.get('/api/v1/transaction');
+    return res.data;
+  } catch (error) {
+    console.log("Errro in get al transactions")
+  }
+}
+
+export const ApplyDiscountCode = async (data)=>{
+  try {
+    const res = await API_DOMAIN.post('/api/v1/discount/apply',{...data});
+    return res.data;
+  } catch (error) {
+    console.log('Error in apply discount code',error);
+  }
+}
+ export const CreateBooking = async (data) => {
+  try {
+    const res = await API_DOMAIN.post("/api/v1/booking", { ...data });
+    return  res.data;
+  } catch (error) {
+    console.log("Create booking functiuon error", error);
+  }
+};
+
+export const checkBooking = async(data)=>{
+  try {
+    const res = await API_DOMAIN.post('/api/v1/booking/check',{...data});
+    return res.data;
+  } catch (error) {
+    console.log('Error in check booking');
+  }
 }

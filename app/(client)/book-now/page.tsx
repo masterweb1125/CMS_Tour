@@ -22,10 +22,13 @@ const Client_TourDetail = () => {
     }
    
   },[])
-  
+  const handleToogleVoucher = ()=>{
+    console.log('working')
+    setBookingVoucherStatus(!BookingVoucherStatus)
+  }
   return (
     <div className="relative m-0 p-0  overflow-x-hidden ">
-      {BookingVoucherStatus?<BookingVoucher data={...BookingData}/>:""}
+      {BookingVoucherStatus?<BookingVoucher  data={BookingData}/>:""}
       <Client_Hero
         bgImage={AddToCard.src}
         title={"Explore The World"}
@@ -36,7 +39,7 @@ const Client_TourDetail = () => {
         }
         smallText={true}
       />
-      <CartPage />
+      <CartPage  setBookingData={setBookingData} />
     </div>
   );
 };

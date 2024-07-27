@@ -28,7 +28,7 @@ const Page = () => {
   }
   return (
     <div className="bg-gray-400 fixed top-0 w-screen flex justify-center items-center z-50 h-screen">
-      <div className="bg-white p-6 w-[30%]">
+      <div className="bg-white p-6 w-[90%] sm:w-[35%] md:w-[45%]">
         <svg viewBox="0 0 24 24" className="text-green-600 w-16 h-16 mx-auto my-6">
           <path
             fill="currentColor"
@@ -40,8 +40,8 @@ const Page = () => {
           <p className="text-gray-600 my-2">Thank you for completing your secure online payment.</p>
           <p>Have a great day!</p>
           <div className="py-10 text-center">
-            <button onClick={handleGoBack}>
-              {/* <a className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"> */}
+            <button className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3" onClick={handleGoBack}>
+              {/* <a > */}
                 GO BACK
               {/* </a> */}
             </button>
