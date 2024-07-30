@@ -12,7 +12,7 @@ import Link from 'next/link'
 
 type Props = {}
 
-const Client_Footer = (props: Props) => {
+const Client_Footer = ({setting}: Props) => {
   return (
     <footer className='bg-primary w-full pt-16'>
       <div className='max-w-7xl m-auto px-4'>
@@ -23,22 +23,22 @@ const Client_Footer = (props: Props) => {
             </div>
             <p className='font-normal'>To taske Trival example which us ever undertakes laborious physica Exerpicne expert osome</p>
             <div className="icons-list flex flex-row gap-3">
-              <Link href="#" passHref>
+              <Link href={setting != null ?setting.socialLinks.facebook:'/'} passHref>
                 <div className='bg-white rounded-full w-10 h-10 flex justify-center items-center'>
                 <i className="lni lni-facebook-fill text-2xl text-black"></i>
                 </div>
               </Link>
-              <Link href="#" passHref>
+              <Link href={setting != null ?setting.socialLinks.twitter:'/'} passHref>
                 <div className='bg-white rounded-full w-10 h-10 flex justify-center items-center'>
                 <i className="lni lni-twitter-fill text-2xl text-black"></i>
                 </div>
               </Link>
-              <Link href="#" passHref>
+              <Link href={setting != null ?setting.socialLinks.pinterest:'/'} passHref>
                 <div className='bg-white rounded-full w-10 h-10 flex justify-center items-center'>
                 <i className="lni lni-pinterest text-2xl text-black"></i>
                 </div>
               </Link>
-              <Link href="#" passHref>
+              <Link href={setting != null ?setting.socialLinks.instagram:'/'} passHref>
                 <div className='bg-white rounded-full w-10 h-10 flex justify-center items-center'>
                 <i className="lni lni-instagram-original text-2xl text-black"></i>
                 </div>
@@ -109,7 +109,7 @@ const Client_Footer = (props: Props) => {
                     Drop a line
                   </div>
                   <div className="item-text text-sm font-medium leading-6">
-                    +00 -249920-3323
+                   {setting != null ?setting.contactInfo.phoneNo:"000-000000000"}
                   </div>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const Client_Footer = (props: Props) => {
                     Email Address
                   </div>
                   <div className="item-text text-sm font-medium leading-6">
-                    gadai@gad.com
+                  {setting != null ?setting.contactInfo.email:"example@gmail.com"}
                   </div>
                 </div>
               </div>
@@ -151,7 +151,7 @@ const Client_Footer = (props: Props) => {
                     Visit Office
                   </div>
                   <div className="item-text text-sm font-medium leading-6">
-                    583 main street, NY, USA
+                  {setting != null ?setting.contactInfo.address:" 583 main street, NY, USA"}
                   </div>
                 </div>
               </div>

@@ -1,8 +1,13 @@
-import { Grid } from "@mui/material";
+"use client"
+import { Box, Button, ButtonGroup, Grid } from "@mui/material";
 import { KababMenu } from "@/src/components/dashboard/dashboardComponents/CardItems";
-
+import { GetBookingWithTourData, hendleGetAllBookings } from "@/src/redux/service/AdminApi";
+import { useEffect, useState } from "react";
+import { CSVLink } from 'react-csv';
+import { saveAs } from 'file-saver';
+import { handleWebpackExternalForEdgeRuntime } from "next/dist/build/webpack/plugins/middleware-plugin";
 const columns = [
-  "ID",
+  "#",
   "Tour Name",
   "Person",
   "Price",
@@ -14,8 +19,72 @@ const columns = [
 ];
 
 function BookingReports() {
+  const [bookings,setbookings] = useState([]);
+const fetch = async()=>{
+  const res =await GetBookingWithTourData();
+  setbookings(res.data)
+}
+useEffect(()=>{
+fetch()
+},[])
+
+const handleExportCSV = () => {
+  const csvData = bookings.map((item, index) => ({
+    '#': index + 1,
+    'Tour Name': item.tour.name,
+    'Person': `adult ${item.totalAdult},child ${item.totalChild},infant ${item.totalInfant}`,
+    'Price': item.totalprice,
+    'Time': item.departTime,
+    'Payment Status': item.paymentStatus,
+     'Travel Date':item.bookingDate,
+    'Status': item.status?item.status:'pending',
+  }));
+
+  // Generate CSV file
+  const headers = columns.map((column) => ({ label: column, key: column }));
+  const csvReport = {
+    data: csvData,
+    headers: headers,
+    filename: 'bookingReport.csv',
+  };
+
+  return <CSVLink {...csvReport}><button className=''>CSV Export</button></CSVLink>;
+};
+const handleExportCSVForSingleBooking = (data) => {
+  const csvData = [1].map((item, index) => ({
+    "#": index + 1,
+    "Tour Name": data.tour.name,
+    Person: `adult ${data.totalAdult},child ${data.totalChild},infant ${data.totalInfant}`,
+    Price: data.totalPrice,
+    Time: data.departTime,
+    "Payment Status": data.paymentStatus,
+    "Travel Date": data.bookingDate,
+    Status: data.status ? data.status : "pending",
+  }));
+
+  const headers = Object.keys(csvData[0]).join(',');
+  const rows = csvData.map((row) => 
+    Object.values(row).map(value => `"${value}"`).join(',')
+  ).join('\n');
+
+  const csvContent = `${headers}\n${rows}`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  saveAs(blob, 'bookingReport.csv');
+};
+
   return (
     <div className="rounded-lg mb-3">
+      
+      <div className="w-full flex items-end justify-end my-6">
+      <ButtonGroup
+            variant="contained"
+            className="bg-[#FFA500] px-3 py-2 text-white"
+            color="inherit"
+          >
+            {handleExportCSV()}
+          </ButtonGroup>
+          </div>
       <Grid container>
         <Grid item xs={12}>
           <div className="relative overflow-x-auto border rounded-md">
@@ -34,26 +103,26 @@ function BookingReports() {
                 </tr>
               </thead>
               <tbody>
-                {[1, 2, 3, 4, 4, 1, 2, 3, 4, 4, 1, 2, 3, 4, 4].map(
-                  (_, index) => (
+                {bookings.map(
+                  (item, index) => (
                     <tr
-                      key={index}
+                      key={item._id}
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                     >
-                      <td className="px-6 py-4 font-medium">232323</td>
+                      <td className="px-6 py-4 font-medium">{index + 1}</td>
                       <td className="px-6 py-4 font-medium">
-                        Maldive To Lahore
+                       {item.tour.name}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        adult 1, child 03
+                        adult {item.totalAdult?item.totalAdult:0}, child {item.totalChild?item.totalChild:0},infant {item.totalInfant?item.totalInfant:0}
                       </td>
-                      <td className="px-6 py-4 font-medium">$9093</td>
-                      <td className="px-6 py-4 font-medium">10:00 Am</td>
-                      <td className="px-6 py-4 font-medium">Confirm</td>
-                      <td className="px-6 py-4 font-medium">10-2-2024</td>
-                      <td className="px-6 py-4 font-medium">Confirm</td>
+                      <td className="px-6 py-4 font-medium">${item.totalPrice}</td>
+                      <td className="px-6 py-4 font-medium">{item.departTime}</td>
+                      <td className="px-6 py-4 font-medium">{item.paymentStatus}</td>
+                      <td className="px-6 py-4 font-medium">{item.bookingDate}</td>
+                      <td className="px-6 py-4 font-medium">{item.status?item.status:'panding'}</td>
                       <td className="px-6 py-4 font-medium">
-                        <div className="text-[#1D1AC1] underline">Download</div>
+                        <div onClick={()=>handleExportCSVForSingleBooking(item)} className="text-[#1D1AC1] underline cursor-pointer">Download</div>
                       </td>
                     </tr>
                   )

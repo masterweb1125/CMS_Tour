@@ -18,7 +18,7 @@ import axios from "axios";
 import { API_DOMAIN } from "@/src/redux/service/APIs";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/src/redux/features/User.Slice";
-import { ApplyDiscountCode, checkBooking, CreateBooking } from "@/src/redux/service/AdminApi";
+import { ApplyDiscountCode, ApplyReferralCode, checkBooking, CreateBooking } from "@/src/redux/service/AdminApi";
 interface CartItem {
   sku: string;
   quantity: number;
@@ -26,7 +26,6 @@ interface CartItem {
 
 const style: any = { layout: "vertical" };
 
-// ---------- old create order ---------
 function createOrder(): Promise<string> {
   return fetch(
     "https://react-paypal-js-storybook.fly.dev/api/paypal/create-order",
@@ -45,9 +44,18 @@ function createOrder(): Promise<string> {
       }),
     }
   )
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
     .then((order: { id: string }) => {
       return order.id;
+    })
+    .catch((error) => {
+      console.error("Error creating order:", error);
+      throw error;
     });
 }
 
@@ -62,37 +70,27 @@ function onApprove(data: { orderID: string }): Promise<void> {
 const ButtonWrapper: React.FC<{ showSpinner: boolean }> = ({ showSpinner }) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
+  const fundingSources = [FUNDING.PAYPAL, FUNDING.PAYLATER, FUNDING.CARD];
+
   return (
     <>
       {showSpinner && isPending && <div className="spinner" />}
-      <PayPalButtons
-        style={style}
-        disabled={false}
-        forceReRender={[style]}
-        fundingSource={FUNDING.PAYPAL}
-        createOrder={createOrder}
-        onApprove={onApprove}
-      />
-      <PayPalButtons
-        style={style}
-        disabled={false}
-        forceReRender={[style]}
-        fundingSource={FUNDING.PAYLATER}
-        createOrder={createOrder}
-        onApprove={onApprove}
-      />
-      <PayPalButtons
-        style={style}
-        disabled={false}
-        forceReRender={[style]}
-        fundingSource={FUNDING.CARD}
-        createOrder={createOrder}
-        onApprove={onApprove}
-      />
+      {fundingSources.map((source) => (
+        <PayPalButtons
+          key={source}
+          style={style}
+          disabled={false}
+          forceReRender={[style]}
+          fundingSource={source}
+          createOrder={createOrder}
+          onApprove={onApprove}
+        />
+      ))}
     </>
   );
 };
 
+ 
 const faqs = [
   {
     question: "What your Package Includes",
@@ -120,7 +118,9 @@ const CartPage = ({setBookingVoucherStatus,setBookingData}) => {
   const User: any = useSelector((root: any) => root.User.UserInfo);
   const roo: any = useSelector((root: any) => root);
   const [discount,setdiscount] = useState({userId:User?._id,code:"",orderTotal:cart?.price})
+  const [referral,setreferral] = useState({userId:User?._id,code:"",orderTotal:cart?.price})
   const [discountErrorMessage,setdiscountErrorMessage] = useState('');
+  const [referralErrorMessage,setreferralErrorMessage] = useState('');
   const [disable,setdisable] = useState(0);
   const [bookingApiResponce,setbookingApiResponce] = useState(null)
   const [totalprice,settotalprice] =  useState(cart?.price?cart.price:0);
@@ -155,6 +155,12 @@ const hendleDiscountCodeChange = (e)=>{
     setdiscountErrorMessage('')
   }
 }
+const hendlereferralCodeChange = (e)=>{
+  setreferral({...referral,code:e.target.value})
+  if(referral.code != ''){
+    setreferralErrorMessage('')
+  }
+}
 useEffect(()=>{
   settransation({...transation,actualAmount:cart?.price})
   if(totalprice === 0) {
@@ -183,6 +189,30 @@ try {
 }
 
 }
+
+
+const handleApplyReferral= async ()=>{
+  try {
+    if (!referral.code != "") {
+      return setreferralErrorMessage('Please fill referral code')
+    }
+    const res = await ApplyReferralCode(referral);
+    console.log(res)
+    if (res){
+     if(!res.status){
+      setreferralErrorMessage(res.msg);
+     }else{
+      setreferralErrorMessage('')
+      settotalprice(res.newTotal)
+      setdisable(1)
+      settransation({...transation,raferralId:res.data._doc._id,raferralAmount:res.newTotal,amount:res.newTotal})
+     }
+    }
+  } catch (error) {
+   console.log(error)
+  }
+  
+  }
 const checking = async ()=>{
   const res = await checkBooking({user:User._id,tour:cart.tourId,bookingDate:cart.date})
   return res;
@@ -467,32 +497,20 @@ useEffect(() => {
                 Safe and Secure Payment processing guaranteed. view details
               </p>
 
-              <div className="mt-2 flex justify-between px-2 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]">
+              <div className="mt-2 flex justify-between px-2 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#635bff]">
                 <div className="flex gap-3 items-center">
                   <input
                     value="option1"
                     checked={selectedOption === "option1"}
                     onChange={handleOptionChange}
                     name="credit_card"
+                    className=""
                     id="card"
                     type="radio"
                   />
-                  <label className="text-gray-500 text-sm">Card</label>
+                  <label className="text-white font-bold text-base">Stripe</label>
                 </div>
-                <div className="card">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1.5 17.625C1.5 18.3212 1.77656 18.9889 2.26884 19.4812C2.76113 19.9734 3.42881 20.25 4.125 20.25H19.875C20.5712 20.25 21.2389 19.9734 21.7312 19.4812C22.2234 18.9889 22.5 18.3212 22.5 17.625V10.4062H1.5V17.625ZM4.59375 14.0625C4.59375 13.6895 4.74191 13.3319 5.00563 13.0681C5.26935 12.8044 5.62704 12.6562 6 12.6562H8.25C8.62296 12.6562 8.98065 12.8044 9.24437 13.0681C9.50809 13.3319 9.65625 13.6895 9.65625 14.0625V15C9.65625 15.373 9.50809 15.7306 9.24437 15.9944C8.98065 16.2581 8.62296 16.4062 8.25 16.4062H6C5.62704 16.4062 5.26935 16.2581 5.00563 15.9944C4.74191 15.7306 4.59375 15.373 4.59375 15V14.0625ZM19.875 3.75H4.125C3.42881 3.75 2.76113 4.02656 2.26884 4.51884C1.77656 5.01113 1.5 5.67881 1.5 6.375V7.59375H22.5V6.375C22.5 5.67881 22.2234 5.01113 21.7312 4.51884C21.2389 4.02656 20.5712 3.75 19.875 3.75Z"
-                      fill="black"
-                    />
-                  </svg>
-                </div>
+               
               </div>
               <div className="mt-3 w-full border-solid border border-opacity-20 py-2  pl-2  rounded-lg border-black-variant bg-[#FBFBFB]">
                 <div className="flex gap-3 items-center">
@@ -642,14 +660,18 @@ useEffect(() => {
                 <p className="text-md font-medium text-[#323232]">
                   Apply Referral Code
                 </p>
+                <p className="text-sm mt-2 font-normal text-red-600">{referralErrorMessage}</p>
                 <div className="apply_form w-full flex gap-2 py-2">
                   <input
                    disabled={disable === 2?true:false || disable === 3?true:false}
+                   onChange={hendlereferralCodeChange}
                     className="bg-[#FBFBFB] text-xs border-solid border-opacity-20 border py-2 w-full  pl-2  rounded-lg border-black-variant"
                     type="text"
+                    value={referral.code}
+                    name="code"
                     placeholder="Enter Code"
                   />
-                  <button   disabled={disable === 2?true:false || disable === 3?true:false} className="text-sm border-opacity-20 border-solid py-2 px-6 border rounded-lg border-black-variant">
+                  <button onClick={handleApplyReferral}  disabled={disable === 2?true:false || disable === 3?true:false} className="text-sm border-opacity-20 border-solid py-2 px-6 border rounded-lg border-black-variant">
                     Apply
                   </button>
                 </div>
@@ -674,6 +696,8 @@ useEffect(() => {
                 >
                   Pay Now
                 </button>
+
+
               </div>
             </div>
           </div>

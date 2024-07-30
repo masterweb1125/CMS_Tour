@@ -1,7 +1,7 @@
 "use client";
 import WalletGrid from "@/src/components/admin/wallet/WalletGrid";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
-import { CreateTransaction, GetAgencyAngeSupplier, GetAllTransactions } from "@/src/redux/service/AdminApi";
+import { CreateTransaction, CreateTransactionForWallet, GetAgencyAngeSupplier, GetAllTransactions } from "@/src/redux/service/AdminApi";
 import { Grid, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -30,7 +30,7 @@ export default function Wallet() {
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [true,newTransaction]);
 
   const handleChange = (e) => {
     setNewTransaction({...newTransaction, actualAmount:newTransaction.amount})
@@ -51,7 +51,7 @@ export default function Wallet() {
   }
 const AddFund = async()=>{
  
-const res = await CreateTransaction(newTransaction);
+const res = await CreateTransactionForWallet(newTransaction);
 if(res.status){
   toast.success("Success fully Add funds")
   reset()

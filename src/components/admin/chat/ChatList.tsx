@@ -1,4 +1,7 @@
+"use client"
+import { GetAllAgency } from "@/src/redux/service/AdminApi";
 import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function ChatList({
   columns,
@@ -7,6 +10,15 @@ export default function ChatList({
   columns: any;
   onOpenChat: any;
 }) {
+const [agency,setagency] = useState([])
+  const fetch = async ()=>{
+    const res = await GetAllAgency();
+    setagency(res.data)
+  }
+
+  useEffect(()=>{
+    fetch()
+  },[])
   return (
     <div className="">
       <Grid container mb={3} spacing={3}>
@@ -23,13 +35,13 @@ export default function ChatList({
                 </tr>
               </thead>
               <tbody>
-                {[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2].map((v, i) => (
+                {agency.map((item, i) => (
                   <tr key={i} className="bg-white border-b text-[#888888] dark:bg-gray-800 dark:border-gray-700">
                     <td className="px-6 py-4 font-medium">{i + 1}</td>
-                    <td className="px-6 py-4 font-medium">Agency</td>
-                    <td className="px-6 py-4 font-medium">10-2-2024</td>
+                    <td className="px-6 py-4 font-medium">{item.name}</td>
+                    <td className="px-6 py-4 font-medium">{item.email}</td>
                     <td className="px-6 py-4">
-                      <div onClick={onOpenChat} className="cursor-pointer select-none underline font-medium">
+                      <div onClick={()=>onOpenChat(item)} className="cursor-pointer select-none underline font-medium">
                         View Chat
                       </div>
                     </td>

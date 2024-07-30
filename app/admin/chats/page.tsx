@@ -2,9 +2,13 @@
 import ChatList from "@/src/components/admin/chat/ChatList";
 import ChatMessage from "@/src/components/admin/chat/ChatMessage";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
+import { sendMessage } from "@/src/redux/service/AdminApi";
 import { AgentAvatarOne, AgentAvatarTwo } from "@/src/utils/images/images";
+import { Tour } from "@mui/icons-material";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const list = [
   {
@@ -150,14 +154,16 @@ const chats = [
   },
 ];
 
-const columns = ["#", "User", "Date", "Action"];
+const columns = ["#", "Agency", "Email", "Action"];
 
 function Chats() {
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [changeScreen, setChangeScreen] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [currentChatUser,setcurrentChatUser] = useState(null)
   const theme = useTheme();
+  const userLoggedin: any = useSelector((root: any) => root?.User?.UserInfo);
   const smallScreen: any = useMediaQuery(theme.breakpoints.down("md"));
 
   const getChat = (id: number) => {
@@ -187,8 +193,29 @@ function Chats() {
     }
   };
 
+
+const handleOpenChat = async(data)=>{
+ setcurrentChatUser(data);
+ setShowChat(true);
+}
+const handleSendMessage = async ({lastmsg})=>{
+  try {
+    if (currentChatUser ===null){
+      return toast.error('user not selected')
+    }
+
+    const res = await sendMessage({ sender:userLoggedin._id,recipient:currentChatUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:true})
+    console.log(res)
+    // if(res.status){
+    //   toast.success('message send');
+    // }
+  } catch (error) {
+    toast.error(error)
+  }
+}
   return (
     <div>
+      <Toaster/>
       <Grid container mb={3} spacing={3}>
         <Grid item xs={12} md={4}>
           <div>
@@ -209,11 +236,11 @@ function Chats() {
         <Grid item xs={12}>
           {showChat ? (
             <div className="border rounded-lg pl-3 pt-3">
-              <BackBtn onClick={() => setShowChat(false)} className="cursor-pointer" />
-              <ChatMessage selectedUser={{ id: "1" }} chats={chats} />
+              <BackBtn onClick={() => {setShowChat(false);setcurrentChatUser(null)}} className="cursor-pointer" />
+              <ChatMessage handleSendMessage={handleSendMessage} selectedUser={{ id: "1" }} chats={chats} />
             </div>
           ) : (
-            <ChatList columns={columns} onOpenChat={() => setShowChat(true)} />
+            <ChatList columns={columns} onOpenChat={handleOpenChat} />
           )}
         </Grid>
       </Grid>

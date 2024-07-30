@@ -255,7 +255,7 @@ export const UpdateReferralUser = async (userid,user)=>{
     const res = await API_DOMAIN.post(`/api/v1/referral/user/${userid}`,{...user})
     return res.data;
   } catch (error) {
-    console.log("Error update referral user")
+    console.log("Error update referral user",error)
   }
 }
 
@@ -352,4 +352,76 @@ export const checkBooking = async(data)=>{
   } catch (error) {
     console.log('Error in check booking');
   }
+}
+
+export const GetUserReferral = async(id)=>{
+try {
+  const res =await API_DOMAIN.get(`/api/v1/referral/${id}`)
+  return res.data
+} catch (error) {
+  console.log('Error in get user referral',error)
+}
+}
+
+export const ApplyReferralCode = async(data)=>{
+  try {
+     const res = await API_DOMAIN.post('/api/v1/referral/apply',{...data});
+     return res.data;
+  } catch (error) {
+    console.log("Error in apply discount",error);
+  }
+}
+
+export const GetSettings = async()=>{
+try {
+  const res = await API_DOMAIN.get('/api/v1/setting/66a63f4a44709647efc24d2d');
+  return res.data
+} catch (error) {
+  console.log("Error in get settings")
+}
+}
+
+export const CreateTransactionForWallet = async (data)=>{
+try {
+  const res = await API_DOMAIN.post("/api/v1/transaction/wallet",{...data})
+  return res.data;
+} catch (error) {
+  console.log("Error in create transation for wallet")
+}
+}
+
+export const CreateShift = async (data)=>{
+try {
+  const res = await API_DOMAIN.post('/api/v1/shift/create',{...data});
+  return res.data;
+} catch (error) {
+  console.log("Error in create shift", error);
+}
+}
+
+export const GetAllShift = async ()=>{
+  try {
+    const res = await API_DOMAIN.get('/api/v1/shift');
+    return res.data;
+  } catch (error) {
+    console.log("Error in get all shift")
+  }
+}
+
+export const GetBookingWithTourData = async()=>{
+  try {
+    const res  = await API_DOMAIN.post('/api/v1/booking/bookintwithalldata')
+    return res.data
+  } catch (error) {
+    console.log("Error in get booking with tour Data")
+  }
+}
+
+export const sendMessage = async (data)=>{
+try {
+  const res = await API_DOMAIN.post('/api/v1/chat',{...data});
+  return res.data;
+} catch (error) {
+  console.log("Error in send message")
+}
 }

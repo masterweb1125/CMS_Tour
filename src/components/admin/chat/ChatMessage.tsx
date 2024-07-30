@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ChatMessage({
   chats,
+  handleSendMessage,
   selectedUser,
 }: {
+  handleSendMessage:any
   selectedUser: any;
   chats: any;
 }) {
+const [msg,setmsg] = useState('');
+
+
   return (
     <div className="relative">
       <div className="mt-10  h-[520px] overflow-y-scroll">
@@ -47,6 +52,7 @@ function ChatMessage({
       <br />
       <div className="flex justify-between items-center pl-3 gap-5 border border-[#E7E7E7] w-100 cursor-pointer absolute bottom-0 w-full rounded-lg">
         <input
+        onChange={(e)=>setmsg(e.target.value)}
           type="text"
           className="w-100 flex-1 focus:outline-none text-sm"
           placeholder="Type your message here..."
@@ -54,9 +60,9 @@ function ChatMessage({
         <div>
           <ItemsSvg />
         </div>
-        <div className="bg-[#ffa500] h-[100%] p-2 rounded-lg">
+        <button onClick={()=>{handleSendMessage({lastmsg:msg})}} className="bg-[#ffa500] h-[100%] p-2 rounded-lg">
           <SendSvg />
-        </div>
+        </button>
       </div>
     </div>
   );

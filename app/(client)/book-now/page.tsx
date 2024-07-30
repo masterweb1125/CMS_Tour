@@ -28,7 +28,7 @@ const Client_TourDetail = () => {
   }
   return (
     <div className="relative m-0 p-0  overflow-x-hidden ">
-      {BookingVoucherStatus?<BookingVoucher  data={BookingData}/>:""}
+      {BookingVoucherStatus?<BookingVoucher  setBookingVoucherStatus={setBookingVoucherStatus} data={BookingData}/>:""}
       <Client_Hero
         bgImage={AddToCard.src}
         title={"Explore The World"}

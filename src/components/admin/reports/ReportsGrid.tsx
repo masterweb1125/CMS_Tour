@@ -48,9 +48,9 @@ function DataGridTabs({ title }: { title: string }) {
 
   const TabsData = [
     { title: "Booking", Component: <BookingReports /> },
-    { title: "Revenue", Component: <RevenueReports /> },
-    { title: "Supplier", Component: <SupplierReports /> },
-    { title: "Customer Behavior", Component: <CustomerBehavior /> },
+    // { title: "Revenue", Component: <RevenueReports /> },
+    // { title: "Supplier", Component: <SupplierReports /> },
+    // { title: "Customer Behavior", Component: <CustomerBehavior /> },
   ];
 
   return (
@@ -117,12 +117,6 @@ function DataGridTabs({ title }: { title: string }) {
             </Tabs>
           </Box>
 
-          <Box>
-            <ButtonGroup variant="contained" className="bg-[#FFA500]" color="inherit">
-              <Button className="hover:bg-[#FFA500] font-mont normal-case text-white ">CSV</Button>
-              <Button className="hover:bg-[#FFA500] font-mont normal-case text-white">Export CSV</Button>
-            </ButtonGroup>
-          </Box>
         </Grid>
 
         <Grid item xs={12}>

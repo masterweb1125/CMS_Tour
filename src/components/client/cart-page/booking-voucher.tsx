@@ -35,7 +35,7 @@ const PaymentStatus = ({ status = "unknown" }) => {
 
 const BookingVoucher = (data) => {
   const [BookingVoucher, setBookingVoucher] = useState(null);
-
+const {setBookingVoucherStatus} = data
   const voucherRef = useRef(null);
 console.log(data)
 
@@ -137,7 +137,7 @@ console.log(data)
   return (
     <div className="w-[100vw] h-screen fixed z-50 top-0 left-0 bg-opacity-black-color flex items-center justify-center overflow-y-auto">
     
-        <button  className="absolute top-[20px] right-[100px] px-[10px] py-[5px] bg-white text-3xl z-[1000000000]">
+        <button onClick={()=>setBookingVoucherStatus(false)} className="absolute top-[20px] right-[100px] px-[10px] py-[5px] bg-white text-3xl z-[1000000000]">
           <ClearIcon/>
         </button>
     
