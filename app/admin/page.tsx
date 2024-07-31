@@ -71,7 +71,7 @@ function Dashboard() {
       </Grid>
 
       <Grid container spacing={3} mt={2}></Grid>
-      <TourBookingCalender />
+      <TourBookingCalender  />
     </div>
   );
 }

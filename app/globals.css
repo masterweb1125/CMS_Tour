@@ -34,3 +34,40 @@ body {
     text-wrap: balance;
   }
 }
+
+
+#style-4::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px #0000 ;
+	background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar
+{
+	width: 8px;
+  padding-bottom: 100px;
+	background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  /* height: 50px; */
+	background-color: #979797;
+	border: 2px solid #d6d6d6;
+}
+
+#triangle-topleft {
+  width: 0;
+  height: 0;
+  border-top: 20px solid #ffa500ed;
+  border-right: 20px solid transparent;
+}
+
+
+#triangle-topright {
+  width: 0;
+  height: 0;
+  border-top: 20px solid #E7E7E7;
+  border-left: 20px solid transparent;
+}

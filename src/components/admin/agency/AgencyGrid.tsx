@@ -1,156 +1,145 @@
 "use client";
+import { LogoTransparent } from "@/src/utils/images/images";
 import { Grid } from "@mui/material";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import React from "react";
-import { KababMenu } from "../../dashboard/dashboardComponents/CardItems";
-import SearchInput from "../../dashboard/dashboardComponents/SearchInput";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import React, { useState } from "react";
+import BookingReports from "./GridLists/BookingReports";
+import RevenueReports from "./GridLists/RevenueReports";
+import Image from "next/image"
 
-const columns = [
-  "#",
-  "Agency Name",
-  "Revenue",
-  "No. of Tours",
-  "Reviews",
-  "Action",
-];
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-function AgencyGrid({
-  title,
-  onSetData,
-  setScreenView,
-  allAgency,
-}: {
-  title: string;
-  onSetData: any;
-  setScreenView: any;
-}) {
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
   return (
-    <div className="shadow-4xl rounded-lg">
-      <Grid container px={3} pt={3}>
-        <Grid item xs={12} md={9}>
-          <h1 className="text-lg font-semibold">{title}</h1>
-        </Grid>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
 
-        <Grid item xs={12} md={3}>
-          <div className="flex justify-between gap-3">
-            <SearchInput />
-            <svg
-              width="40"
-              height="34"
-              viewBox="0 0 40 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="39"
-                height="43"
-                rx="7.5"
-                stroke="#D0D5DD"
-              />
-              <path
-                d="M15 22H25M12.5 17H27.5M17.5 27H22.5"
-                stroke="#667085"
-                strokeWidth="1.66667"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </Grid>
-      </Grid>
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
-      <Grid container mt={3}>
+function DataGridTabs({ title }: { title: string }) {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const TabsData = [
+    { title: "Revenue", Component: <RevenueReports /> },
+    { title: "Tours", Component: <BookingReports /> },
+  ];
+
+  return (
+    <div className="border rounded-lg mt-4">
+      <Grid container className="px-5">
         <Grid item xs={12}>
-          <div className="relative overflow-x-auto border rounded-md">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  {columns.map((item, index) => (
-                    <th scope="col" key={index} className="px-6 py-3">
-                      {item}
-                    </th>
-                  ))}
+          <Grid container className="mt-4">
+            <Grid item xs={12} md={2} className="flex items-center justify-center">
+              <Image src={LogoTransparent} width={100} height={100} className="object-contain" alt="" />
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <table cellPadding={4}>
+                <tr className="text-sm">
+                  <td className="font-semibold">Company Name: </td>
+                  <td>Travel*&Co.</td>
                 </tr>
-              </thead>
-              <tbody>
-                {allAgency.length === 0
-                  ? "No agency Found"
-                  : allAgency.data.map((item,i) =>(
-                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4 font-medium">{i+1}</td>
-                        <td className="px-6 py-4 font-medium">{item.name != null?item.name:item.company_name}</td>
-                        <td className="px-6 py-4 font-medium">$9093</td>
-                        <td className="px-6 py-4 font-medium">23</td>
-                        <td className="px-6 py-4 font-medium">2133213</td>
-                        <td className="px-6 py-4">
-                          <BasicMenu setScreenView={() => setScreenView(2)} />
-                        </td>
-                      </tr>
-                    ))}
-              </tbody>
-            </table>
-          </div>
+                <tr className="text-sm">
+                  <td className="font-semibold">Email Address:  </td>
+                  <td>noraizraja2121@gmail.com</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">last Name: </td>
+                  <td>shahid raja </td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Facial Number:</td>
+                  <td>9829282922</td>
+                </tr>
+              </table>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <table cellPadding={4}>
+                <tr className="text-sm">
+                  <td className="font-semibold">office Number: </td>
+                  <td>02003232323</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Country:   </td>
+                  <td>Pakistan</td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">Occupation: </td>
+                  <td>software engineer  </td>
+                </tr>
+                <tr className="text-sm">
+                  <td className="font-semibold">emergency number: </td>
+                  <td> 9829282922</td>
+                </tr>
+              </table>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          md={12}
+          mt={1}
+          mb={4}
+          className="flex justify-between mt-5 flex-wrap gap-2 lg:gap-0"
+        >
+          <Box>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor={"inherit"}
+              TabIndicatorProps={{
+                style: { backgroundColor: "#ffa500" },
+              }}
+            >
+              {TabsData.map(({ title }: any, index: number) => (
+                <Tab
+                  key={index}
+                  className="normal-case font-mont text-black font-semibold"
+                  label={title}
+                  {...a11yProps(index)}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12}>
+          {TabsData.map(({ Component }, index) => (
+            <CustomTabPanel key={index} value={value} index={index}>
+              {Component}
+            </CustomTabPanel>
+          ))}
         </Grid>
       </Grid>
     </div>
   );
 }
 
-export default AgencyGrid;
-
-function BasicMenu({
-  onSetData,
-  setScreenView,
-}: {
-  onSetData?: any;
-  setScreenView: any;
-}) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div className="cursor-pointer">
-      <div onClick={handleClick}>
-        <KababMenu />
-      </div>
-
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            setScreenView();
-          }}
-          className="font-mont text-xs"
-        >
-          View Details
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="font-mont text-xs">
-          Deactivate Agency
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="font-mont text-xs">
-          Chat
-        </MenuItem>
-        <MenuItem onClick={handleClose} className="font-mont text-xs">
-          Blacklist agency
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-}
+export default DataGridTabs;

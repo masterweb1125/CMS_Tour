@@ -10,149 +10,6 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const list = [
-  {
-    id: 1,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 2,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 3,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 4,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 5,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 6,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 7,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 8,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 9,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 10,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 11,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 12,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-];
-
-const chats = [
-  {
-    recevie: "1",
-    sender: "",
-    message: "Hello",
-  },
-  {
-    recevie: "",
-    sender: "",
-    message: "Hi",
-  },
-  {
-    recevie: "1",
-    sender: "",
-    message: "How are you doing",
-  },
-  {
-    recevie: "",
-    sender: "",
-    message:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ",
-  },
-  {
-    recevie: "1",
-    sender: "",
-    message: "Hello",
-  },
-  {
-    recevie: "",
-    sender: "",
-    message: "Hi",
-  },
-  {
-    recevie: "1",
-    sender: "",
-    message: "How are you doing",
-  },
-  {
-    recevie: "",
-    sender: "",
-    message:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ",
-  },
-];
 
 const columns = ["#", "Agency", "Email", "Action"];
 
@@ -180,6 +37,7 @@ function Chats() {
   };
 
   useEffect(() => {
+ 
     if (!smallScreen) setChangeScreen(false);
     if (smallScreen && selectedUser) setChangeScreen(true);
   }, [smallScreen, selectedUser]);
@@ -204,7 +62,7 @@ const handleSendMessage = async ({lastmsg})=>{
       return toast.error('user not selected')
     }
 
-    const res = await sendMessage({ sender:userLoggedin._id,recipient:currentChatUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:true})
+    const res = await sendMessage({ sender:userLoggedin._id,recipient:currentChatUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:true,recipient:currentChatUser._id})
     console.log(res)
     // if(res.status){
     //   toast.success('message send');
@@ -235,9 +93,9 @@ const handleSendMessage = async ({lastmsg})=>{
       <Grid container>
         <Grid item xs={12}>
           {showChat ? (
-            <div className="border rounded-lg pl-3 pt-3">
+            <div className="border w-full h-full  rounded-lg pl-3 pt-3 ">
               <BackBtn onClick={() => {setShowChat(false);setcurrentChatUser(null)}} className="cursor-pointer" />
-              <ChatMessage handleSendMessage={handleSendMessage} selectedUser={{ id: "1" }} chats={chats} />
+              <ChatMessage handleSendMessage={handleSendMessage} selectedUser={currentChatUser}  />
             </div>
           ) : (
             <ChatList columns={columns} onOpenChat={handleOpenChat} />

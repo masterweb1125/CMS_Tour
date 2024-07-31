@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Client_Hero from "@/src/components/client/hero-section/hero.component";
 import {
   Cover,
@@ -20,6 +20,12 @@ import { blogs } from "@/src/utils/data/blogs";
 import Client_CustomerSupport from "@/src/components/client/customer-support/customer-support.component";
 
 const ClientPage = () => {
+
+  useEffect(() => {
+    // This code runs on the client-side only
+    document.body.setAttribute('cz-shortcut-listen', 'true');
+    // setAttributeAdded(true);
+  }, []);
   return (
     <>
       <Client_Hero

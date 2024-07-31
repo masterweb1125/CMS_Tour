@@ -417,11 +417,33 @@ export const GetBookingWithTourData = async()=>{
   }
 }
 
-export const sendMessage = async (data)=>{
-try {
-  const res = await API_DOMAIN.post('/api/v1/chat',{...data});
-  return res.data;
-} catch (error) {
-  console.log("Error in send message")
-}
-}
+// api.js
+import {socket} from './socket.js';
+
+export const sendMessage = async (data) => {
+  try {
+    // Emit the message through Socket.IO
+    socket.emit('chat message', data);
+
+    // Optionally, if you want to still use the API to save the message in the database
+    const res = await API_DOMAIN.post('/api/v1/chat', { ...data });
+    return res.data;
+  } catch (error) {
+    console.log("Error in send message", error);
+  }
+};
+
+export const SortedMessages = async (recipientId, senderId) => {
+  try {
+    const res = await API_DOMAIN.post(`/api/v1/chat/${recipientId}/${senderId}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error in get sender and receiver messages", error);
+  }
+};
+
+// Listening for incoming messages
+socket.on('chat message', (msg) => {
+  console.log('New message received:', msg);
+  // You can update the UI here with the new message
+});

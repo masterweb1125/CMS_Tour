@@ -2,6 +2,7 @@
 import { GetAllAgency } from "@/src/redux/service/AdminApi";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function ChatList({
   columns,
@@ -10,7 +11,8 @@ export default function ChatList({
   columns: any;
   onOpenChat: any;
 }) {
-const [agency,setagency] = useState([])
+const [agency,setagency] = useState([]);
+const userLoggedin: any = useSelector((root: any) => root?.User?.UserInfo);
   const fetch = async ()=>{
     const res = await GetAllAgency();
     setagency(res.data)
@@ -35,7 +37,7 @@ const [agency,setagency] = useState([])
                 </tr>
               </thead>
               <tbody>
-                {agency.map((item, i) => (
+                {agency.map((item, i) => item._id !== userLoggedin._id && (
                   <tr key={i} className="bg-white border-b text-[#888888] dark:bg-gray-800 dark:border-gray-700">
                     <td className="px-6 py-4 font-medium">{i + 1}</td>
                     <td className="px-6 py-4 font-medium">{item.name}</td>
