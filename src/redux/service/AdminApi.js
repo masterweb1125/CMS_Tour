@@ -447,3 +447,14 @@ socket.on('chat message', (msg) => {
   console.log('New message received:', msg);
   // You can update the UI here with the new message
 });
+
+
+
+export const GetAgencyAllInfo = async (agencyId)=>{
+  try {
+    const res = await API_DOMAIN.post(`/api/v1/agency/${agencyId}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error in get agency all info ");
+  }
+}

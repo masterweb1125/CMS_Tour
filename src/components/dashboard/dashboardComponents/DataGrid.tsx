@@ -15,8 +15,7 @@ const columns = [
   "Action",
 ];
 
-function DataGrid({ title,analytics }: { title: string }) {
-
+function DataGrid({ title, analytics }: { title: string }) {
   return (
     <div className="shadow-4xl rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
@@ -54,7 +53,7 @@ function DataGrid({ title,analytics }: { title: string }) {
         </Grid>
 
         <Grid item xs={12}>
-          <div className="relative overflow-x-auto border rounded-md">
+          <div className="relative overflow-x-auto border rounded-md mb-3">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -66,15 +65,26 @@ function DataGrid({ title,analytics }: { title: string }) {
                 </tr>
               </thead>
               <tbody>
-              { analytics && analytics?.recnetBookings?.length != 0 ? analytics.recentBookings?.filter(item => item._id).map((item) =>(
-                <RecentBookingCard {...item}/>
-                )):<p className="py-3 px-4 text-[16px]">Recent Booking Not Found</p>
-              }
+                {analytics &&
+                analytics.recentBookings &&
+                analytics.recentBookings.length !== 0 ? (
+                  analytics.recentBookings
+                    .filter((item) => item._id)
+                    .map((item) => (
+                      <RecentBookingCard key={item._id} {...item} />
+                    ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="100%"
+                      className="flex text-sm items-start p-4 w-full"
+                    >
+                      Recent Booking not found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
-          </div>
-          <div className="text-end py-4 text-[#353535] font-semibold cursor-pointer select-none">
-            View All
           </div>
         </Grid>
       </Grid>

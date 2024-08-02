@@ -10,10 +10,9 @@ const columns = [
   "Payment Status",
   "Travel Date",
   "Status",
-  "Action",
 ];
 
-function RevenueReports() {
+function RevenueReports({ data }) {
   return (
     <div className="border rounded-lg mb-3">
       <Grid container>
@@ -34,32 +33,42 @@ function RevenueReports() {
                 </tr>
               </thead>
               <tbody>
-                {[1, 2, 3, 4, 4,1, 2, 3, 4, 4,1, 2, 3, 4, 4].map((_, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  >
-                    <td className="px-6 py-4 font-medium">232323</td>
-                    <td className="px-6 py-4 font-medium">Maldive To Lahore</td>
-                    <td className="px-6 py-4 font-medium">
-                      adult 1, child 03
-                    </td>
-                    <td className="px-6 py-4 font-medium">$9093</td>
-                    <td className="px-6 py-4 font-medium">10:00 Am</td>
-                    <td className="px-6 py-4 font-medium">Confirm</td>
-                    <td className="px-6 py-4 font-medium">10-2-2024</td>
-                    <td className="px-6 py-4 font-medium">Confirm</td>
-                    <td className="px-6 py-4 font-medium">
-                    <div className="text-[#1D1AC1] underline">Download</div>
-                    </td>
-                  </tr>
-                ))}
+                {
+                  (data !== null && 
+                    data.tourBookings.length !== 0 ?
+                    data.tourBookings.map((item, i) => (
+                      <tr
+                        key={item._id}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                      >
+                        <td className="px-6 py-4 font-medium">{i+1 }</td>
+                        <td className="px-6 py-4 font-medium">
+                          {item.tour_name}
+                        </td>
+                        <td className="px-6 py-4 font-medium">
+                          adult {item.totalAdult}, child {item.totalChild},infant {item.totalInfant}
+                        </td>
+                        <td className="px-6 py-4 font-medium">${item.totalPrice}</td>
+                        <td className="px-6 py-4 font-medium">{item.departTime}</td>
+                        <td className="px-6 py-4 font-medium">{item.paymentStatus}</td>
+                        <td className="px-6 py-4 font-medium">{item.bookingDate}</td>
+                        <td className="px-6 py-4 font-medium">{item.status}</td>
+                        {/* <td className="px-6 py-4 font-medium">
+                          <div className="text-[#1D1AC1] underline">
+                            Download
+                          </div>
+                        </td> */}
+                      </tr>
+                    )):<div className="flex items-start p-4 text-sm justify-center w-full">Bookings not found</div>)
+                }
               </tbody>
             </table>
           </div>
-          <div className="text-end pt-5 text-[#353535] font-semibold cursor-pointer select-none">
-            View All
-          </div>
+          {/* {data != null && data.tourBookings.length > 10 && (
+            <div className="text-end pt-5 text-[#353535] font-semibold cursor-pointer select-none">
+              View All
+            </div>
+          )} */}
         </Grid>
       </Grid>
     </div>
