@@ -9,8 +9,8 @@ import { FaLink } from "react-icons/fa";
 function ChatMessage({ handleSendMessage, selectedUser }) {
   const [msg, setMsg] = useState("");
   const [senderChat, setSenderChat] = useState([]);
-  const userLoggedIn = useSelector((state) => state?.User?.UserInfo);
   const chatContainerRef = useRef(null);
+  const userLoggedIn = useSelector((state) => state?.User?.UserInfo);
 
   const fetchMessages = useCallback(async () => {
     if (selectedUser && userLoggedIn) {

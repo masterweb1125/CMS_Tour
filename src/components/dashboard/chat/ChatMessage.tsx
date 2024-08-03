@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 
 function ChatMessage({
   chats,
@@ -7,6 +8,8 @@ function ChatMessage({
   selectedUser: any;
   chats: any;
 }) {
+
+
   return (
     <div className="relative">
       <div className="mt-10  h-[520px] overflow-y-scroll">

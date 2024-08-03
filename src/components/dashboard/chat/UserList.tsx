@@ -2,53 +2,39 @@ import { Grid } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function UserList({
-  index,
-  getChat,
-  selectedUser,
-  item,
-  list,
-}: {
-  index: number;
-  getChat: any;
-  selectedUser: any;
-  list: any;
-  item: any;
-}) {
-  const { id, img, name, message, date, status } = item;
+function UserList({ index, getChat, selectedUser, item, list }) {
   return (
     <Grid
       item
       xs={12}
-      key={index}
-      className={`${
-        list.length - 1 !== index && "border-b-2"
-      } py-3 px-3 cursor-pointer hover:bg-[#ffa500] hover:text-white hover:rounded-xl
+      key={item?._id}
+      className={`px-3 flex items-center cursor-pointer h-[70px] hover:bg-[#ffa500] hover:text-white hover:rounded-xl
           transition-all group ${
-      id === selectedUser?.id
-        ? "bg-[#ffa500] text-white rounded-xl p-2"
-        : ""
-    }
+            item?._id === selectedUser?._id
+              ? "bg-[#ffa500] text-white rounded-xl p-2"
+              : ""
+          }
     `}
-      onClick={() => getChat(id)}
+      onClick={() => getChat(item)}
     >
       <div className={`flex overflow-hidden gap-4 items-center select-none`}>
-        <Image className="w-10" src={img} alt="" />
+        <Image className="w-12 rounded-full" width={100} height={100} src={item?.profile_image} alt={item?.name} />
         <div className="flex flex-col w-36">
-          <div className="font-semibold text-sm">{name}</div>
+          <div className="font-semibold text-sm">{item?.name}</div>
           <div
             className={`text-xs font-light group-hover:text-white ${
-              id === selectedUser?.id ? "text-white" : "text-[#303030]"
+              item?._id === selectedUser?._id ? "text-white" : "text-[#303030]"
             } }`}
           >
-            {message?.length > 18 ? message.substring(0, 18) + " ..." : message}
+            message{" "}
+            {/* {message?.length > 18 ? message.substring(0, 18) + " ..." : message} */}
           </div>
         </div>
         <div className="flex-col justify-end w-28">
           <div className="text-xs text-end font-extralight text-[9px]">
-            {date}
+            {"date"}
           </div>
-          <div className="text-end">{status}</div>
+          <div className="text-end">offline</div>
         </div>
       </div>
     </Grid>

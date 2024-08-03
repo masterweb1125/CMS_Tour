@@ -71,7 +71,7 @@ function Sidebar({ children }: any) {
 
       <aside
         id="separator-sidebar"
-        className={`fixed top-0 left-0 z-40 w-[18rem] h-screen border-r-2 transition-transform -translate-x-full sm:translate-x-0 ${
+        className={`fixed top-0 left-0 z-40 w-[18rem] overflow-y-auto h-screen pb-14 border-r-2 transition-transform -translate-x-full sm:translate-x-0 ${
           mobileView ? "transform-none" : ""
         }`}
         aria-label="Sidebar"

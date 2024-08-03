@@ -419,6 +419,7 @@ export const GetBookingWithTourData = async()=>{
 
 // api.js
 import {socket} from './socket.js';
+import { TryOutlined } from "@mui/icons-material";
 
 export const sendMessage = async (data) => {
   try {
@@ -456,5 +457,14 @@ export const GetAgencyAllInfo = async (agencyId)=>{
     return res.data;
   } catch (error) {
     console.log("Error in get agency all info ");
+  }
+}
+
+export const GetAdmins = async ()=>{
+  try {
+    const res = await API_DOMAIN.get('/api/v1/admin');
+    return res.data;
+  } catch (error) {
+    console.log("Error in get admins",error);
   }
 }
