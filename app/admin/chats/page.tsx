@@ -62,7 +62,7 @@ const handleSendMessage = async ({lastmsg})=>{
       return toast.error('user not selected')
     }
 
-    const res = await sendMessage({ sender:userLoggedin._id,recipient:currentChatUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:true,recipient:currentChatUser._id})
+    const res = await sendMessage({ sender:userLoggedin._id,recipient:currentChatUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:userLoggedin._id,recipient:currentChatUser._id})
     console.log(res)
     // if(res.status){
     //   toast.success('message send');

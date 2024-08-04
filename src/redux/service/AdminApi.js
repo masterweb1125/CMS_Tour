@@ -468,3 +468,11 @@ export const GetAdmins = async ()=>{
     console.log("Error in get admins",error);
   }
 }
+export const GetConversaion = async (recipientId,senderId)=>{
+  try {
+    const res = await API_DOMAIN.post(`/api/v1/chat/conversation/${recipientId}/${senderId}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error in get conversation");
+  }
+}

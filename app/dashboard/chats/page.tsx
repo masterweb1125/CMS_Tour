@@ -7,6 +7,7 @@ import { GetAdmins, sendMessage, SortedMessages } from "@/src/redux/service/Admi
 import { AgentAvatarOne, AgentAvatarTwo } from "@/src/utils/images/images";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const list = [
@@ -199,7 +200,7 @@ function Chats() {
   const fetchMessages = useCallback(async () => {
     if (selectedUser && userLoggedIn) {
       const sendermsg = await SortedMessages(
-        selectedUser._id,
+        selectedUser?._id,
         userLoggedIn._id
       );
       // Sort messages by createdAt in ascending order
@@ -209,27 +210,32 @@ function Chats() {
       setSenderChat(sortedMessages);
     }
   }, [selectedUser, userLoggedIn]);
+
+
+
   useEffect(() => {
     fetchMessages();
   }, [selectedUser]);
 
-  // const handleSendMessage = async ({lastmsg})=>{
-  //   try {
-  //     if (selectedUser ===null){
-  //       return toast.error('user not selected')
-  //     }
+  const handleSendMessage = async ({lastmsg})=>{
+    // toast.success('jrj')
+    // try {
+      if (selectedUser === null){
+        return toast.error('user not selected')
+      }
   
-  //     const res = await sendMessage({ sender:userLoggedin._id,recipient:selectedUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:true,recipient:currentChatUser._id})
-  //     console.log(res)
-  //     // if(res.status){
-  //     //   toast.success('message send');
-  //     // }
-  //   } catch (error) {
-  //     toast.error(error)
-  //   }
-  // }
+      const res = await sendMessage({ sender:userLoggedIn._id,recipient:selectedUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:userLoggedIn._id,recipient:selectedUser._id})
+      // console.log(res)
+      if(!res?.status){
+        toast.error('some thing want wrong');
+      }
+    // } catch (error) {
+    //   toast.error(error)
+    // }
+  }
   return (
     <div>
+      <Toaster/>
       <Grid
         container
         className="border border-[#D0D5DD] flex flex-col rounded-lg h-[96vh]"
@@ -240,7 +246,7 @@ function Chats() {
               <BackBtn onClick={backScreen} />
               <br />
               <ChatHeader selectedUser={selectedUser} />
-              <ChatMessage selectedUser={selectedUser} chats={chats} />
+              <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
             </div>
           ) : (
             <Grid container className="overflow-y-scroll scroll-auto ">
@@ -255,10 +261,12 @@ function Chats() {
                 <UserList
                   key={index}
                   item={item}
+                  admin={true}
                   index={index}
                   getChat={getChat}
                   selectedUser={selectedUser}
                   list={admin}
+                  userLoggedIn={userLoggedIn}
                 />
               ))}
             </Grid>
@@ -403,7 +411,7 @@ function Chats() {
             {selectedUser && (
               <React.Fragment>
                 <ChatHeader selectedUser={selectedUser} />
-                <ChatMessage selectedUser={selectedUser} chats={chats} />
+                <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
               </React.Fragment>
             )}
           </div>

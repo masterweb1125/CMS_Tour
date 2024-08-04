@@ -1,65 +1,126 @@
 "use client"
-import React, { useEffect } from "react";
+import { socket } from "@/src/redux/service/socket";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FaLink } from "react-icons/fa";
 
 function ChatMessage({
   chats,
   selectedUser,
+  handleSendMessage,
+  setSenderChat,
+  senderChat,
+  userLoggedIn,
 }: {
+  setSenderChat:any;
+  handleSendMessage:any;
+  senderChat:any;
   selectedUser: any;
+  userLoggedIn:any;
   chats: any;
 }) {
 
 
-  return (
-    <div className="relative">
-      <div className="mt-10  h-[520px] overflow-y-scroll">
-        {chats.map(
-          (
-            { recevie, message }: { recevie: number; message: string },
-            index: number
-          ) => (
-            <div
-              key={index}
-              className={`flex ${
-                recevie == selectedUser?.id
-                  ? ""
-                  : "flex-col items-end justify-end"
-              } mb-3`}
-            >
-              <div
-                className={`border w-52 px-5 py-2 rounded-3xl text-sm font-medium ${
-                  recevie == selectedUser?.id
-                    ? "bg-[#E7E7E7]"
-                    : "bg-[#ffa500] text-white"
-                }`}
-              >
-                {message}
-              </div>
+  const [msg, setMsg] = useState("");
 
-              {recevie != selectedUser?.id && (
-                <div className="text-xs mt-2 flex gap-2 items-center">
-                  <div>Today, 8.33pm</div>{" "}
-                  <div className="w-2 h-2 rounded-xl bg-[#ffa500]" />
-                </div>
-              )}
+
+  useEffect(() => {
+    const handleNewMessage = (newMessage) => {
+      if (
+        (newMessage.sender === userLoggedIn._id && newMessage.recipient === selectedUser._id) ||
+        (newMessage.sender === selectedUser._id && newMessage.recipient === userLoggedIn._id)
+      ) {
+        setSenderChat((prevChats) => {
+          // Add the new message and then sort
+          const updatedChats = [...prevChats, newMessage];
+          return updatedChats.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        });
+        // Scroll to the bottom when a new message is received
+        // if (chatContainerRef.current) {
+        //   chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        // }
+      }
+    };
+
+    socket.on('new message', handleNewMessage);
+
+    // return () => {
+      //   socket.off('new message', handleNewMessage);
+    // };
+  }, [userLoggedIn._id, selectedUser._id]);
+  const handleSubmit = async () => { 
+    if (msg.trim()) {
+      const messageData = {
+        sender: userLoggedIn._id,
+        recipient: selectedUser._id,
+        content: msg,
+        lastmsg: msg,
+        createdAt: new Date().toISOString() // Add createdAt timestamp
+      };
+      toast.success('funtion runing')
+      await handleSendMessage(messageData);
+      socket.emit('send message', messageData);
+      setSenderChat((prevChats) => {
+        const updatedChats = [...prevChats, messageData];
+        return updatedChats.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      });
+      setMsg(""); 
+     
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevents a newline from being added
+      handleSubmit();
+    }
+  };
+  
+  return (
+    <div className="relative h-[75vh] ">
+      <div id="style-4"  className="mt-10 px-4 scroll-smooth h-[100%] overflow-y-scroll" style={{ paddingBottom: '50px' }}>
+        {senderChat.length !== 0 && senderChat.map(({ sender, content, createdAt }, index) => (
+          <div
+            key={index}
+            className={`flex ${sender === selectedUser?._id ? "" : "flex-col items-end justify-end"} mb-4`}
+          >
+            <div
+              className={`border w-52 px-5 py-2 rounded-xl relative text-sm font-medium ${sender === selectedUser?._id ? "bg-[#E7E7E7]" : "bg-[#ffa500] text-white"}`}
+            > 
+            <div id={sender === selectedUser._id ?"triangle-topright":"triangle-topleft"} className={`absolute  ${sender === selectedUser._id?'left-[-11px] top-[-1px]':"right-[-11px] top-[0px]"}`}>
+
             </div>
-          )
-        )}
+              {content}
+            </div>
+            {sender !== selectedUser?._id && (
+              <div className="text-[11px] mt-1 flex gap-2 pr-4 items-center">
+                <div>{new Date(createdAt).toLocaleTimeString()}</div>
+                <div className="w-2 h-2 rounded-xl bg-[#ffa500]" />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
       <br />
       <br />
-      <div className="flex justify-between items-center pl-3 gap-5 border border-[#E7E7E7] w-100 cursor-pointer absolute bottom-0 w-full rounded-lg">
+      <div className="flex justify-between items-center py-2 gap-5 bg-white w-100 pr-4 cursor-pointer absolute bottom-0 w-full ">
         <input
+          onChange={(e) => setMsg(e.target.value)}
+          value={msg}
+          onKeyDown={handleKeyDown}
           type="text"
-          className="w-100 flex-1 focus:outline-none text-sm"
+          className="w-100 border-[#E7E7E7] p-3 border rounded-lg flex-1 focus:outline-none text-sm"
           placeholder="Type your message here..."
         />
-        <div>
-          <ItemsSvg />
-        </div>
-        <div className="bg-[#ffa500] h-[100%] p-2 rounded-lg">
+        <button className="bg-[#ffa500] text-[1rem] h-[100%] p-3 rounded-lg text-white fill-white">
+        <FaLink />
+        </button>
+        <button
+        disabled={msg == "" ?true:false}
+          onClick={handleSubmit}
+          className="bg-[#ffa500] disabled:bg-[#979797] h-[100%] p-2 rounded-lg"
+        >
           <SendSvg />
-        </div>
+        </button>
       </div>
     </div>
   );
