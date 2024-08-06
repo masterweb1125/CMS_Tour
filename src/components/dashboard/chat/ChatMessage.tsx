@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { socket } from "@/src/redux/service/socket";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaLink } from "react-icons/fa";
 
@@ -12,97 +12,134 @@ function ChatMessage({
   senderChat,
   userLoggedIn,
 }: {
-  setSenderChat:any;
-  handleSendMessage:any;
-  senderChat:any;
+  setSenderChat: any;
+  handleSendMessage: any;
+  senderChat: any;
   selectedUser: any;
-  userLoggedIn:any;
+  userLoggedIn: any;
   chats: any;
 }) {
-
-
   const [msg, setMsg] = useState("");
-
+  const file = useRef<HTMLInputElement>(null);
+  const imagefileref = useRef<HTMLInputElement>(null);
+  const [filePopup, setFilePopup] = useState(false);
 
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
       if (
-        (newMessage.sender === userLoggedIn._id && newMessage.recipient === selectedUser._id) ||
-        (newMessage.sender === selectedUser._id && newMessage.recipient === userLoggedIn._id)
+        (newMessage.sender === userLoggedIn._id &&
+          newMessage.recipient === selectedUser._id) ||
+        (newMessage.sender === selectedUser._id &&
+          newMessage.recipient === userLoggedIn._id)
       ) {
-        setSenderChat((prevChats) => {
-          // Add the new message and then sort
+        ((prevChats) => {
           const updatedChats = [...prevChats, newMessage];
-          return updatedChats.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          return updatedChats.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
         });
-        // Scroll to the bottom when a new message is received
-        // if (chatContainerRef.current) {
-        //   chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        // }
       }
     };
 
-    socket.on('new message', handleNewMessage);
+    socket.on("new message", handleNewMessage);
+    
+    return () => {
+      socket.off("new message", handleNewMessage);
+    };
+  }, [userLoggedIn._id, selectedUser._id, setSenderChat]);
+  
+  useEffect(()=>{
 
-    // return () => {
-      //   socket.off('new message', handleNewMessage);
-    // };
-  }, [userLoggedIn._id, selectedUser._id]);
-  const handleSubmit = async () => { 
+    const handleNewMessage = (newMessage) => {
+      if (
+        (newMessage.sender === userLoggedIn._id &&
+          newMessage.recipient === selectedUser._id) ||
+        (newMessage.sender === selectedUser._id &&
+          newMessage.recipient === userLoggedIn._id)
+      ) {
+        ((prevChats) => {
+          const updatedChats = [...prevChats, newMessage];
+          return updatedChats.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        });
+      }
+    };
+    
+    socket.on(userLoggedIn._id,handleNewMessage)
+
+  })
+  const handleClickFileBtn = (type: number) => {
+    if (type === 1) {
+      imagefileref.current?.click();
+      setFilePopup(false);
+    } else {
+      file.current?.click();
+      setFilePopup(false);
+    }
+  };
+
+  const handleSubmit = async () => {
     if (msg.trim()) {
       const messageData = {
         sender: userLoggedIn._id,
         recipient: selectedUser._id,
         content: msg,
         lastmsg: msg,
-        createdAt: new Date().toISOString() // Add createdAt timestamp
+        createdAt: new Date().toISOString(),
       };
-      toast.success('funtion runing')
+
       await handleSendMessage(messageData);
-      socket.emit('send message', messageData);
+      socket.emit("send message", messageData);
       setSenderChat((prevChats) => {
         const updatedChats = [...prevChats, messageData];
-        return updatedChats.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        return updatedChats.sort(
+          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
       });
-      setMsg(""); 
-     
+      setMsg("");
     }
   };
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevents a newline from being added
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
       handleSubmit();
     }
   };
-  
+
   return (
     <div className="relative h-[75vh] ">
-      <div id="style-4"  className="mt-10 px-4 scroll-smooth h-[100%] overflow-y-scroll" style={{ paddingBottom: '50px' }}>
-        {senderChat.length !== 0 && senderChat.map(({ sender, content, createdAt }, index) => (
-          <div
-            key={index}
-            className={`flex ${sender === selectedUser?._id ? "" : "flex-col items-end justify-end"} mb-4`}
-          >
+      <div className="style-4 mt-10 px-4 scroll-smooth h-[100%] overflow-y-scroll" style={{ paddingBottom: "50px" }}>
+        {senderChat.length !== 0 &&
+          senderChat.map(({ sender, content, createdAt }, index) => (
             <div
-              className={`border w-52 px-5 py-2 rounded-xl relative text-sm font-medium ${sender === selectedUser?._id ? "bg-[#E7E7E7]" : "bg-[#ffa500] text-white"}`}
-            > 
-            <div id={sender === selectedUser._id ?"triangle-topright":"triangle-topleft"} className={`absolute  ${sender === selectedUser._id?'left-[-11px] top-[-1px]':"right-[-11px] top-[0px]"}`}>
-
-            </div>
-              {content}
-            </div>
-            {sender !== selectedUser?._id && (
-              <div className="text-[11px] mt-1 flex gap-2 pr-4 items-center">
-                <div>{new Date(createdAt).toLocaleTimeString()}</div>
-                <div className="w-2 h-2 rounded-xl bg-[#ffa500]" />
+              key={index}
+              className={`flex ${sender === selectedUser?._id ? "" : "flex-col items-end justify-end"} mb-4`}
+            >
+              <div
+                className={`border text-wrap max-w-[300px] px-5 py-2 rounded-xl relative text-sm font-medium ${
+                  sender === selectedUser?._id ? "bg-[#E7E7E7]" : "bg-[#ffa500] text-white"
+                }`}
+              >
+                <div
+                  id={sender === selectedUser._id ? "triangle-topright" : "triangle-topleft"}
+                  className={`absolute ${sender === selectedUser._id ? "left-[-11px] top-[-1px]" : "right-[-11px] top-[0px]"}`}
+                ></div>
+                {content}
               </div>
-            )}
-          </div>
-        ))}
+              {sender !== selectedUser?._id && (
+                <div className="text-[11px] mt-1 flex gap-2 pr-4 items-center">
+                  <div>{new Date(createdAt).toLocaleTimeString()}</div>
+                  <div className="w-2 h-2 rounded-xl bg-[#ffa500]" />
+             </div>
+              )}
+            </div>
+          ))}
       </div>
       <br />
       <br />
-      <div className="flex justify-between items-center py-2 gap-5 bg-white w-100 pr-4 cursor-pointer absolute bottom-0 w-full ">
+      <div className="flex justify-between items-center py-2 gap-5 bg-white w-100 pr-4 cursor-pointer absolute bottom-0 w-full">
         <input
           onChange={(e) => setMsg(e.target.value)}
           value={msg}
@@ -111,11 +148,43 @@ function ChatMessage({
           className="w-100 border-[#E7E7E7] p-3 border rounded-lg flex-1 focus:outline-none text-sm"
           placeholder="Type your message here..."
         />
-        <button className="bg-[#ffa500] text-[1rem] h-[100%] p-3 rounded-lg text-white fill-white">
-        <FaLink />
-        </button>
         <button
-        disabled={msg == "" ?true:false}
+          onClick={() => setFilePopup(!filePopup)}
+          className="bg-[#ffa500] text-[1.3rem] relative h-[100%] p-3 rounded-lg text-white fill-white"
+        >
+          <div
+            hidden={!filePopup}
+            onMouseLeave={() => setFilePopup(false)}
+            style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+            className="absolute text-sm text-[#646464] list-none top-[-95px] right-0 w-[170px] h-[90px] rounded-md bg-[#F5F5F5]"
+          >
+            <li
+              onClick={() => handleClickFileBtn(1)}
+              className="border-b border-[#b8b8b8] py-3"
+            >
+              Images
+            </li>
+            <li onClick={() => handleClickFileBtn(2)} className="py-3">
+              Document
+            </li>
+          </div>
+          <FaLink />
+        </button>
+        <input
+          ref={file}
+          type="file"
+          name="file"
+          hidden
+          accept=".pdf,.csv,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx"
+        />
+        <input
+          ref={imagefileref}
+          type="file"
+          accept=".png,.jpeg,.jpg"
+          hidden
+        />
+        <button
+          disabled={msg.trim() === ""}
           onClick={handleSubmit}
           className="bg-[#ffa500] disabled:bg-[#979797] h-[100%] p-2 rounded-lg"
         >
@@ -127,7 +196,6 @@ function ChatMessage({
 }
 
 export default ChatMessage;
-
 const ItemsSvg = () => (
   <svg
     width="21"

@@ -3,6 +3,7 @@ import ChatList from "@/src/components/admin/chat/ChatList";
 import ChatMessage from "@/src/components/admin/chat/ChatMessage";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
 import { sendMessage } from "@/src/redux/service/AdminApi";
+import { socket } from "@/src/redux/service/socket";
 import { AgentAvatarOne, AgentAvatarTwo } from "@/src/utils/images/images";
 import { Tour } from "@mui/icons-material";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
@@ -71,6 +72,14 @@ const handleSendMessage = async ({lastmsg})=>{
     toast.error(error)
   }
 }
+
+useEffect(()=>{
+  socket.emit('userStatus',userLoggedin)
+  socket.on('status',(user)=>{
+    // setonlineUser(user);
+    console.log(user)
+  })
+},[])
   return (
     <div>
       <Toaster/>

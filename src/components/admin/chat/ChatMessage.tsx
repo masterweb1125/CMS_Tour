@@ -10,8 +10,8 @@ function ChatMessage({ handleSendMessage, selectedUser }) {
   const [msg, setMsg] = useState("");
   const [senderChat, setSenderChat] = useState([]);
   const chatContainerRef = useRef(null);
+  
   const userLoggedIn = useSelector((state) => state?.User?.UserInfo);
-
   const fetchMessages = useCallback(async () => {
     if (selectedUser && userLoggedIn) {
       const sendermsg = await SortedMessages(selectedUser._id, userLoggedIn._id);
@@ -23,7 +23,15 @@ function ChatMessage({ handleSendMessage, selectedUser }) {
 
   useEffect(() => {
     fetchMessages();
-  }, [fetchMessages]);
+    const handleUpdateMessages = ()=>{
+      fetchMessages();
+      setTimeout(() => {
+        fetchMessages();
+      }, 700);
+    }
+  socket.on('update',handleUpdateMessages)
+
+  }, [selectedUser]);
 
   
   useEffect(() => {
@@ -46,9 +54,9 @@ function ChatMessage({ handleSendMessage, selectedUser }) {
 
     socket.on('new message', handleNewMessage);
 
-    // return () => {
-      //   socket.off('new message', handleNewMessage);
-    // };
+    return () => {
+        socket.off('new message', handleNewMessage);
+    };
   }, [userLoggedIn._id, selectedUser._id]);
 
   const handleSubmit = () => { 

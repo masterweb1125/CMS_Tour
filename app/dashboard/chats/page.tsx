@@ -4,6 +4,7 @@ import ChatMessage from "@/src/components/dashboard/chat/ChatMessage";
 import UserList from "@/src/components/dashboard/chat/UserList";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
 import { GetAdmins, sendMessage, SortedMessages } from "@/src/redux/service/AdminApi";
+import { socket } from "@/src/redux/service/socket";
 import { AgentAvatarOne, AgentAvatarTwo } from "@/src/utils/images/images";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
@@ -156,6 +157,7 @@ const chats = [
 
 function Chats() {
   const userLoggedIn = useSelector((state) => state?.User?.UserInfo);
+  const [onlineUser,setonlineUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [admin, setadmin] = useState([]);
   const [senderChat, setSenderChat] = useState([]);
@@ -163,7 +165,7 @@ function Chats() {
   const [changeScreen, setChangeScreen] = useState(false);
   const theme = useTheme();
   const smallScreen: any = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [currentUserStatus,setcurrentUserStatus]=useState(false)
   const getChat = (data) => {
     try {
       if (smallScreen) {
@@ -212,14 +214,19 @@ function Chats() {
   }, [selectedUser, userLoggedIn]);
 
 
-
+ const hendleUpdateMessages = async ()=>{
+      fetchMessages()
+      setTimeout(() => {
+        fetchMessages()
+      }, 700);
+    }
   useEffect(() => {
     fetchMessages();
+    socket.on('update',hendleUpdateMessages);
   }, [selectedUser]);
 
+
   const handleSendMessage = async ({lastmsg})=>{
-    // toast.success('jrj')
-    // try {
       if (selectedUser === null){
         return toast.error('user not selected')
       }
@@ -229,10 +236,21 @@ function Chats() {
       if(!res?.status){
         toast.error('some thing want wrong');
       }
-    // } catch (error) {
-    //   toast.error(error)
-    // }
+   
   }
+  useEffect(()=>{
+    
+    socket.emit('userStatus',userLoggedIn)
+  },[])
+
+useEffect(()=>{
+
+  socket.on('status',(user)=>{
+    setonlineUser(user);
+    console.log(user)
+  })
+})
+
   return (
     <div>
       <Toaster/>
@@ -240,18 +258,18 @@ function Chats() {
         container
         className="border border-[#D0D5DD] flex flex-col rounded-lg h-[96vh]"
       >
-        <Grid item xs={12} md={3.2} className="border-r-2 ">
+        <Grid item xs={12} md={3.2} className="border-r-2 " >
           {changeScreen ? (
             <div className="py-3 px-3">
               <BackBtn onClick={backScreen} />
               <br />
-              <ChatHeader selectedUser={selectedUser} />
+              <ChatHeader onlineUsers= {onlineUser} selectedUser={selectedUser} />
               <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
             </div>
           ) : (
-            <Grid container className="overflow-y-scroll scroll-auto ">
-              <Grid item xs={12}>
-                <div className="flex justify-between items-center gap-4 p-4">
+            <Grid  className="overflow-y-scroll px-2 scroll-smooth h-full style-4">
+              <Grid className="">
+                <div className="flex justify-between  gap-4 p-4">
                   <h2 className="font-semibold text-lg pt-2">People</h2>
                   <SearchInput className="w-32" />
                 </div>
@@ -410,7 +428,7 @@ function Chats() {
             )}
             {selectedUser && (
               <React.Fragment>
-                <ChatHeader selectedUser={selectedUser} />
+                <ChatHeader onlineUsers= {onlineUser} selectedUser={selectedUser} />
                 <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
               </React.Fragment>
             )}
