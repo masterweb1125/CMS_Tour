@@ -77,7 +77,7 @@ function Sidebar({ children }: any) {
         }`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full px-3 py-4 overflow-y-auto style-4 bg-white dark:bg-gray-800">
           <Link href="/dashboard">
             <Image
               src={LogoTransparent}

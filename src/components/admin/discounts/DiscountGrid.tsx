@@ -1,9 +1,11 @@
 import { CSVLink } from 'react-csv';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { Button, ButtonGroup, Grid } from '@mui/material';
+import { Button, ButtonGroup, Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Popover } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchInput from '@/src/components/dashboard/dashboardComponents/SearchInput';
 import { GetAllDiscounts, UpdateDiscount } from '@/src/redux/service/AdminApi';
+import { TbStatusChange } from "react-icons/tb";
+import { AiOutlineClockCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 
 const columns = [
   '#',
@@ -16,15 +18,28 @@ const columns = [
   'Action',
 ];
 
-function DiscountGrid({setDiscountData,setbtntext}) {
-  const [discount, setDiscount] = useState([]);
-  const [activePopup,setActivePopup] = useState(null);
+function DiscountGrid({ setDiscountData, setbtntext }) {
+  const [discounts, setDiscounts] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
+
+  const handleActionClick = (event, discount) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedDiscount(discount);
+  };
+
+  const handleActionClose = () => {
+    setAnchorEl(null);
+    setSelectedDiscount(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   // Fetch discounts from API
   const fetchDiscounts = async () => {
     try {
       const res = await GetAllDiscounts();
-      setDiscount(res);
+      setDiscounts(res);
     } catch (error) {
       console.error('Error fetching discounts:', error);
     }
@@ -32,8 +47,7 @@ function DiscountGrid({setDiscountData,setbtntext}) {
 
   useEffect(() => {
     fetchDiscounts();
-  }
-);
+  }, []);
 
   // Format expiration date
   const formatDate = (dateString) => {
@@ -59,7 +73,7 @@ function DiscountGrid({setDiscountData,setbtntext}) {
 
   // CSV export function
   const handleExportCSV = () => {
-    const csvData = discount.map((item, index) => ({
+    const csvData = discounts.map((item, index) => ({
       '#': index + 1,
       'Name': item.name,
       'Discount': `${item.value}%`,
@@ -69,7 +83,6 @@ function DiscountGrid({setDiscountData,setbtntext}) {
       'Expiration': formatDate(item.expirationDate),
     }));
 
-    // Generate CSV file
     const headers = columns.map((column) => ({ label: column, key: column }));
     const csvReport = {
       data: csvData,
@@ -79,82 +92,52 @@ function DiscountGrid({setDiscountData,setbtntext}) {
 
     return <CSVLink {...csvReport}><button className=''>CSV Export</button></CSVLink>;
   };
-const handlePopup = async(id)=>{
- setActivePopup(activePopup == id?null:id)
-}
-const handleSetData = (data)=>{
-  setbtntext(false)
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  })
- setDiscountData(data)
-}
 
-const handleActiveStatusChange = async(data)=>{
+  const handleSetData = (data) => {
+    setbtntext(false);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    setDiscountData(data);
+  };
 
+  const handleActiveStatusChange = async (data) => {
     const res = await UpdateDiscount(data._id, {
       name: data.name,
       value: data.value,
       expirationDate: data.expirationDate,
       usageLimit: data.usageLimit,
       userMaxLimit: data.userMaxLimit,
-      isActive: data.isActive?false:true,
+      isActive: !data.isActive,
     });
+    if (res) {
+      fetchDiscounts();
+    }
+  };
 
-}
   return (
     <div className="border pt-8 rounded-lg">
       <Grid container mb={3} spacing={3} px={3}>
         <Grid item xs={12} md={9}>
-          <div className="border-t-4 border-[#FFA500] w-24 " />
-          <p className="text-[#344054] text-lg font-semibold pt-4">
-            Discount History
-          </p>
-          <h6 className="text-xs text-[#475467] pt-1 md:pt-0">
-            Select user which you want to add something or deduct
-          </h6>
+          <div className="border-t-4 border-[#FFA500] w-24" />
+          <p className="text-[#344054] text-lg font-semibold pt-4">Discount History</p>
+          <h6 className="text-xs text-[#475467] pt-1 md:pt-0">Select user which you want to add something or deduct</h6>
         </Grid>
-
         <Grid item xs={12} md={3}>
           <div className="flex justify-between gap-3">
             <SearchInput />
-            <svg
-              width="40"
-              height="34"
-              viewBox="0 0 40 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="39"
-                height="43"
-                rx="7.5"
-                stroke="#D0D5DD"
-              />
-              <path
-                d="M15 22H25M12.5 17H27.5M17.5 27H22.5"
-                stroke="#667085"
-                strokeWidth="1.66667"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg width="40" height="34" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.5" y="0.5" width="39" height="43" rx="7.5" stroke="#D0D5DD" />
+              <path d="M15 22H25M12.5 17H27.5M17.5 27H22.5" stroke="#667085" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         </Grid>
-
         <Grid item xs={12} className="flex items-end justify-end">
-          <ButtonGroup
-            variant="contained"
-            className="bg-[#FFA500] px-3 py-2 text-white"
-            color="inherit"
-          >
+          <ButtonGroup variant="contained" className="bg-[#FFA500] px-3 py-2 text-white" color="inherit">
             {handleExportCSV()}
           </ButtonGroup>
         </Grid>
-
         <Grid item xs={12}>
           <div className="relative overflow-x-auto border rounded-md pb-3 pr-3">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -168,50 +151,53 @@ const handleActiveStatusChange = async(data)=>{
                 </tr>
               </thead>
               <tbody>
-                {discount.length > 0 &&
-                  discount.map((item, i) => (
-                    <tr
-               
-                      key={item._id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                    >
+                {discounts.length > 0 &&
+                  discounts.map((item, i) => (
+                    <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <td className="px-6 py-4 font-medium">{i + 1}</td>
                       <td className="px-6 py-4 font-medium">{item.name}</td>
-                      <td className="px-6 py-4 font-medium">
-                        {item.value + '%'}
-                      </td>
+                      <td className="px-6 py-4 font-medium">{item.value + '%'}</td>
                       <td className="px-6 py-4 font-medium">{item.usageLimit}</td>
                       <td className="px-6 py-4 font-medium">{item.timesUsed}</td>
-                      <td className="px-6 py-4 font-medium">
-                        {item.isActive ? 'Active' : 'Inactive'}
-                      </td>
-                      <td
-                        className="px-6 py-4 font-medium"
-                        style={{
-                          color: checkDateStatus(item.expirationDate)
-                            ? '#687586'
-                            : 'red',
-                        }}
-                      >
+                      <td className="px-6 py-4 font-medium">{item.isActive ? 'Active' : 'Inactive'}</td>
+                      <td className="px-6 py-4 font-medium" style={{ color: checkDateStatus(item.expirationDate) ? '#687586' : 'red' }}>
                         {formatDate(item.expirationDate)}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                       <button onClick={()=>handlePopup(item._id)} className=' p-2 rounded-fill relative rounded-full hover:bg-gray-300 text-xl'><BsThreeDotsVertical />
-                       {
-                        activePopup == item._id &&  <div id={item._id} className='absolute z-[1000] text-sm bottom-[-100px] right-1 flex flex-col  w-[180px] rounded-[5px] bg-white' style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
-                        <button onClick={()=>handleSetData(item)} className='py-3  hover:bg-gray-400 px-2 border-b border-gray-400 text-[#344054] text-left'>Update</button>
-                        <button onClick={()=>handleActiveStatusChange(item)} className='py-3 hover:bg-gray-400 px-2 text-[#344054] text-left'>{item.isActive?'Inactive': 'Active'}</button>
-                       
-
-                      </div>
-                       }
-                       </button> 
+                        <IconButton onClick={(event) => handleActionClick(event, item)}>
+                          <BsThreeDotsVertical />
+                        </IconButton>
+                        <Popover
+                          open={open && selectedDiscount?._id === item._id}
+                          anchorEl={anchorEl}
+                          onClose={handleActionClose}
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
+                        >
+                          <Paper className='w-[150px]'>
+                            <MenuList>
+                              <MenuItem onClick={() => { handleSetData(item); handleActionClose(); }}>
+                                <ListItemIcon>
+                                  <AiOutlineClockCircle color="orange" />
+                                </ListItemIcon>
+                                <ListItemText primary="Update" />
+                              </MenuItem>
+                              <MenuItem onClick={() => { handleActiveStatusChange(item); handleActionClose(); }}>
+                                <ListItemIcon>
+                                <TbStatusChange />
+                                </ListItemIcon>
+                                <ListItemText primary={item.isActive?"Inactive":"Active"} />
+                              </MenuItem>
+                            </MenuList>
+                          </Paper>
+                        </Popover>
                       </td>
                     </tr>
                   ))}
               </tbody>
             </table>
-
             <div className="text-end pt-5 text-[#353535] font-semibold cursor-pointer select-none">
               View All
             </div>
@@ -223,4 +209,3 @@ const handleActiveStatusChange = async(data)=>{
 }
 
 export default DiscountGrid;
-

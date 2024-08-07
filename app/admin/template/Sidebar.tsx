@@ -71,12 +71,12 @@ function Sidebar({ children }: any) {
 
       <aside
         id="separator-sidebar"
-        className={`fixed top-0 left-0 z-40 w-[18rem] overflow-y-auto h-screen pb-14 border-r-2 transition-transform -translate-x-full sm:translate-x-0 ${
+        className={`fixed  top-0 left-0 z-40 w-[18rem] overflow-y-auto h-screen pb-14 border-r-2 transition-transform -translate-x-full sm:translate-x-0  ${
           mobileView ? "transform-none" : ""
         }`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full px-3 py-4 overflow-y-auto style-4 bg-white dark:bg-gray-800">
           <Link href="/dashboard">
             <Image
               src={LogoTransparent}

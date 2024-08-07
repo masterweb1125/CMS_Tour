@@ -476,3 +476,37 @@ export const GetConversaion = async (recipientId,senderId)=>{
     console.log("Error in get conversation");
   }
 }
+
+export const CreateServicesCategory = async (data)=>{
+  try {
+    const res = await API_DOMAIN.post('/api/v1/services/category',data);
+    return res.data;
+  } catch (error) {
+    console.log("Error in create services category")
+  }
+}
+export const GetAllServicesCategory = async ()=>{
+  try {
+    const res = await API_DOMAIN.get('/api/v1/services/category');
+    return res.data;
+  } catch (error) {
+    console.log("Error in get all services category")
+  }
+}
+export const GetServicesCategoryByName = async (name)=>{
+  try {
+    const res = await API_DOMAIN.get(`/api/v1/services/category/${name}`);
+    return res.data;
+  } catch (error) {
+    console.log("Error in get services category by name")
+  }
+}
+
+export const UpdatedServicesCategory = async (id,data)=>{
+  try {
+    const res = await API_DOMAIN.put(`/api/v1/services/category/${id}`,data);
+    return res.data;
+  } catch (error) {
+    console.log("Error in updtae services category",error)
+  }
+}

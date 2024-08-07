@@ -72,12 +72,16 @@ const handleSendMessage = async ({lastmsg})=>{
     toast.error(error)
   }
 }
+useEffect(() => {
+  return () => {
+    socket.emit('userStatus', userLoggedin);
+  }
+},[userLoggedin]);
 
 useEffect(()=>{
-  socket.emit('userStatus',userLoggedin)
+  
   socket.on('status',(user)=>{
-    // setonlineUser(user);
-    console.log(user)
+  
   })
 },[])
   return (

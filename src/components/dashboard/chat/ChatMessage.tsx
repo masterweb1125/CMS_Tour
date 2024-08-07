@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { FaLink } from "react-icons/fa";
 
 function ChatMessage({
-  chats,
   selectedUser,
   handleSendMessage,
   setSenderChat,
@@ -17,12 +16,18 @@ function ChatMessage({
   senderChat: any;
   selectedUser: any;
   userLoggedIn: any;
-  chats: any;
 }) {
   const [msg, setMsg] = useState("");
   const file = useRef<HTMLInputElement>(null);
   const imagefileref = useRef<HTMLInputElement>(null);
   const [filePopup, setFilePopup] = useState(false);
+  const chatboxRef = useRef(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+function scrollToBottom() {
+    if (chatboxRef.current) {
+      chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
+    }
+  }
 
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
@@ -32,7 +37,7 @@ function ChatMessage({
         (newMessage.sender === selectedUser._id &&
           newMessage.recipient === userLoggedIn._id)
       ) {
-        ((prevChats) => {
+        setSenderChat((prevChats) => {
           const updatedChats = [...prevChats, newMessage];
           return updatedChats.sort(
             (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
@@ -42,14 +47,13 @@ function ChatMessage({
     };
 
     socket.on("new message", handleNewMessage);
-    
-    return () => {
-      socket.off("new message", handleNewMessage);
-    };
-  }, [userLoggedIn._id, selectedUser._id, setSenderChat]);
-  
-  useEffect(()=>{
 
+    return () => {
+      socket.off("new message");
+    };
+  }, [userLoggedIn._id, selectedUser._id]);
+
+  useEffect(() => {
     const handleNewMessage = (newMessage) => {
       if (
         (newMessage.sender === userLoggedIn._id &&
@@ -57,18 +61,20 @@ function ChatMessage({
         (newMessage.sender === selectedUser._id &&
           newMessage.recipient === userLoggedIn._id)
       ) {
-        ((prevChats) => {
+        setSenderChat((prevChats) => {
           const updatedChats = [...prevChats, newMessage];
           return updatedChats.sort(
             (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           );
         });
+        scrollToBottom()
       }
     };
-    
-    socket.on(userLoggedIn._id,handleNewMessage)
 
-  })
+    socket.on(userLoggedIn._id, handleNewMessage);
+    return ()=>socket.off(userLoggedIn._id);
+  }, []);
+
   const handleClickFileBtn = (type: number) => {
     if (type === 1) {
       imagefileref.current?.click();
@@ -98,6 +104,7 @@ function ChatMessage({
         );
       });
       setMsg("");
+      scrollToBottom()
     }
   };
 
@@ -108,16 +115,46 @@ function ChatMessage({
     }
   };
 
+  useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const messageId = entry.target.getAttribute("data-id");
+          if (messageId) {
+            socket.emit("read", {
+             id:messageId,
+            });
+          }
+        }
+      });
+    });
+
+    const messageElements = document.querySelectorAll(".message");
+    messageElements.forEach((el) => observer.current?.observe(el));
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [senderChat]);
+  
+useEffect(()=>{
+scrollToBottom()
+},[senderChat])
   return (
-    <div className="relative h-[75vh] ">
-      <div className="style-4 mt-10 px-4 scroll-smooth h-[100%] overflow-y-scroll" style={{ paddingBottom: "50px" }}>
+    <div className="relative h-[75vh]">
+      <div id="chatbox" ref={chatboxRef} className="style-4 mt-10 px-4 scroll-smooth h-[100%] overflow-y-scroll" style={{ paddingBottom: "50px" }}>
         {senderChat.length !== 0 &&
-          senderChat.map(({ sender, content, createdAt }, index) => (
+          senderChat.map(({ sender, content, createdAt, _id }, index) => (
             <div
               key={index}
-              className={`flex ${sender === selectedUser?._id ? "" : "flex-col items-end justify-end"} mb-4`}
+              className={`message flex ${sender === selectedUser?._id ? "" : "flex-col items-end justify-end"} mb-4`}
+             data-id={_id}
             >
-              <div
+              <div 
+                id="messages"
                 className={`border text-wrap max-w-[300px] px-5 py-2 rounded-xl relative text-sm font-medium ${
                   sender === selectedUser?._id ? "bg-[#E7E7E7]" : "bg-[#ffa500] text-white"
                 }`}
@@ -132,7 +169,7 @@ function ChatMessage({
                 <div className="text-[11px] mt-1 flex gap-2 pr-4 items-center">
                   <div>{new Date(createdAt).toLocaleTimeString()}</div>
                   <div className="w-2 h-2 rounded-xl bg-[#ffa500]" />
-             </div>
+                </div>
               )}
             </div>
           ))}
@@ -196,6 +233,8 @@ function ChatMessage({
 }
 
 export default ChatMessage;
+
+
 const ItemsSvg = () => (
   <svg
     width="21"

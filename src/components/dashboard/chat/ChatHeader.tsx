@@ -12,24 +12,17 @@ function ChatHeader({
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    if (!selectedUser || !onlineUsers) return;
-    
-    const userOnline = onlineUsers.find((item) => item._id === selectedUser._id);
-  
-    if (userOnline) {
-      if (userOnline[0].isOnline) {
-        setStatus(userOnline.isOnline);
-        console.log(userOnline)
-      } else {
-        if (userOnline.lastSeen) {
-          setStatus('last seen ' + userOnline.lastSeen);
-        } else {
-          setStatus('offline');
-        }
+     const online = onlineUsers.filter(item => item.userId === selectedUser._id)[0];
+     if(online){
+      if(online.isActive){
+        setStatus('online')
+      }else{
+        setStatus('offline')
       }
-    } else {
+     }else{
       setStatus('offline');
-    }
+     }
+
   }, [selectedUser, onlineUsers]);
   
   

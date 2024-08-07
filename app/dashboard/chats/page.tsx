@@ -3,112 +3,19 @@ import ChatHeader from "@/src/components/dashboard/chat/ChatHeader";
 import ChatMessage from "@/src/components/dashboard/chat/ChatMessage";
 import UserList from "@/src/components/dashboard/chat/UserList";
 import SearchInput from "@/src/components/dashboard/dashboardComponents/SearchInput";
-import { GetAdmins, sendMessage, SortedMessages } from "@/src/redux/service/AdminApi";
+import {
+  GetAdmins,
+  sendMessage,
+  SortedMessages,
+} from "@/src/redux/service/AdminApi";
 import { socket } from "@/src/redux/service/socket";
 import { AgentAvatarOne, AgentAvatarTwo } from "@/src/utils/images/images";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const list = [
-  {
-    id: 1,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 2,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 3,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 4,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 5,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 6,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 7,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 8,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 9,
-    img: AgentAvatarOne,
-    name: "Anil",
-    message: "April fool’s day",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 10,
-    img: AgentAvatarTwo,
-    name: "Chuuthiya",
-    message: "Bhaag",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 11,
-    img: AgentAvatarOne,
-    name: "Mary ma’am",
-    message: "You have to report it",
-    date: "Today, 9.52pm",
-    status: "1",
-  },
-  {
-    id: 12,
-    img: AgentAvatarTwo,
-    name: "Bill Gates",
-    message: "Nevermind bro",
-    date: "Yesterday, 9.52pm",
-    status: "1",
-  },
-];
 
 const chats = [
   {
@@ -157,7 +64,7 @@ const chats = [
 
 function Chats() {
   const userLoggedIn = useSelector((state) => state?.User?.UserInfo);
-  const [onlineUser,setonlineUser] = useState([]);
+  const [onlineUser, setonlineUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [admin, setadmin] = useState([]);
   const [senderChat, setSenderChat] = useState([]);
@@ -165,7 +72,7 @@ function Chats() {
   const [changeScreen, setChangeScreen] = useState(false);
   const theme = useTheme();
   const smallScreen: any = useMediaQuery(theme.breakpoints.down("md"));
-  const [currentUserStatus,setcurrentUserStatus]=useState(false)
+  const [currentUserStatus, setcurrentUserStatus] = useState(false);
   const getChat = (data) => {
     try {
       if (smallScreen) {
@@ -206,68 +113,87 @@ function Chats() {
         userLoggedIn._id
       );
       // Sort messages by createdAt in ascending order
-      const sortedMessages = sendermsg.messages.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
-      setSenderChat(sortedMessages);
+      if (sendermsg.messages) {
+        const sortedMessages = sendermsg.messages.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+        setSenderChat(sortedMessages);
+      }
     }
   }, [selectedUser, userLoggedIn]);
 
-
- const hendleUpdateMessages = async ()=>{
-      fetchMessages()
-      setTimeout(() => {
-        fetchMessages()
-      }, 700);
-    }
+  const hendleUpdateMessages =  useCallback(() => {
+  // fetchMessages()
+  },[selectedUser, userLoggedIn])
   useEffect(() => {
-    fetchMessages();
-    socket.on('update',hendleUpdateMessages);
-  }, [selectedUser]);
+    fetchMessages()
+    socket.on("update",hendleUpdateMessages );
 
+    return () => {
+      socket.off("update");
+    };
+  }, [fetchMessages, selectedUser]);
 
-  const handleSendMessage = async ({lastmsg})=>{
-      if (selectedUser === null){
-        return toast.error('user not selected')
-      }
+  const handleSendMessage = async ({ lastmsg }) => {
+    if (selectedUser === null) {
+      return toast.error("user not selected");
+    }
+
+    const res = await sendMessage({
+      sender: userLoggedIn._id,
+      recipient: selectedUser._id,
+      lastmsgstatus: 4,
+      lastmsg: lastmsg,
+      lastmsgside: userLoggedIn._id,
+      recipient: selectedUser._id,
+    });
+    // console.log(res)
+    if (!res?.status) {
+      toast.error("some thing want wrong");
+    }
+  };
+  useEffect(() => {
+
   
-      const res = await sendMessage({ sender:userLoggedIn._id,recipient:selectedUser._id, lastmsgstatus:4, lastmsg:lastmsg, lastmsgside:userLoggedIn._id,recipient:selectedUser._id})
-      // console.log(res)
-      if(!res?.status){
-        toast.error('some thing want wrong');
-      }
-   
-  }
-  useEffect(()=>{
-    
-    socket.emit('userStatus',userLoggedIn)
-  },[])
+    // Optional cleanup if needed
+    return () => {
+      socket.emit('userStatus', { ...userLoggedIn, isActive: false });
+    };
+  }, [userLoggedIn]);
 
-useEffect(()=>{
-
-  socket.on('status',(user)=>{
-    setonlineUser(user);
-    console.log(user)
-  })
-})
+  useEffect(() => {
+    socket.on("status", (user) => {
+      setonlineUser(user);
+      console.log(user);
+    });
+  });
 
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       <Grid
         container
         className="border border-[#D0D5DD] flex flex-col rounded-lg h-[96vh]"
       >
-        <Grid item xs={12} md={3.2} className="border-r-2 " >
+        <Grid item xs={12} md={3.2} className="border-r-2 ">
           {changeScreen ? (
             <div className="py-3 px-3">
               <BackBtn onClick={backScreen} />
               <br />
-              <ChatHeader onlineUsers= {onlineUser} selectedUser={selectedUser} />
-              <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
+              <ChatHeader
+                onlineUsers={onlineUser}
+                selectedUser={selectedUser}
+              />
+              <ChatMessage
+                userLoggedIn={userLoggedIn}
+                handleSendMessage={handleSendMessage}
+                setSenderChat={setSenderChat}
+                senderChat={senderChat}
+                selectedUser={selectedUser}
+              />
             </div>
           ) : (
-            <Grid  className="overflow-y-scroll px-2 scroll-smooth h-full style-4">
+            <Grid className="overflow-y-scroll scroll-smooth h-full style-4">
               <Grid className="">
                 <div className="flex justify-between  gap-4 p-4">
                   <h2 className="font-semibold text-lg pt-2">People</h2>
@@ -277,6 +203,7 @@ useEffect(()=>{
 
               {admin.map((item, index) => (
                 <UserList
+                  senderChat={senderChat}
                   key={index}
                   item={item}
                   admin={true}
@@ -428,8 +355,18 @@ useEffect(()=>{
             )}
             {selectedUser && (
               <React.Fragment>
-                <ChatHeader onlineUsers= {onlineUser} selectedUser={selectedUser} />
-                <ChatMessage userLoggedIn={userLoggedIn} handleSendMessage={handleSendMessage} setSenderChat={setSenderChat} senderChat={senderChat} selectedUser={selectedUser}  chats={chats} />
+                <ChatHeader
+                  onlineUsers={onlineUser}
+                  selectedUser={selectedUser}
+                />
+                <ChatMessage
+                  userLoggedIn={userLoggedIn}
+                  handleSendMessage={handleSendMessage}
+                  setSenderChat={setSenderChat}
+                  senderChat={senderChat}
+                  selectedUser={selectedUser}
+                  chats={chats}
+                />
               </React.Fragment>
             )}
           </div>
